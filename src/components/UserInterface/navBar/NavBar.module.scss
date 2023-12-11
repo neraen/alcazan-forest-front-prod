@@ -1,0 +1,45 @@
+.navbar{
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.navbar-padding{
+  padding-left: 50px;
+  background: rgba(255,255,255,0.5)!important;
+  color: black!important;
+  backdrop-filter: blur(20px);
+  position: sticky;
+  z-index: 1500;
+  width: 100%;
+}
+
+.navbar-brand{
+  color: black!important;
+  text-decoration: none!important;
+}
+
+.navbar-brand img{
+  width: 50px;
+  margin-right: 20px;
+}
+
+.navbar-nav.ml-auto{
+  margin-left: 20px;
+}
+
+.btn-sign{
+  text-decoration: none;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  outline: none;
+  overflow: hidden;
+  font-weight: 700;
+  font-size: 14px;
+  color: black;
+  padding: 0px 15px;
+  margin: 0 auto;
+  position: relative;
+  right: 15px;
+}
