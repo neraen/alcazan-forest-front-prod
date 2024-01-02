@@ -188,10 +188,6 @@ class Map extends React.Component {
     {
         return (<>
 
-            <div className="banner-map">
-                <h1 className="text-center title-map-font">{this.state.name}</h1>
-            </div>
-
             <div className="cases" style={{backgroundImage: "url("+require("../../../img/map/"+this.state.mapId+".png").default+")", backgroundSize: 'cover'}}>
                 {this.state.cases.map(uniqueCase => (
                     <div  onClick={() =>this.handleClick(uniqueCase)}>

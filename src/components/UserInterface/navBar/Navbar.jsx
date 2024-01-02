@@ -16,24 +16,24 @@ const Navbar = ({history}) => {
 
     return(
         <nav className="navbar navbar-expand-lg navbar-padding title-font" >
-            <NavLink to="/" className="navbar-brand" href="#"><img src="../../../img/A.F.png"/>Alcazan Forest</NavLink>
+            <NavLink to="/" className="navbar-brand" href="#"><img src="../img/alcazan_forest_logo2.png"/>Alcazan Forest</NavLink>
             <div className="collapse navbar-collapse" id="navbarColor02">
                 <ul className="navbar-nav mr-auto">
                     {isAuthenticated && (
                     <>
                         <li className="nav-item">
-                            <NavLink className="nav-link link-dark" to="/carte">Carte</NavLink>
+                            <NavLink className="nav-link gold-link" to="/carte">Carte</NavLink>
                         </li>
                         <li className="nav-item">
-                        <NavLink className="nav-link link-dark" to="/personnage">Profil</NavLink>
+                        <NavLink className="nav-link gold-link" to="/personnage">Profil</NavLink>
                         </li>
                         <li className="nav-item">
-                        <NavLink className="nav-link link-dark" to="/inventaire">Inventaire</NavLink>
+                        <NavLink className="nav-link gold-link" to="/inventaire">Inventaire</NavLink>
                         </li>
                         {role.includes('ROLE_ADMIN') && (
                             <>
                                 <li className="nav-item">
-                                    <NavLink className="nav-link link-dark" to="/administration">Administration</NavLink>
+                                    <NavLink className="nav-link gold-link" to="/administration">Administration</NavLink>
                                 </li>
                             </>
                         )}
@@ -41,10 +41,10 @@ const Navbar = ({history}) => {
                     ||
                     (<>
                         <li className="nav-item">
-                        <NavLink className="nav-link link-dark" to="/preview">APERCU</NavLink>
+                        <NavLink className="nav-link gold-link" to="/preview">APERCU</NavLink>
                         </li>
                         <li className="nav-item">
-                        <NavLink className="nav-link link-dark" to="/about">A PROPOS</NavLink>
+                        <NavLink className="nav-link gold-link" to="/about">A PROPOS</NavLink>
                         </li>
                     </>)
                     }

@@ -22,18 +22,25 @@ class Target extends Component{
     }
 
     render() {
-
-        return (<>
+        let barWidth = 0;
+        const windowWidth = window.innerWidth;
+        if(windowWidth > 1700){
+            barWidth = windowWidth / 10;
+        }else{
+            barWidth = windowWidth / 6
+        }
+        return (
+            <>
 
             {(this.props.target.type === "player" && this.props.target) &&
             <div className="joueur-cible">
                 <h4 className="joueur-cible-name">{this.props.target.pseudo}</h4>
                 <div className="target-stats">
                     <StatBar displayText={false} value={this.props.target.currentLife} max={this.props.target.maxLife}
-                             maxWidth={230}
+                             maxWidth={barWidth}
                              classN="lifeBar"/>
                     <StatBar displayText={false} value={this.props.target.currentMana} max={this.props.target.maxMana}
-                             maxWidth={230}
+                             maxWidth={barWidth}
                              classN="manaBar"/>
                     <div className="avatar-cible-hover"><Link to={"profil/" + this.props.target.pseudo}>Voir profil</Link></div>
                     <img src="/img/gui/CharacterEnemy/AvatarEnemy.png" alt="avatar" className="avatar-player"/>
@@ -46,16 +53,13 @@ class Target extends Component{
 
             {(this.props.target.type === "monstre" && this.props.target) &&
             <div className="joueur-cible">
+                <div className="enemy-bars">
                 <h4 className="joueur-cible-name">{this.props.target.nomMonstre} x {this.props.target.quantiteMonstre} </h4>
-                <div className="target-stats">
                     <StatBar displayText={false} value={this.props.target.monstreLife} max={this.props.target.monstreLifeMax}
-                             maxWidth={200} classN="lifeBar"/>
-
-                    <img src={"/img/monstre/" + this.props.target.imageMonstre + ".png"} alt="avatar"
-                         className="avatar-player avatar-monster"/>
-                {/*          <div style={{backgroundImage: `url("../img/monstre/${this.props.target.imageMonstre}.png")`, height: "120px"}}
-                         className="avatar-player">'</div>*/}
+                             maxWidth={barWidth} classN="lifeBar"/>
                 </div>
+                <img src={"/img/monstre/" + this.props.target.imageMonstre + ".png"} alt="avatar"
+                     className="avatar-player avatar-monster"/>
             </div>
             }
 
@@ -64,7 +68,7 @@ class Target extends Component{
                 <h4 className="joueur-cible-name">{this.props.target.bossName}</h4>
                 <div className="target-stats">
                     <StatBar displayText={false} value={this.props.target.bossLife} max={this.props.target.bossMaxLife}
-                             maxWidth={200} classN="lifeBar"/>
+                             maxWidth={barWidth} classN="lifeBar"/>
 
                     <img src={"/img/boss/" + this.props.target.bossSkin + ".png"} alt="avatar"
                          className="avatar-player avatar-monster"/>

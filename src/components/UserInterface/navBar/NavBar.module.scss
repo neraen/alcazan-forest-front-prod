@@ -1,12 +1,16 @@
 .navbar{
   padding-top: 0;
   padding-bottom: 0;
+
+  .nav-item{
+    color: #FBCE58!important;
+  }
 }
 
 .navbar-padding{
   padding-left: 50px;
-  background: rgba(255,255,255,0.5)!important;
-  color: black!important;
+  background: #052527!important;
+  color: #FBCE58!important;
   backdrop-filter: blur(20px);
   position: sticky;
   z-index: 1500;
@@ -14,12 +18,13 @@
 }
 
 .navbar-brand{
-  color: black!important;
+  color: #FBCE58!important;
   text-decoration: none!important;
 }
 
 .navbar-brand img{
-  width: 50px;
+  width: 70px;
+  padding-top: 0;
   margin-right: 20px;
 }
 
@@ -30,6 +35,7 @@
 .btn-sign{
   text-decoration: none;
   border: none;
+  background: none;
   text-align: center;
   cursor: pointer;
   text-transform: uppercase;
@@ -37,9 +43,13 @@
   overflow: hidden;
   font-weight: 700;
   font-size: 14px;
-  color: black;
+  color: #FBCE58;
   padding: 0px 15px;
   margin: 0 auto;
   position: relative;
   right: 15px;
+}
+
+.gold-link{
+  color: #FBCE58!important;
 }

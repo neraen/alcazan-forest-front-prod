@@ -108,27 +108,31 @@ class MapPage extends React.Component{
         return (<>
             <main className="map-page">
                 <div className="top-container raw">
-                    <div className="side-block px-5">
-                        <Steps
-                            enabled={this.isIntroJsAllowed()}
-                            steps={this.state.steps}
-                            initialStep={0}
-                            options={{tooltipPosition: "right", tooltipClass: "intro-js-tooltip", highlightClass: "intro-js-highlight"}}
-                            onExit={(stepIndex) => this.onExit(stepIndex)}
-                            onBeforeExit={(stepIndex) => this.onBeforeExit(stepIndex)}
-                        />
-                        <UsernameBlock user={this.state.user}/>
-                        <Target />
-                        <UserStatsBlock />
-                        <SideMenu />
+                    <div className="side-block-container">
+                        <div className="side-block px-5">
+                            <div className="banner-map">
+                                <h1 className="text-center title-map-font">Tutoriel boisé</h1>
+                            </div>
+                            <Steps
+                                enabled={this.isIntroJsAllowed()}
+                                steps={this.state.steps}
+                                initialStep={0}
+                                options={{tooltipPosition: "right", tooltipClass: "intro-js-tooltip", highlightClass: "intro-js-highlight"}}
+                                onExit={(stepIndex) => this.onExit(stepIndex)}
+                                onBeforeExit={(stepIndex) => this.onBeforeExit(stepIndex)}
+                            />
+                            <UsernameBlock user={this.state.user}/>
+                            <Target />
 
-                        <div className="block-notification">
-                            {(this.props.joueurState.message !== '') && (
-                                <div dangerouslySetInnerHTML={{__html: this.props.joueurState.message}}></div>
-                            )}
                         </div>
-                    </div>
 
+                        {(this.props.joueurState.message.length > 0) && (
+                            <div className="block-notification">
+                                <div dangerouslySetInnerHTML={{__html: this.props.joueurState.message}}></div>
+                            </div>
+                        )}
+                        </div>
+                    <SideMenu />
                     <div className="map-container mr-5" >
                         {this.state.display && <Map setMapLoaded={() => this.setMapLoaded()} user={this.state.user} needRefresh={this.props.joueurState.needRefresh}/> || <Loader />}
                         <div className="footer-block">
