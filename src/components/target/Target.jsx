@@ -34,8 +34,9 @@ class Target extends Component{
 
             {(this.props.target.type === "player" && this.props.target) &&
             <div className="joueur-cible">
-                <h4 className="joueur-cible-name">{this.props.target.pseudo}</h4>
+
                 <div className="target-stats">
+                    <h4 className="joueur-cible-name">{this.props.target.pseudo}</h4>
                     <StatBar displayText={false} value={this.props.target.currentLife} max={this.props.target.maxLife}
                              maxWidth={barWidth}
                              classN="lifeBar"/>
@@ -43,11 +44,12 @@ class Target extends Component{
                              maxWidth={barWidth}
                              classN="manaBar"/>
                     <div className="avatar-cible-hover"><Link to={"profil/" + this.props.target.pseudo}>Voir profil</Link></div>
-                    <img src="/img/gui/CharacterEnemy/AvatarEnemy.png" alt="avatar" className="avatar-player"/>
+
                     <div className="joueur-cible-profil-btn-close" title="decibler" onClick={this.props.removePlayerTarget}></div>
                     <div className="joueur-cible-profil-btn" title="Voir le profil"></div>
                     <div className="joueur-cible-level" title="Niveau">{this.props.target.niveau}</div>
                 </div>
+                <img src="/img/gui/CharacterEnemy/AvatarEnemy.png" alt="avatar" className="avatar-player"/>
             </div>
             }
 

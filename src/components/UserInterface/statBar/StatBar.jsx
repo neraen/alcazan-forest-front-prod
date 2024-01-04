@@ -10,7 +10,7 @@ const StatBar = ({value, max, maxWidth, classN, displayText=true}) => {
     return(
         <>
             <div style={{width : maxWidth}} className={classN}>
-                <div className="valueBar" style={{width : getWithValueBar()}}><span className="value-bar-text">{displayText && value +" / "+ max}</span></div>
+                <div className="valueBar" style={{width : getWithValueBar()}}><span  style={{left : maxWidth - 80}} className="value-bar-text">{displayText && value +" / "+ max}</span></div>
             </div>
         </>
     )

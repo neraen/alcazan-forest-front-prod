@@ -166,8 +166,16 @@ main{
   /*background: url("../img/gui/Panel2.png");*/
   /*background-size: 355px 131px;*/
   color: white;
-  border-radius: 7px;
-  border: solid aliceblue 1px;
+  border-left: solid 1px #FBCE58;
+  margin-left: 5px;
+  display: flex;
+  flex-direction: column;
+  span{
+    display: flex;
+    flex: 1 1 auto;
+    padding: 10px;
+    font-size: 14px;
+  }
 }
 
 .user-stats-container{
@@ -180,19 +188,10 @@ main{
 }
 
 .username-block{
-  /*background: url(../img/gui/CharacterPlayer/OverlayBorder.png);*/
-  /*background-size: 380px 180px;*/
   color: white;
   z-index: 1;
   display: flex;
   position: relative;
-  /*background: rgba(0,0,0,0.7);*/
-  /*backdrop-filter: blur(20px);*/
-  /*border-radius: 7px;*/
-  /*border: solid aliceblue 1px;*/
-  /*display: flex;*/
-  /*justify-content: center;*/
-  /*align-items: center;*/
 }
 
 .player-pseudo{
@@ -279,7 +278,7 @@ main{
 }
 
 .username-block .value-bar-text{
-
+  position: absolute;
 }
 
 .manaBar .valueBar{
@@ -338,14 +337,12 @@ main{
   display: flex;
   position: relative;
   margin-top: 50px;
-  margin-bottom: 80px;
   height: auto;
 }
 
 .joueur-cible-name{
   text-align: center;
   width: 236px;
-  height: 34px;
   color: crimson;
   text-shadow: 1px 1px 2px black;
   display: flex;
@@ -402,7 +399,7 @@ main{
   font-size: 16px;
   position: absolute;
   top: 60px;
-  left: 323px;
+  right: -37px;
   z-index: -2;
   content: " ";
 }
@@ -423,7 +420,7 @@ main{
   font-size: 16px;
   position: absolute;
   top: 16px;
-  left: 313px;
+  right: -37px;
   z-index: -2;
   content: " ";
 }
@@ -436,17 +433,20 @@ main{
 .avatar-cible-hover{
   display: none;
   position: absolute;
-  top: 22px;
+  top: 5px;
   z-index: 13;
-  left: 221px;
+  right: 5px;
   color: aliceblue;
   background: rgba(0,0,0,0.5);
   width: 120px;
   height: 120px;
   border-radius: 50%;
-
   justify-content: center;
   align-items: center;
+  a{
+    color: aliceblue;
+    text-decoration: none;
+  }
 }
 
 .joueur-cible:hover .avatar-cible-hover{
@@ -455,7 +455,27 @@ main{
 }
 
 .target-stats{
-
+  margin-right: 90px;
+  margin-top: 17px;
+  .joueur-cible-name{
+    margin: 0 0 0 25px;
+  }
+  .lifeBar{
+    border-radius: 30px 0 0 0;
+    border-top: aliceblue 1px solid;
+    border-left: aliceblue 1px solid;
+    .valueBar{
+      border-radius: 30px 0 0 0;
+    }
+  }
+  .manaBar{
+    border-radius: 0 0 0 30px;
+    border-bottom: aliceblue 1px solid;
+    border-left: aliceblue 1px solid;
+    .valueBar{
+      border-radius: 0 0 0 30px;
+    }
+  }
 }
 
 
@@ -582,10 +602,8 @@ main{
   margin-right: 30px;
   background: #052527 !important;
   border: solid 1px #FBCE58 !important;
-  //background: rgba(0, 0, 0, 0.75);
-  //backdrop-filter: blur(20px);
-  //border: solid aliceblue 1px;
   width: auto;
+  padding-bottom: 80px;
 }
 
 .side-menu{
@@ -611,8 +629,8 @@ main{
 }
 
 .side-menu-icon{
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
 }
 
 .exp-icon-container{
@@ -665,9 +683,10 @@ main{
   background: rgba(0,0,0,0.75);
   backdrop-filter: blur(20px);
   border: #FBCE58 solid 1px;
-  border-radius: 7px;
+  border-radius: 0 0 7px 7px;
   margin-bottom: 20px;
-  margin-top: 20px!important;
+  display: flex;
+  flex-direction: row;
 }
 
 .buffs{
@@ -1787,12 +1806,7 @@ section #text span{
     left: 195px;
   }
   .user-stats-block {
-    background-size: 212px 131px;
     color: white;
-    min-width: 210px;
-    max-width: 210px;
-    height: 131px;
-    margin-left: 6px;
   }
 
   .user-stats-block .coin-icon{
@@ -2346,8 +2360,13 @@ section #text span{
     font-size: 1em;
   }
 
-  .player-pseudo{
+  .player-pseudo, .joueur-cible-name{
     padding: 1px;
+  }
+
+  .player-level{
+    top: 78px;
+    left: -10px;
   }
 
   .player-bars{
@@ -2367,16 +2386,45 @@ section #text span{
     height: 25px;
   }
 
-
-
   .joueur-cible .avatar-player{
     width: 100px;
   }
 
-  .joueur-cible-name{
-    font-size: 14px;
+  .avatar-cible-hover{
+    width: 100px;
+    height: 100px;
+    top: 0;
+    right: 0;
   }
 
+  .joueur-cible-profil-btn-close, .joueur-cible-profil-btn{
+    height: 40px;
+    width: 40px;
+  }
+
+  .joueur-cible-profil-btn{
+    top: 40px;
+    right: -25px;
+  }
+
+  .joueur-cible-profil-btn-close {
+    top: 0;
+    right: -25px;
+  }
+
+
+  .enemy-bars, .target-stats{
+    margin-right: 65px;
+    margin-top: 17px;
+  }
+
+  .enemy-bars .valueBar{
+    height: 25px;
+  }
+
+  .lifeBar .valueBar{
+    height: 25px;
+  }
 
   .joueur-cible-level {
     background-size: 38px 38px;
@@ -2385,16 +2433,9 @@ section #text span{
     font-size: 14px;
     position: absolute;
     top: 83px;
-    left: 195px;
+    left: 290px;
   }
-  .user-stats-block {
-    background-size: 212px 131px;
-    color: white;
-    min-width: 210px;
-    max-width: 210px;
-    height: 131px;
-    margin-left: 6px;
-  }
+
 
   .user-stats-block .coin-icon{
     width: 16px;
@@ -2415,8 +2456,8 @@ section #text span{
   }
 
   .side-menu-icon{
-    width: 42px;
-    height: 42px;
+    width: 60px;
+    height: 60px;
   }
 
   .expBar{
