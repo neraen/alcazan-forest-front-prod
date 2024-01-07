@@ -163,18 +163,23 @@ main{
 }
 
 .user-stats-block{
-  /*background: url("../img/gui/Panel2.png");*/
-  /*background-size: 355px 131px;*/
   color: white;
   border-left: solid 1px #FBCE58;
-  margin-left: 5px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: baseline;
+  margin-left: 5px;
   span{
     display: flex;
-    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
     padding: 10px;
-    font-size: 14px;
+    font-size: 13px;
+    .img-stat-icon{
+      width: 25px;
+      margin-right: 5px;
+    }
   }
 }
 
@@ -672,14 +677,8 @@ main{
 }
 
 .spell-bar {
-  /*width: 1248px;*/
-  /*padding: 20px;*/
-  /*margin-left: 422px;*/
-  /*background: url(../img/gui/spells/spell-bar/Panel.png);*/
-  /*background-position: center;*/
-  /*background-size: cover;*/
-  width: auto;
-  padding: 10px;
+  width: 100.8vh;
+  padding: 7px;
   background: rgba(0,0,0,0.75);
   backdrop-filter: blur(20px);
   border: #FBCE58 solid 1px;
@@ -687,6 +686,7 @@ main{
   margin-bottom: 20px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 .buffs{
@@ -1170,7 +1170,7 @@ section #text span{
 
 .footer-block{
   display: flex;
-  margin: auto;
+  margin: 0 auto;
 }
 
 
@@ -1843,10 +1843,6 @@ section #text span{
     height: 42px;
   }
 
-  .spell-bar{
-    padding: 20px;
-  }
-
   .expBar{
     width: 760px;
     height: 7px;
@@ -2437,7 +2433,7 @@ section #text span{
   }
 
 
-  .user-stats-block .coin-icon{
+  .user-stats-block span .img-stat-icon{
     width: 16px;
     height: 16px;
   }

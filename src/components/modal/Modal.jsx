@@ -8,6 +8,7 @@ const Modal = ({ isShowing, hide, title, ...props }) =>
 
                     <div className="modal-custom">
                         <div className="modal-header">
+                            {props.avatar && <img src={props.avatar} />}
                             <h4 className="custom-modal-title">{title}</h4>
                             <button
                                 type="button"
@@ -32,14 +33,15 @@ const Modal = ({ isShowing, hide, title, ...props }) =>
             }
            
             .modal-custom {
-                height: 500px;
-                width: 1000px;
-                background: rgba(0,0,0,0.5);
-                border: rgba(255,255,255,0.4) 1px solid;
+                height: 50vh;
+                width: 39vw;
                 position: absolute;
                 top: 0px;
-                left: 71px;
-                backdrop-filter: blur(20px);
+                left: 15px;
+                background: rgba(5, 37, 39, 0.8);
+                backdrop-filter: blur(16px);
+
+                //border: solid 1px #FBCE58;
                 z-index: 50;
                 color: aliceblue;
                 border-radius: 10px;
@@ -60,6 +62,13 @@ const Modal = ({ isShowing, hide, title, ...props }) =>
               cursor: pointer;
               border: none;
               background: transparent;
+            }
+            
+            @media screen and (max-width: 1700px) {
+                  .modal-custom {
+                    height: 60vh;
+                    width: 52vw;
+                  }
             }
           `}</style>
         </>

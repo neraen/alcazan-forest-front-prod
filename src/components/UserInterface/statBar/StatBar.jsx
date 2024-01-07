@@ -3,7 +3,6 @@ import React from 'react'
 const StatBar = ({value, max, maxWidth, classN, displayText=true}) => {
 
     const getWithValueBar = () => {
-        console.log(window.innerWidth)
         return value / max * maxWidth;
     }
 
