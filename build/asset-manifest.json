@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.233fab87.chunk.css",
-    "main.js": "/static/js/main.54e253cb.chunk.js",
-    "main.js.map": "/static/js/main.54e253cb.chunk.js.map",
+    "main.css": "/static/css/main.6267ea7e.chunk.css",
+    "main.js": "/static/js/main.95c66f24.chunk.js",
+    "main.js.map": "/static/js/main.95c66f24.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.974fec08.js",
     "runtime-main.js.map": "/static/js/runtime-main.974fec08.js.map",
     "static/css/2.67103af6.chunk.css": "/static/css/2.67103af6.chunk.css",
@@ -10,7 +10,7 @@
     "static/js/2.d80b6826.chunk.js.map": "/static/js/2.d80b6826.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.67103af6.chunk.css.map": "/static/css/2.67103af6.chunk.css.map",
-    "static/css/main.233fab87.chunk.css.map": "/static/css/main.233fab87.chunk.css.map",
+    "static/css/main.6267ea7e.chunk.css.map": "/static/css/main.6267ea7e.chunk.css.map",
     "static/js/2.d80b6826.chunk.js.LICENSE.txt": "/static/js/2.d80b6826.chunk.js.LICENSE.txt",
     "static/media/1.png": "/static/media/1.2605b9e8.png",
     "static/media/10.png": "/static/media/10.f863bfc3.png",
@@ -34,7 +34,6 @@
     "static/media/27.png": "/static/media/27.3b8168bf.png",
     "static/media/28.png": "/static/media/28.efadbdbe.png",
     "static/media/29.png": "/static/media/29.f70c301c.png",
-    "static/media/app.scss": "/static/media/sword.a9f8c2c0.jpg",
     "static/media/3.png": "/static/media/3.6bb7e139.png",
     "static/media/30.png": "/static/media/30.b280625b.png",
     "static/media/31.png": "/static/media/31.2535397f.png",
@@ -51,6 +50,7 @@
     "static/media/7.png": "/static/media/7.69331101.png",
     "static/media/8.png": "/static/media/8.ed2116cc.png",
     "static/media/9.png": "/static/media/9.321891bc.png",
+    "static/media/app.scss": "/static/media/sword.a9f8c2c0.jpg",
     "static/media/Panel.png": "/static/media/Panel.e0dd987e.png",
     "static/media/bird1.png": "/static/media/bird1.c7e41938.png",
     "static/media/bird2.png": "/static/media/bird2.09d09c7f.png",
@@ -64,7 +64,7 @@
     "static/js/runtime-main.974fec08.js",
     "static/css/2.67103af6.chunk.css",
     "static/js/2.d80b6826.chunk.js",
-    "static/css/main.233fab87.chunk.css",
-    "static/js/main.54e253cb.chunk.js"
+    "static/css/main.6267ea7e.chunk.css",
+    "static/js/main.95c66f24.chunk.js"
   ]
 }
