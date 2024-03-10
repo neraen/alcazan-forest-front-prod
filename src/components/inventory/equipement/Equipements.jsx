@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import InventaireApi from "../../../services/InventaireApi";
 import carateristiqueService from "../../../services/carateristiqueService";
 

@@ -3,6 +3,7 @@ import UsersApi from "../../../services/UsersApi";
 import {connect} from "react-redux";
 import {fetchTargetInfo, updateJoueurState, removePlayerTarget} from "../../../store/actions";
 import distanceCalculator from "../../../services/distanceCalculator";
+import target from "../../target/Target";
 
 
 const Spell = (props) => {
@@ -23,7 +24,6 @@ const Spell = (props) => {
             document.querySelector(".spell-filter-" + props.spell.id).style.background = 'conic-gradient(rgba(0, 0, 0, 0.6) '+ passedTime +'% ,rgba(0, 0, 0, 0.1)  '+ passedTime +'%)';
         }
 
-
         if(props.target.type === "player"){
             const distance = distanceCalculator.computeDistance(props.target.abscisseTarget, props.target.ordonneeTarget, props.positionJoueur.abscisse, props.positionJoueur.ordonnee);
             if(props.spell.portee < distance && props.spell.portee !== 0){
@@ -33,6 +33,12 @@ const Spell = (props) => {
             }
         }else{
             setDisable(false)
+        }
+
+        if(props.allDisabled){
+            setDisable(true);
+        }else{
+            setDisable(false);
         }
     })
 
@@ -45,7 +51,7 @@ const Spell = (props) => {
         setPassedTime(100);
         let time = props.spell.cooldown * 1000  - UPDATE_INTERVAL;
         setTime(time);
-
+        props.setAllSpellDisabled(true);
         // Update remaining cooldown
         const intervalID = setInterval(() => {
             // Pass remaining time in percentage to CSS
@@ -60,6 +66,7 @@ const Spell = (props) => {
             // Stop timer when there is no time left
             if(time < 0) {
                 //target.textContent = '';
+                props.setAllSpellDisabled(false);
                 setPassedTime(100);
                 clearInterval(intervalID);
             }
@@ -67,24 +74,26 @@ const Spell = (props) => {
     }
 
     const handleAttack = async event => {
-        if(props.spell.portee === 0){
-            await launchAutoFocusedSpell();
-        }
-        else if(props.target.type === "player"){
-            const distance = distanceCalculator.computeDistance(props.target.abscisseTarget, props.target.ordonneeTarget, props.positionJoueur.abscisse, props.positionJoueur.ordonnee);
-            if(props.spell.portee < distance){
-                setDisable(true)
-            }else{
-                if(passedTime >= 100){
-                    setDisable(false)
-                    activateSkill();
-                    await launchAttack();
-                }
+        if(!disable){
+            if(props.spell.portee === 0){
+                await launchAutoFocusedSpell();
             }
-        }else if(props.target.type === "monstre" || props.target.type === "boss"){
-            await launchAttack();
-        }else{
-            //toast("Vous n'avez pas de cible.")
+            else if(props.target.type === "player"){
+                const distance = distanceCalculator.computeDistance(props.target.abscisseTarget, props.target.ordonneeTarget, props.positionJoueur.abscisse, props.positionJoueur.ordonnee);
+                if(props.spell.portee < distance){
+                    setDisable(true)
+                }else{
+                    if(passedTime >= 100){
+                        setDisable(false)
+                        activateSkill();
+                        await launchAttack();
+                    }
+                }
+            }else if(props.target.type === "monstre" || props.target.type === "boss"){
+                await launchAttack();
+            }else{
+                //toast("Vous n'avez pas de cible.")
+            }
         }
     }
 
@@ -136,8 +145,7 @@ const Spell = (props) => {
     }
 
     return <>
-        {/*{disable && <div>La cible est trop loin</div>}*/}
-        <div title={props.spell.nom} className={"spell-container"} onClick={handleAttack}>
+        <div title={props.spell.nom} className="spell-container" onClick={handleAttack}>
             <div className={"spell-filter spell-filter-" + props.spell.id}>{time > 0 && (time/1000).toLocaleString('fr-FR', {maximumFractionDigits: 1})}</div>
             <div  className="spell">
                 <img src={"../../../img/spell/" + props.spell.icone} className="img-spell"/>

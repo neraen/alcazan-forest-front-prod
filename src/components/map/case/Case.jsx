@@ -3,7 +3,6 @@ import '../../../styles/app.css'
 import Player from "../../player/Player";
 import Pnj from "../../pnj/pnj/Pnj";
 import Boss from "../../boss/Boss";
-import ActionView from "../../pnj/actionView/ActionView";
 import ActionMap from "../../actionMap/ActionMap";
 
 const Case = (props) => {

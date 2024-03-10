@@ -32,9 +32,9 @@ const Consommable = (props) => {
         let time = props.consommable.cooldown * 1000  - UPDATE_INTERVAL;
         setTime(time);
 
-        // Update remaining cooldown
+        // Mise à jour du cooldown
         const intervalID = setInterval(() => {
-            // Pass remaining time in percentage to CSS
+            // Temps restant en % pour le CSS
             setPassedTime(time / props.consommable.cooldown / 1000 * 100);
 
 
@@ -73,11 +73,10 @@ const Consommable = (props) => {
     }
 
     return <>
-        {/*{disable && <div>La cible est trop loin</div>}*/}
         <div title={props.consommable.nom} className={"spell-container"} onClick={handleUseConsommable}>
             <div className={"consommable-filter consommable-filter-" + props.consommable.id}>{time > 0 && (time/1000).toLocaleString('fr-FR', {maximumFractionDigits: 1})}</div>
             <div  className="spell">
-                <img src={"../../img/consommables/" + props.consommable.icone} className="img-spell"/>
+                <img src={"../../img/consommables/" + props.consommable.icone} alt="Consommable" className="img-spell"/>
             </div>
         </div>
     </>

@@ -10,6 +10,7 @@ const SpellBar = (props) => {
 
     const [experienceData, setExperienceData] = useState({experienceActuelle : 0, experienceMax: 0});
     const [spells, setSpells] = useState();
+    const [allDisabled, setAllDisabled] = useState(false);
     const [consommables, setConsommables] = useState();
 
     useEffect(() => {
@@ -34,6 +35,10 @@ const SpellBar = (props) => {
         props.setSpellsLoaded(true);
     }
 
+    const setAllSpellDisabled = (isDisabled) => {
+        setAllDisabled(isDisabled)
+    }
+
 
     return <>
         <div className="spell-bar">
@@ -51,7 +56,7 @@ const SpellBar = (props) => {
                 <div className="spells align-items-center">
                     <div className="d-flex">
                         {spells && spells.map(spell => (
-                            <Spell key={spell.id} spell={spell} />
+                            <Spell allDisabled={allDisabled} setAllSpellDisabled={setAllSpellDisabled} key={spell.id} spell={spell} />
                         ))}
                         {spells && [...Array(8 - spells.length)].map((x, i) =>
                             <div  className="spell" key={i}>
@@ -84,5 +89,4 @@ const SpellBar = (props) => {
         </div>
     </>
 }
- //{spells.map(spell => (<Spell spell={spell} />))}
 export default SpellBar

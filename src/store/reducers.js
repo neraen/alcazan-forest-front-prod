@@ -1,6 +1,4 @@
 import * as actions from './actions'
-import {combineReducers} from "redux";
-import {SET_CASES, TOGGLE_COLLISION_CASE} from "./actions";
 
 export const playerStatsReducer = (state = {
     data: {

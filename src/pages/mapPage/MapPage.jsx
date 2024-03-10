@@ -3,7 +3,6 @@ import UsernameBlock from "../../components/UserInterface/usernameBlock/Username
 import SideMenu from "../../components/UserInterface/sideMenu/SideMenu";
 import Map from "../../components/map/map/Map";
 import SpellBar from "../../components/UserInterface/spellBar/SpellBar";
-import UserStatsBlock from "../../components/UserInterface/userStatsBlock/UserStatsBlock";
 import UsersApi from "../../services/UsersApi";
 import Loader from "../../components/loader/Loader";
 import Target from "../../components/target/Target";

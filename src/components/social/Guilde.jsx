@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React from "react"
 import GuildeApi from "../../services/GuildeApi";
 
 class Guilde extends React.Component {

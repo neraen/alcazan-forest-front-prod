@@ -105,7 +105,7 @@ class Map extends React.Component {
                 this.props.updateJoueurState({lifeJoueur: data.life, manaJoueur: data.mana, pm: data.pm})
             });
 
-        if(data.ordonneeJoueur != ordonnee || data.abscisseJoueur != abscisse){
+        if(data.ordonneeJoueur !== ordonnee || data.abscisseJoueur !== abscisse){
             //toast.error("Un obstacle vous empeche d'aller à cet endroit");
         }
 
@@ -172,7 +172,7 @@ class Map extends React.Component {
     }
 
     getJoueur(uniqueCase){
-        if(this.state.abscisseJoueur == uniqueCase.abscisse && this.state.ordonneeJoueur == uniqueCase.ordonnee){
+        if(this.state.abscisseJoueur === uniqueCase.abscisse && this.state.ordonneeJoueur === uniqueCase.ordonnee){
          return this.props.user
         }else{
             if(!this.state.isInstance){

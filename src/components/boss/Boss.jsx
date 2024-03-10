@@ -18,8 +18,6 @@ const Boss = (props) => {
         <div className="joueur" style={{backgroundImage: "url(../img/boss/"+props.boss.bossSkin+".png)"}} onClick={handleTarget}>
             <div className="joueur-hover d-none flex-column">
                 <div className="joueur-name">{props.boss.bossName}</div>
-                {/*<div className="joueur-level">{props.player.nomGuilde && <span>{props.player.nomGuilde}</span>}</div>*/}
-
             </div>
         </div>
     </>

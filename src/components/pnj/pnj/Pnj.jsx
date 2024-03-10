@@ -11,7 +11,6 @@ const Pnj = (props) => {
 
     const { isShowing: isDialogShowed, toggle: toggleDialogPnj } = useModal();
     const [sequence, setSequence] = useState();
-    const [clicked, setClicked] = useState(false);
     const [pnjInfo, setPnjInfo] = useState({
         typepnj: "",
         typeShop: "",

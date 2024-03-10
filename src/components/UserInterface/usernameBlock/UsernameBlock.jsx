@@ -26,7 +26,8 @@ const UsernameBlock = (props) => {
                 </div>
                 {/*<NavLink className="nav-link text-center" to="/">Messagerie</NavLink>*/}
             </div>
-        ) || <Loader maxWidth={200} maxHeight={200}/>}
+            ) || (<Loader maxWidth={200} maxHeight={200}/>)
+        }
     </>
 }
 

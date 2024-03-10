@@ -24,7 +24,7 @@ authAPI.setup();
 
 const Index =  () => {
     const [isAuthenticated, setIsAuthenticated] = useState(authAPI.isAuthenticated());
-    const [role, setRole] = useState(authAPI.getRoles());
+    const [role] = useState(authAPI.getRoles());
 
     const NavbarWitRouter = withRouter(Navbar)
 

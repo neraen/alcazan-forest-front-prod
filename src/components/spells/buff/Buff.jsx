@@ -1,8 +1,7 @@
 import {connect} from "react-redux";
-import {fetchTargetInfo, removePlayerTarget, updateJoueurState} from "../../../store/actions";
+import {updateJoueurState} from "../../../store/actions";
 import React, {useEffect, useState} from "react";
 import BuffApi from "../../../services/BuffApi";
-import Consommable from "../../consommable/Consommable";
 
 const Buff = () => {
 

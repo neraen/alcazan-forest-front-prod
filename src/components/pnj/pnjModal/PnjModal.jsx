@@ -1,11 +1,10 @@
-import useModal from "../../../hooks/useModal";
 import React from "react";
 import Modal from "../../modal/Modal";
 import ShopView from "../shopView/ShopView";
 import QuestView from "../questView/QuestView";
 import ActionView from "../actionView/ActionView";
 import GuildeView from "../guildeView/GuildeView";
-import distanceCalculator from "../../../services/distanceCalculator";
+
 
 class PnjModal extends React.Component{
 
