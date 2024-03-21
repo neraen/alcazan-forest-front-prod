@@ -9,6 +9,10 @@
 /** USER INTERFACE **/
 @import "../components/UserInterface/navBar/NavBar.module";
 
+/** ADMINISTRATION **/
+
+@import "../administration/components/forms/CreateEquipement/CreateEquipementForm.module";
+
 /*@import url(../../public/fonts/BerryRotunda.ttf);*/
 
 * {

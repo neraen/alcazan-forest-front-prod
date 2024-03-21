@@ -13,8 +13,13 @@ function getAllEquipements() {
     return axios.post(API_URL + "equipements", {}).then(response => response.data.equipements);
 }
 
+function getAllEquipementsGrouped() {
+    return axios.post(API_URL + "equipements/grouped", {}).then(response => response.data);
+}
+
 export default {
     create,
     fetchFormElements,
-    getAllEquipements
+    getAllEquipements,
+    getAllEquipementsGrouped,
 }

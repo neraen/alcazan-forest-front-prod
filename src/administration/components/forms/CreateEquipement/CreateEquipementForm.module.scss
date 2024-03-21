@@ -1,0 +1,21 @@
+.create-equipement-form{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.create-equipement-form-body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-equipement-values{
+  margin-right: 30px;
+}
+
+.create-equipement-form-footer{
+  display: flex;
+  padding: 20px;
+  justify-content: center;
+}
