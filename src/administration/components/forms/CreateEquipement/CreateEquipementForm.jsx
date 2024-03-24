@@ -2,6 +2,7 @@ import React from "react";
 import EquipementApi from "../../../../services/EquipementApi";
 import Field from "../../../../components/forms/field/Field";
 import Select from "../../../../components/forms/select/Select";
+import equipements from "../../../../components/inventory/equipement/Equipements";
 
 class CreateEquipementForm extends React.Component{
 
@@ -15,8 +16,9 @@ class CreateEquipementForm extends React.Component{
             levelMin: 0,
             description: "",
             positionEquipement: 1,
+            positionEquipementName: "",
             rarity: 1,
-            caracteristiques: {},
+            caracteristiques: [],
             classe: 1,
             positions: [],
             rarities: [],
@@ -27,24 +29,99 @@ class CreateEquipementForm extends React.Component{
         }
     }
 
+    setCurrentEquipement(){
+        const idEquipement = this.state.idEquipement;
+        if(idEquipement === 0){
+            this.setBlanckEquipement();
+        }else{
+            const currentEquipement = this.state.equipements.find(equipement => equipement.id == idEquipement);
+            console.log(currentEquipement);
+            const caracteristiques = this.mapCaracteristiqueWithForm(currentEquipement.caracteristiques)
+            console.log(currentEquipement);
+            this.setState({
+                name: currentEquipement.nom,
+                icone: currentEquipement.icone,
+                prixRevente: currentEquipement.prixRevente,
+                prixAchat: currentEquipement.prixAchat,
+                levelMin: currentEquipement.levelMin,
+                description: currentEquipement.description,
+                positionEquipement: currentEquipement.positionEquipementId,
+                positionEquipementName: currentEquipement.positionEquipementName,
+                rarity: currentEquipement.rarityId,
+                classe: currentEquipement.classeId,
+                caracteristiques: caracteristiques
+            })
+        }
+
+    }
+
+    mapCaracteristiqueWithForm(caracteristiques){
+        const mappedCaracteristiques = [];
+        this.state.listeCaracteristiques.forEach(listedCaracteristique => {
+            const caracteristique = caracteristiques.find(caracteristique => listedCaracteristique.nom === caracteristique.nom)
+            if(caracteristique){
+                mappedCaracteristiques.push(caracteristique)
+            }else{
+                mappedCaracteristiques.push({...listedCaracteristique, valeur: 0})
+            }
+        })
+
+        return mappedCaracteristiques;
+    }
+
+    setBlanckEquipement(){
+        const caracteristiques = this.mapCaracteristiqueWithForm([]);
+        this.setState( {
+            name: "",
+            icone: "",
+            prixRevente: 0,
+            prixAchat: 0,
+            levelMin: 0,
+            description: "",
+            positionEquipement: 1,
+            rarity: 1,
+            classe: 1,
+            caracteristiques: caracteristiques,
+            idEquipement: 0
+        });
+    }
+
     componentDidMount() {
         this.fetchFormElements();
         this.fetchEquipements();
+
+
     }
 
     handleChange({ currentTarget }){
         const { name, value } = currentTarget;
-        console.log(name, value);
         this.setState({ ...this.state, [name]: value });
     };
 
     handleChangeCaracteristiques({ currentTarget }){
         const { name, value } = currentTarget;
-        const caracteristiques = {...this.state.caracteristiques, [name]: value};
-        caracteristiques[name] = value;
-        this.setState({caracteristiques});
+        console.log(value);
+        console.log(this.state);
+        const caracteristiques = [...this.state.caracteristiques];
+        const updatedCaracteristiques = caracteristiques.map(caracteristique => {
+            console.log(value)
+            if(caracteristique.nom === name){
+                console.log('int : '+value)
+                caracteristique = {
+                    nom: caracteristique.nom,
+                    id: caracteristique.id,
+                    valeur: value
+                }
+            }
+            return caracteristique
+        });
+        console.log(updatedCaracteristiques);
+        this.setState({caracteristiques:  updatedCaracteristiques});
     };
 
+    handleChangeEquipement({currentTarget}){
+        this.setState({idEquipement: currentTarget.value}, () => this.setCurrentEquipement())
+    }
 
     async fetchFormElements(){
         const formElements = await EquipementApi.fetchFormElements();
@@ -53,13 +130,12 @@ class CreateEquipementForm extends React.Component{
             classes: formElements.classes,
             rarities: formElements.rarities,
             positions: formElements.positions
-        })
+        }, () =>  this.setCurrentEquipement())
     }
 
     async fetchEquipements(){
-        const equipements = await EquipementApi.getAllEquipementsGrouped();
+        const equipements = await EquipementApi.getAllEquipementsInfo();
         this.setState({...this.state, equipements: equipements})
-        console.log(this.state);
     }
 
 
@@ -78,19 +154,28 @@ class CreateEquipementForm extends React.Component{
             caracteristiques: this.state.caracteristiques,
             idEquipement: this.state.idEquipement
         }
+        console.log(equipement);
         await EquipementApi.create(equipement);
+    }
+
+    get idEquipement(){
+        return this.state.idEquipement
     }
 
     render() {
         return(
-            <>
+            <div className="create-equipement-page">
                 <h2 className="title-map-font">Création d'équipement</h2>
-                <Select name="idEquipement" label="editer equipement" value={this.state.idEquipement} onChange={(event) => this.handleChange(event)}>
-                    <option key={0} value={0}>Créer un équipement</option>
-                    {this.state.equipements && this.state.equipements.map(equipement =>
-                        <option key={equipement.id} value={equipement.id}>{equipement.nom}</option>
-                    )}
-                </Select>
+
+                <div className="equipement-selector">
+                    <Select name="idEquipement" label="editer equipement" value={this.state.idEquipement} onChange={(event) => this.handleChangeEquipement(event)}>
+                        <option key={0} value={0}>Créer un équipement</option>
+                        {this.state.equipements && this.state.equipements.map(equipement =>
+                            <option key={equipement.id} value={equipement.id}>{equipement.nom}</option>
+                        )}
+                    </Select>
+                </div>
+
                 <form className="create-equipement-form" onSubmit={() => this.handleSubmit()}>
                     <div className="create-equipement-form-body">
                         <div className="form-equipement-values">
@@ -117,9 +202,16 @@ class CreateEquipementForm extends React.Component{
                             </Select>
                         </div>
                         <div className="form-equipement-caracteristiques">
-                        {this.state.listeCaracteristiques && this.state.listeCaracteristiques.map(caracteristique =>
-                            <Field key={caracteristique.id} label={caracteristique.nom} name={caracteristique.nom} value={this.state.caracteristiques[caracteristique.nom]} onChange={(event) => this.handleChangeCaracteristiques(event)}/>
-                        )}
+                            {this.state.listeCaracteristiques && this.state.caracteristiques.length > 0 && this.state.listeCaracteristiques.map((caracteristique, index) =>
+                                <Field key={caracteristique.id} type='number' label={caracteristique.nom} name={caracteristique.nom} value={this.state.caracteristiques[index].valeur} onChange={(event) => this.handleChangeCaracteristiques(event)}/>
+                            )}
+                        </div>
+                        <div className="form-icon-equipement">
+                            {this.state.idEquipement > 0 && (
+                                <>
+                                    <img src={"../img/equipement/" + this.state.positionEquipementName + "/"+ this.state.icone} alt={this.state.name}/>
+                                </>
+                            )}
                         </div>
                     </div>
 
@@ -127,7 +219,7 @@ class CreateEquipementForm extends React.Component{
                         <button type="submit" onClick={(event) => this.handleSubmit(event)}>Creer l'équipement</button>
                     </div>
                 </form>
-            </>
+            </div>
         );
     }
 

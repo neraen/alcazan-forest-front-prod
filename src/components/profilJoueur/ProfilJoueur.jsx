@@ -24,7 +24,6 @@ const ProfilJoueur = ({match, history}) => {
             setIdFriend(friendData.friendId);
             setIsFriend(!!friendData.friendId);
 
-            console.log(joueurData.idJoueur)
             const dataEquipementEquipe = await ProfilAPI.getEquipementEquipeJoueur(joueurData.idJoueur);
             setEquipementEquipe(dataEquipementEquipe);
         }

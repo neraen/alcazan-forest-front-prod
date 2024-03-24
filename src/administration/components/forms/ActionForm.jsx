@@ -98,7 +98,3 @@ class ActionForm extends React.Component{
         )
     }
 }
-
-export default connect((state, ownProps) => {
-    return {questMaker: state.data.questMaker, ownProps};
-}, {removeQuestMakerAction, updateQuestMakerAction})(ActionForm);

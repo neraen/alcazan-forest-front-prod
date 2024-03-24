@@ -1,3 +1,21 @@
+.create-equipement-page{
+  color: aliceblue;
+
+}
+
+.title-map-font{
+  color: aliceblue!important;
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+.equipement-selector{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .create-equipement-form{
   display: flex;
   justify-content: center;
@@ -7,7 +25,7 @@
 .create-equipement-form-body{
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .form-equipement-values{
@@ -18,4 +36,8 @@
   display: flex;
   padding: 20px;
   justify-content: center;
+}
+
+.form-icon-equipement{
+  padding: 20px;
 }
