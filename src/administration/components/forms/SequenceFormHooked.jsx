@@ -28,7 +28,7 @@ export default function SequenceFormHooked({index, removeSequence, register, con
         fetchselectElements();
     }, []);
 
-    const { fields, append, remove } = useFieldArray({ control, name: "actions" });
+    const { fields, append, remove } = useFieldArray({ control, name: `sequences[${index}].actions` });
 
    // const { control, register } = useFormContext();
    // const { register } = useFormContext();
@@ -57,9 +57,13 @@ export default function SequenceFormHooked({index, removeSequence, register, con
         const actionTypes = await actionTypeApi.getAllActionTypes();
         setActionTypes(actionTypes);
     }
+
+    const getSequencesForm = () => {
+
+    }
     
     const handleAddAction = () =>{
-        const actionTypeName = currentActionTypeName ? currentActionTypeName : actionTypes[currentActionType-1].name;
+        append()
     }
 
     const onRemove = () => {
@@ -105,13 +109,13 @@ export default function SequenceFormHooked({index, removeSequence, register, con
             <div className="quest-maker-actions-container">
                 <div className="quest-maker-actions-form">
                     <div className="map-maker-btn-validation" onClick={() => this.handleAddAction()}>Ajouter une action</div>
-                    <select name={} value={currentActionType}>
+                    <select value={currentActionType}>
                         {actionTypes.length > 0 && actionTypes.map(actionType => <option key={actionType.id} value={actionType.id}>{actionType.name}</option>)}
                     </select>
                 </div>
 
                 <div className="quest-maker-actions">
-                    {sequences[index].actions && sequences[index].actions.map((action, index) => {
+                    {fields.map((action, index) => {
                         return <ActionFormHooked key={index} action={action}/>
                     })}
                 </div>
