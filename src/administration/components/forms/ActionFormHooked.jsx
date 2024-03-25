@@ -23,6 +23,8 @@ export default function ActionFormHooked({action}) {
         const fields = await actionTypeApi.getAllFields(action.actionTypeId);
         setFields(fields);
 
+        console.log(fields);
+
         switch (action.actionTypeName) {
             case "donnerObjet":
                 const objets = await objectApi.getAllObjects();
@@ -72,7 +74,7 @@ export default function ActionFormHooked({action}) {
                     </select>
                 }
                 else{
-                    return <input key={index} name={"action"+ field.name[0].toUpperCase() + field.name.substring(1)} type={field.type} label={field.name} value={this.props.action["action"+ field.name[0].toUpperCase() + field.name.substring(1)]}/>
+                    return <input key={index} name={"action"+ field.name[0].toUpperCase() + field.name.substring(1)} type={field.type} label={field.name} value={action["action"+ field.name[0].toUpperCase() + field.name.substring(1)]}/>
                 }
 
             })}

@@ -58,12 +58,22 @@ export default function SequenceFormHooked({index, removeSequence, register, con
         setActionTypes(actionTypes);
     }
 
-    const getSequencesForm = () => {
-
+    const handleActionTypeChange = ({currentTarget}) => {
+        setCurrentActionType(currentTarget.value)
     }
     
     const handleAddAction = () =>{
-        append()
+        console.log(currentActionType)
+        console.log(actionTypes)
+
+        const action = {
+            actionTypeId: currentActionType,
+            actionTypeName: actionTypes.find(actionType => actionType.id == currentActionType).name,
+            actionName: ""
+        }
+
+        console.log(action)
+        append(action)
     }
 
     const onRemove = () => {
@@ -108,8 +118,8 @@ export default function SequenceFormHooked({index, removeSequence, register, con
             
             <div className="quest-maker-actions-container">
                 <div className="quest-maker-actions-form">
-                    <div className="map-maker-btn-validation" onClick={() => this.handleAddAction()}>Ajouter une action</div>
-                    <select value={currentActionType}>
+                    <div className="map-maker-btn-validation" onClick={() => handleAddAction()}>Ajouter une action</div>
+                    <select value={currentActionType} onChange={(event) => handleActionTypeChange(event)}>
                         {actionTypes.length > 0 && actionTypes.map(actionType => <option key={actionType.id} value={actionType.id}>{actionType.name}</option>)}
                     </select>
                 </div>
