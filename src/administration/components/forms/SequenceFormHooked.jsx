@@ -63,16 +63,12 @@ export default function SequenceFormHooked({index, removeSequence, register, con
     }
     
     const handleAddAction = () =>{
-        console.log(currentActionType)
-        console.log(actionTypes)
-
         const action = {
             actionTypeId: currentActionType,
             actionTypeName: actionTypes.find(actionType => actionType.id == currentActionType).name,
             actionName: ""
         }
 
-        console.log(action)
         append(action)
     }
 
@@ -125,8 +121,8 @@ export default function SequenceFormHooked({index, removeSequence, register, con
                 </div>
 
                 <div className="quest-maker-actions">
-                    {fields.map((action, index) => {
-                        return <ActionFormHooked key={index} action={action}/>
+                    {fields.map((action, actionIndex) => {
+                        return <ActionFormHooked key={index} action={action} sequenceIndex={index} actionIndex={actionIndex} register={register}/>
                     })}
                 </div>
                 recompense

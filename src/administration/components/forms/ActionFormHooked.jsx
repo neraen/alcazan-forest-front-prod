@@ -10,7 +10,7 @@ import mapMakerApi from "../../services/MapMakerApi";
 import monsterApi from "../../../services/monsterApi";
 
 
-export default function ActionFormHooked({action}) {
+export default function ActionFormHooked({action, register, sequenceIndex, actionIndex}) {
 
     const [fields, setFields] =  useState([]);
     const [fieldContent, setFieldContent] =  useState([]);
@@ -23,7 +23,9 @@ export default function ActionFormHooked({action}) {
         const fields = await actionTypeApi.getAllFields(action.actionTypeId);
         setFields(fields);
 
+
         console.log(fields);
+        console.log(action);
 
         switch (action.actionTypeName) {
             case "donnerObjet":
@@ -66,7 +68,7 @@ export default function ActionFormHooked({action}) {
             <input name="actionName" label="Nom de l'action"/>
             {fields && fields.length > 0 && fields.map((field, index) => {
                 if(field.type === "select"){
-                    return <select key={index} name={field.name} label={field.name}>
+                    return <select key={index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${field.name}`)} >
                         <option value={0}>selectionner un {field.name}</option>
                         {fieldContent && fieldContent.length > 0 && fieldContent.map((content, index) => {
                             return <option key={index} value={content.id}>{content.name}</option>
