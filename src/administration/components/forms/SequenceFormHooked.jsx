@@ -125,7 +125,15 @@ export default function SequenceFormHooked({index, removeSequence, register, con
                         return <ActionFormHooked key={index} action={action} sequenceIndex={index} actionIndex={actionIndex} register={register}/>
                     })}
                 </div>
+
                 recompense
+                <div className="quest-maker-actions">
+                    <RecompenseForm recompense={recompense} sequenceIndex={index}
+                                    objets={objets}
+                                    equipements={equipements}
+                                    consommables={consommables}/>
+                </div>
+
             </div>
         </div>
     )

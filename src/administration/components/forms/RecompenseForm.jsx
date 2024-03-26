@@ -24,13 +24,6 @@ class RecompenseForm extends React.Component{
     handleChange = (event) => {
         const value = event.currentTarget.value;
         const name = event.currentTarget.name;
-        const recompense = Object.assign({...this.props.questMaker.sequences[this.props.sequenceIndex].recompense}, {[name]: value});
-
-        this.props.updateQuestMakerSequenceRecompense(recompense, this.props.sequenceIndex);
-    }
-
-    getSequence(){
-        return this.props.questMaker.sequences[this.props.sequenceIndex];
     }
 
     render(){

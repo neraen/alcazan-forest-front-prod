@@ -76,7 +76,7 @@ export default function ActionFormHooked({action, register, sequenceIndex, actio
                     </select>
                 }
                 else{
-                    return <input key={index} name={"action"+ field.name[0].toUpperCase() + field.name.substring(1)} type={field.type} label={field.name} value={action["action"+ field.name[0].toUpperCase() + field.name.substring(1)]}/>
+                    return <input key={index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${field.name[0].toUpperCase() + field.name.substring(1)}`)} type={field.type}/>
                 }
 
             })}

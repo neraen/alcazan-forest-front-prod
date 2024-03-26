@@ -61,13 +61,10 @@ export default function QuestFormHooked({questId}){
         recompense: []
     };
 
-
-
     const { fields, append, remove } = useFieldArray({ control, name: "sequences" });
 
     async function submit(values){
         console.log(values);
-        {console.log(defaultValues)}
     }
 
     return (
@@ -101,5 +98,4 @@ export default function QuestFormHooked({questId}){
              )}
         </div>
     );
-
 }
