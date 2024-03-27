@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react'
-import '../../../styles/app.css'
-import sequenceApi from "../../../services/sequenceApi";
-import actionTypeApi from "../../services/actionTypeApi";
+import '../../../../styles/app.css'
+import sequenceApi from "../../../../services/sequenceApi";
+import actionTypeApi from "../../../services/actionTypeApi";
 import ActionFormHooked from "./ActionFormHooked";
-import EquipementApi from "../../../services/EquipementApi";
-import consommableApi from "../../../services/consommableApi";
-import objectApi from "../../../services/objectApi";
+import EquipementApi from "../../../../services/EquipementApi";
+import consommableApi from "../../../../services/consommableApi";
+import objectApi from "../../../../services/objectApi";
 import RecompenseForm from "./RecompenseForm";
 import {useFieldArray, useFormContext} from "react-hook-form";
-import MapMakerApi from "../../services/MapMakerApi";
+import MapMakerApi from "../../../services/MapMakerApi";
 
 export default function SequenceFormHooked({index, removeSequence, register, control}){
 
@@ -29,9 +29,6 @@ export default function SequenceFormHooked({index, removeSequence, register, con
     }, []);
 
     const { fields, append, remove } = useFieldArray({ control, name: `sequences[${index}].actions` });
-
-   // const { control, register } = useFormContext();
-   // const { register } = useFormContext();
 
     const fetchselectElements = async () =>{
         const equipements = await EquipementApi.getAllEquipements();
@@ -128,7 +125,8 @@ export default function SequenceFormHooked({index, removeSequence, register, con
 
                 recompense
                 <div className="quest-maker-actions">
-                    <RecompenseForm recompense={recompense} sequenceIndex={index}
+                    <RecompenseForm sequenceIndex={index}
+                                    register={register}
                                     objets={objets}
                                     equipements={equipements}
                                     consommables={consommables}/>

@@ -17,7 +17,7 @@ import {
 import EquipementApi from "../../../services/EquipementApi";
 import consommableApi from "../../../services/consommableApi";
 import objectApi from "../../../services/objectApi";
-import RecompenseForm from "./RecompenseForm";
+import RecompenseForm from "./QuestMaker/RecompenseForm";
 
 class SequenceForm extends React.Component{
     constructor(props) {

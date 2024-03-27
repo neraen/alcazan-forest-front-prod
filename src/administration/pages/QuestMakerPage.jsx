@@ -4,7 +4,7 @@ import Field from "../../components/forms/field/Field";
 import QuestForm from "../components/forms/QuestForm";
 import QuestMakerApi from "../services/QuestMakerApi";
 import {connect} from "react-redux";
-import QuestFormHooked from "../components/forms/QuestFormHooked";
+import QuestFormHooked from "../components/forms/QuestMaker/QuestFormHooked";
 
 class QuestMakerPage extends React.Component{
 

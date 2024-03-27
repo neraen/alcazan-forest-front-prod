@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import '../../../styles/app.css'
+import '../../../../styles/app.css'
 import {useFieldArray, useForm} from "react-hook-form";
-import QuestMakerApi from "../../services/QuestMakerApi";
+import QuestMakerApi from "../../../services/QuestMakerApi";
 import SequenceFormHooked from "./SequenceFormHooked";
 
 export default function QuestFormHooked({questId}){
