@@ -23,10 +23,6 @@ export default function ActionFormHooked({action, register, sequenceIndex, actio
         const fields = await actionTypeApi.getAllFields(action.actionTypeId);
         setFields(fields);
 
-
-        console.log(fields);
-        console.log(action);
-
         switch (action.actionTypeName) {
             case "donnerObjet":
                 const objets = await objectApi.getAllObjects();

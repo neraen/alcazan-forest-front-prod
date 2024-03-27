@@ -10,7 +10,7 @@ import RecompenseForm from "./RecompenseForm";
 import {useFieldArray, useFormContext} from "react-hook-form";
 import MapMakerApi from "../../../services/MapMakerApi";
 
-export default function SequenceFormHooked({index, removeSequence, register, control}){
+export default function SequenceForm({index, removeSequence, register, control}){
 
     const [currentActionType, setCurrentActionType] = useState(1);
     const [currentActionTypeName, setCurrentActionTypeName] = useState("");

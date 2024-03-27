@@ -4,7 +4,7 @@ import Field from "../../components/forms/field/Field";
 import QuestForm from "../components/forms/QuestForm";
 import QuestMakerApi from "../services/QuestMakerApi";
 import {connect} from "react-redux";
-import QuestFormHooked from "../components/forms/QuestMaker/QuestFormHooked";
+import QuestForm from "../components/forms/QuestMaker/QuestForm";
 
 class QuestMakerPage extends React.Component{
 
@@ -52,7 +52,7 @@ class QuestMakerPage extends React.Component{
                         <option key={quest.id} value={quest.id}>{quest.name}</option>
                     )}
                 </Select>
-                <QuestFormHooked questId={this.state.questId}/>
+                <QuestForm questId={this.state.questId}/>
 
             </div>
         </>

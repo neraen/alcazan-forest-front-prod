@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react'
 import '../../../../styles/app.css'
 import {useFieldArray, useForm} from "react-hook-form";
 import QuestMakerApi from "../../../services/QuestMakerApi";
-import SequenceFormHooked from "./SequenceFormHooked";
+import SequenceForm from "./SequenceForm";
 
-export default function QuestFormHooked({questId}){
+export default function QuestForm({questId}){
 
     const [questInfos, setQuestInfo] = useState([])
     const [selectContent, setSelectContent] = useState([])
@@ -91,7 +91,7 @@ export default function QuestFormHooked({questId}){
                     <div className="quest-maker-central-part sequences">
                         <div className="map-maker-btn-validation" onClick={() => append(emptySequence)}>Ajouter une sequence</div>
                         {fields && fields.map((sequence, index) => {
-                            return <SequenceFormHooked key={index} index={index} control={control} remove={remove} register={register}/>
+                            return <SequenceForm key={index} index={index} control={control} remove={remove} register={register}/>
                         })}
                     </div>
                 </form>
