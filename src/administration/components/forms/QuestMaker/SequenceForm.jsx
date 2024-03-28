@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react'
 import '../../../../styles/app.css'
 import sequenceApi from "../../../../services/sequenceApi";
 import actionTypeApi from "../../../services/actionTypeApi";
-import ActionFormHooked from "./ActionFormHooked";
 import EquipementApi from "../../../../services/EquipementApi";
 import consommableApi from "../../../../services/consommableApi";
 import objectApi from "../../../../services/objectApi";
 import RecompenseForm from "./RecompenseForm";
-import {useFieldArray, useFormContext} from "react-hook-form";
+import {useFieldArray} from "react-hook-form";
 import MapMakerApi from "../../../services/MapMakerApi";
+import ActionForm from "./ActionForm";
 
 export default function SequenceForm({index, removeSequence, register, control}){
 
@@ -119,7 +119,7 @@ export default function SequenceForm({index, removeSequence, register, control})
 
                 <div className="quest-maker-actions">
                     {fields.map((action, actionIndex) => {
-                        return <ActionFormHooked key={index} action={action} sequenceIndex={index} actionIndex={actionIndex} register={register}/>
+                        return <ActionForm key={index} action={action} sequenceIndex={index} actionIndex={actionIndex} register={register}/>
                     })}
                 </div>
 

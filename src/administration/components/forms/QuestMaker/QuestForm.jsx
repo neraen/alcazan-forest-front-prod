@@ -8,13 +8,10 @@ export default function QuestForm({questId}){
 
     const [questInfos, setQuestInfo] = useState([])
     const [selectContent, setSelectContent] = useState([])
-    const [sequences, setSequences] = useState([])
-    const [defaultValues, setDefaultValues] = useState([])
 
     const {
         register,
         handleSubmit,
-        watch,
         control,
         reset,
         formState: {isSubmitting}
@@ -36,10 +33,6 @@ export default function QuestForm({questId}){
 
     const fetchQuestInfo = async () => {
         const questInfosFetch = await QuestMakerApi.getQuest(questId);
-        console.log(questInfosFetch)
-        if(questInfosFetch.sequences !== undefined){
-            setSequences(questInfosFetch.sequences);
-        }
         setQuestInfo(questInfosFetch);
     }
 

@@ -10,7 +10,7 @@ import mapMakerApi from "../../../services/MapMakerApi";
 import monsterApi from "../../../../services/monsterApi";
 
 
-export default function ActionFormHooked({action, register, sequenceIndex, actionIndex}) {
+export default function ActionForm({action, register, sequenceIndex, actionIndex}) {
 
     const [fields, setFields] =  useState([]);
     const [fieldContent, setFieldContent] =  useState([]);

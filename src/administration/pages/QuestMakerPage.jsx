@@ -1,7 +1,6 @@
 import React from 'react';
 import Select from "../../components/forms/select/Select";
 import Field from "../../components/forms/field/Field";
-import QuestForm from "../components/forms/QuestForm";
 import QuestMakerApi from "../services/QuestMakerApi";
 import {connect} from "react-redux";
 import QuestForm from "../components/forms/QuestMaker/QuestForm";
