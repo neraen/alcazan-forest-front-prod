@@ -74,7 +74,6 @@ export default function ActionForm({action, register, sequenceIndex, actionIndex
                 else{
                     return <input key={index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${field.name[0].toUpperCase() + field.name.substring(1)}`)} type={field.type}/>
                 }
-
             })}
         </div>
     )
