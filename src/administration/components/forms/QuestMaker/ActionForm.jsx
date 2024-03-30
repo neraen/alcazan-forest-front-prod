@@ -63,17 +63,23 @@ export default function ActionForm({action, register, sequenceIndex, actionIndex
             <h6>{action.actionName + " : " + action.actionTypeName}</h6>
             <input name="actionName" label="Nom de l'action"/>
             {fields && fields.length > 0 && fields.map((field, index) => {
-                if(field.type === "select"){
-                    return <select key={index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${field.name}`)} >
-                        <option value={0}>selectionner un {field.name}</option>
-                        {fieldContent && fieldContent.length > 0 && fieldContent.map((content, index) => {
-                            return <option key={index} value={content.id}>{content.name}</option>
-                        })}
-                    </select>
-                }
-                else{
-                    return <input key={index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${field.name[0].toUpperCase() + field.name.substring(1)}`)} type={field.type}/>
-                }
+                {field.type}
+                field.type === "select" && (
+                    <div className="field-group">
+                        <label htmlFor=""></label>
+                         <select className="select-form-field" key={index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${field.name}`)} >
+                            <option value={0}>selectionner un {field.name}</option>
+                            {fieldContent && fieldContent.length > 0 && fieldContent.map((content, index) => {
+                                return <option key={index} value={content.id}>{content.name}</option>
+                            })}
+                        </select>
+                    </div>
+                ) || (
+                    <div className="field-group">
+                        <label>{field.name[0].toUpperCase() + field.name.substring(1)}</label>
+                        <input  className="input-form-field" key={index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${field.name[0].toUpperCase() + field.name.substring(1)}`)} type={field.type}/>
+                    </div>
+                )
             })}
         </div>
     )

@@ -65,24 +65,42 @@ export default function QuestForm({questId}){
         <div>
             {selectContent && (
                 <form onSubmit={handleSubmit(submit)}>
-                    <input {...register("level")} />
-                    <input {...register("name")} />
-                    <select {...register("alignement")} label="Alignement requis">
-                        <option  value={0}>Aucun alignement requis</option>
-                        {selectContent.alignements && selectContent.alignements.map((alignement) => {
-                            return <option key={alignement.id} value={alignement.id}>{alignement.name}</option>
-                        })}
-                    </select>
-                    <select {...register("objet")} label="Objet requis">
-                        <option value={0}>Aucun objet requis</option>
-                        {selectContent.objets && selectContent.objets.map((objet) => {
-                            return <option key={objet.id} value={objet.id}>{objet.name}</option>
-                        })}
-                    </select>
-                    <button type="submit">Submit</button>
+                    <div className="quest-info-form">
+                        <h2> Informations de la quête </h2>
+                        <div className="field-group gold-border">
+                            <label> Niveau requis </label>
+                            <input {...register("level")} />
+                        </div>
+                        <div className="field-group gold-border">
+                            <label> Nom de la quête </label>
+                            <input {...register("name")} />
+                        </div>
+
+                        <div className="field-group gold-border">
+                            <label> Alignement requis  </label>
+                            <select {...register("alignement")} label="Alignement requis">
+                                <option  value={0}>Aucun alignement requis</option>
+                                {selectContent.alignements && selectContent.alignements.map((alignement) => {
+                                    return <option key={alignement.id} value={alignement.id}>{alignement.name}</option>
+                                })}
+                            </select>
+                        </div>
+
+                        <div className="field-group gold-border">
+                            <label> Objet requis  </label>
+                            <select {...register("objet")} label="Objet requis">
+                                <option value={0}>Aucun objet requis</option>
+                                {selectContent.objets && selectContent.objets.map((objet) => {
+                                    return <option key={objet.id} value={objet.id}>{objet.name}</option>
+                                })}
+                            </select>
+                        </div>
+
+                        <button className="form-btn" type="submit">Valider la quête</button>
+                    </div>
 
                     <div className="quest-maker-central-part sequences">
-                        <div className="map-maker-btn-validation" onClick={() => append(emptySequence)}>Ajouter une sequence</div>
+                        <div className="add-form-btn" onClick={() => append(emptySequence)}>Ajouter une sequence</div>
                         {fields && fields.map((sequence, index) => {
                             return <SequenceForm key={index} index={index} control={control} remove={remove} register={register}/>
                         })}

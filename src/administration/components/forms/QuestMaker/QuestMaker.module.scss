@@ -1,6 +1,108 @@
 .quest-page-maker-container{
   display: flex;
-  background: #052527;
+  background: #394648;
   color: aliceblue;
   padding: 20px;
+  flex-direction: column;
+}
+
+.quest-info-form{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  border: solid 1px #FBCE58;
+  padding: 10px
+}
+
+.sequence-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border: solid 1px #FBCE58;
+}
+
+.sequence-info-form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sequence-form-left, .sequence-form-right{
+  padding: 20px;
+}
+
+.quest-maker-actions{
+  display: flex;
+  flex-direction: row;
+}
+
+.action-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.recompense-form-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 70vw;
+}
+
+
+.field-group{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+
+.gold-border{
+  border: solid 1px #FBCE58;
+}
+
+.form-btn{
+  border-radius: 20px;
+  background: aliceblue;
+  padding: 10px;
+  color: #052527;
+}
+
+.select-form-field{
+  &:focus {
+    border: solid 1px #FBCE58
+  }
+
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.input-form-field{
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.quest-form-separator{
+  border: solid 1px #FBCE58;
+  width: 100%;
+  height: 2px;
+  background: #FBCE58;
+}
+
+.add-form-btn{
+  border-radius: 10px;
+  background: aliceblue;
+  color: #052527;
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  padding: 5px;
 }

@@ -75,45 +75,74 @@ export default function SequenceForm({index, removeSequence, register, control})
     
     return (
         <div className="sequence-container">
+            <h2></h2>
             <button type="button" onClick={onRemove}>
                 Supprimer
             </button>
             <div className="sequence-form-container">
-                
-                <div className="sequence-form-left">
-                    <input type="text" {...register( `sequences[${index}].nomSequence`)}/>
-                    <input type="checkbox" {...register( `sequences[${index}].isLast`)} />
-                    <input type="number" {...register( `sequences[${index}].position`)}/>
-                </div>
 
-                <div className="sequence-form-right">
-                    <select {...register( `sequences[${index}].lastSequence`)} >
-                        <option value="0">Aucune séquence précédante</option>
-                        {sequences.length > 0 && sequences.map(sequence => <option key={sequence.id} value={sequence.id}>{sequence.name}</option>)}
-                    </select>
+                <div className="sequence-info-form">
+                    <div className="sequence-form-left">
+                        <div className="field-group">
+                            <label htmlFor={`sequences[${index}].nomSequence`}> Nom de la séquence </label>
+                            <input className="input-form-field" type="text" {...register( `sequences[${index}].nomSequence`)}/>
+                        </div>
+                        <div className="field-group">
+                            <label htmlFor={ `sequences[${index}].isLast`}>Est-ce la dernière séquence ? </label>
+                            <input className="input-form-field"type="checkbox" {...register( `sequences[${index}].isLast`)} />
+                        </div>
+                        <div className="field-group">
+                            <label htmlFor={`sequences[${index}].position`}> Position de la séquence </label>
+                            <input className="input-form-field" type="number" {...register( `sequences[${index}].position`)}/>
+                        </div>
+                    </div>
 
-                    <select {...register( `sequences[${index}].nextSequence`)}>
-                        <option value="0">Aucune séquence suivante</option>
-                        {sequences.length > 0 && sequences.map(sequence => <option key={sequence.id} value={sequence.id}>{sequence.name}</option>)}
-                    </select>
+                    <div className="sequence-form-right">
+                        <div className="field-group">
+                            <label htmlFor={`sequences[${index}].lastSequence`}> Sequence précédante </label>
+                            <select className="select-form-field" {...register( `sequences[${index}].lastSequence`)} >
+                                <option value="0">Aucune séquence précédante</option>
+                                {sequences.length > 0 && sequences.map(sequence => <option key={sequence.id} value={sequence.id}>{sequence.name}</option>)}
+                            </select>
+                        </div>
 
-                    <select {...register( `sequences[${index}].pnj`)} >
-                        <option value="0">Aucun pnj</option>
-                        {pnjs.length > 0 && pnjs.map(pnj => <option key={pnj.id} value={pnj.id}>{pnj.name}</option>)}
-                    </select>
+                        <div className="field-group">
+                            <label htmlFor={`sequences[${index}].nextSequence`}> Sequence suivante </label>
+                            <select className="select-form-field" {...register( `sequences[${index}].nextSequence`)}>
+                                <option value="0">Aucune séquence suivante</option>
+                                {sequences.length > 0 && sequences.map(sequence => <option key={sequence.id} value={sequence.id}>{sequence.name}</option>)}
+                            </select>
+                        </div>
+
+                        <div className="field-group">
+                            <label htmlFor={`sequences[${index}].pnj`}> Pnj de la séquence </label>
+                            <select className="select-form-field" {...register( `sequences[${index}].pnj`)} >
+                                <option value="0">Aucun pnj</option>
+                                {pnjs.length > 0 && pnjs.map(pnj => <option key={pnj.id} value={pnj.id}>{pnj.name}</option>)}
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div className="sequence-actions-container">
-                <input {...register( `sequences[${index}].dialogueTitre`)}/>
-                <textarea  {...register( `sequences[${index}].dialogueContent`)}/>
+                <div className="field-group">
+                    <label htmlFor={`sequences[${index}].dialogueTitre`}> Titre du dialogue </label>
+                    <input className="input-form-field" {...register(`sequences[${index}].dialogueTitre`)}/>
+                </div>
+                <div className="field-group">
+                    <label htmlFor={`sequences[${index}].dialogueTitre`}> Titre du dialogue </label>
+                    <textarea className="input-form-field" {...register( `sequences[${index}].dialogueContent`)}/>
+                </div>
             </div>
+
+            <hr className="quest-form-separator"/>
             
             <div className="quest-maker-actions-container">
                 <div className="quest-maker-actions-form">
-                    <div className="map-maker-btn-validation" onClick={() => handleAddAction()}>Ajouter une action</div>
+                    <div className="add-form-btn" onClick={() => handleAddAction()}>Ajouter une action</div>
                     <select value={currentActionType} onChange={(event) => handleActionTypeChange(event)}>
-                        {actionTypes.length > 0 && actionTypes.map(actionType => <option key={actionType.id} value={actionType.id}>{actionType.name}</option>)}
+                        {actionTypes && actionTypes.length > 0 && actionTypes.map(actionType => <option key={actionType.id} value={actionType.id}>{actionType.name}</option>)}
                     </select>
                 </div>
 
@@ -123,7 +152,7 @@ export default function SequenceForm({index, removeSequence, register, control})
                     })}
                 </div>
 
-                recompense
+                <hr className="quest-form-separator"/>
                 <div className="quest-maker-actions">
                     <RecompenseForm sequenceIndex={index}
                                     register={register}

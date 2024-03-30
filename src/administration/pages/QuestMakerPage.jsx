@@ -46,11 +46,11 @@ class QuestMakerPage extends React.Component{
             </form>
             <h1>Editer une quête</h1>
             <div className="quest-page-maker-container">
-                <Select onChange={(event) => this.handleChangeQuest(event)}>
+                <select className="select-form-field" onChange={(event) => this.handleChangeQuest(event)}>
                     {this.state.quests && this.state.quests.map(quest =>
                         <option key={quest.id} value={quest.id}>{quest.name}</option>
                     )}
-                </Select>
+                </select>
                 <QuestForm questId={this.state.questId}/>
 
             </div>
