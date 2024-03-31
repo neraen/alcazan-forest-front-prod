@@ -56,8 +56,8 @@ export default function QuestForm({questId}){
 
     const { fields, append, remove } = useFieldArray({ control, name: "sequences" });
 
-    async function submit(values){
-        console.log(values);
+    async function submit(quest){
+       QuestMakerApi.updateQuest(quest.id, quest)
     }
 
     return (

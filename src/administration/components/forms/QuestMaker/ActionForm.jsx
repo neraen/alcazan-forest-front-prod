@@ -64,7 +64,7 @@ export default function ActionForm({action, register, sequenceIndex, actionIndex
     return (
         <div className="action-container">
             <h6>{action.actionName && action.actionName || "Nouveau" + " : " + action.actionTypeName}</h6>
-            <input className="input-form-field" {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${action.name}`)}/>
+            <input className="input-form-field" {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].actionName`)}/>
             {fields && fields.length > 0 && fields.map((field, index) => {
                 return (field.type === "select" && fieldContent && fieldContent.length > 0) && (
                     <div className="field-group">

@@ -87,7 +87,7 @@ export default function SequenceForm({index, removeSequence, register, control})
                         </div>
                         <div className="field-group">
                             <label htmlFor={ `sequences[${index}].isLast`}>Est-ce la dernière séquence ? </label>
-                            <input className="input-form-field"type="checkbox" {...register( `sequences[${index}].isLast`)} />
+                            <input className="input-form-field" type="checkbox" {...register( `sequences[${index}].isLast`)} />
                         </div>
                         <div className="field-group">
                             <label htmlFor={`sequences[${index}].position`}> Position de la séquence </label>
