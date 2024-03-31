@@ -6,7 +6,7 @@ function create(monstre){
 }
 
 function getAllMonsters() {
-    return axios.post(API_URL + "monstres", {}).then(response => response.data.monstres);
+    return axios.post(API_URL + "monstres", {}).then(response => response.data);
 }
 
 

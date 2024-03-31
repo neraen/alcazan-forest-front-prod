@@ -23,6 +23,9 @@ export default function ActionForm({action, register, sequenceIndex, actionIndex
         const fields = await actionTypeApi.getAllFields(action.actionTypeId);
         setFields(fields);
 
+        console.log(fields)
+        console.log(action)
+
         switch (action.actionTypeName) {
             case "donnerObjet":
                 const objets = await objectApi.getAllObjects();
@@ -60,24 +63,23 @@ export default function ActionForm({action, register, sequenceIndex, actionIndex
 
     return (
         <div className="action-container">
-            <h6>{action.actionName + " : " + action.actionTypeName}</h6>
-            <input name="actionName" label="Nom de l'action"/>
+            <h6>{action.actionName && action.actionName || "Nouveau" + " : " + action.actionTypeName}</h6>
+            <input className="input-form-field" {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${action.name}`)}/>
             {fields && fields.length > 0 && fields.map((field, index) => {
-                {field.type}
-                field.type === "select" && (
+                return (field.type === "select" && fieldContent && fieldContent.length > 0) && (
                     <div className="field-group">
                         <label htmlFor=""></label>
                          <select className="select-form-field" key={index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${field.name}`)} >
-                            <option value={0}>selectionner un {field.name}</option>
+                            <option value={0}>selectionner {field.name}</option>
                             {fieldContent && fieldContent.length > 0 && fieldContent.map((content, index) => {
-                                return <option key={index} value={content.id}>{content.name}</option>
+                                return <option key={content.name + actionIndex} value={content.id}>{content.name}</option>
                             })}
                         </select>
                     </div>
                 ) || (
                     <div className="field-group">
                         <label>{field.name[0].toUpperCase() + field.name.substring(1)}</label>
-                        <input  className="input-form-field" key={index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${field.name[0].toUpperCase() + field.name.substring(1)}`)} type={field.type}/>
+                        <input  className="input-form-field" key={"input"+field.name+index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${"action"+field.name[0].toUpperCase() + field.name.substring(1)}`)} type={field.type}/>
                     </div>
                 )
             })}

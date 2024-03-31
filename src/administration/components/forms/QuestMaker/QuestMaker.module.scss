@@ -34,14 +34,22 @@
   padding: 20px;
 }
 
+.sequence-dialogue-container{
+  display: flex;
+}
+
 .quest-maker-actions{
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .action-container{
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
+  max-width: max-content;
   justify-content: center;
   align-items: center;
   padding: 10px;
@@ -88,6 +96,11 @@
 .input-form-field{
   padding: 5px;
   border-radius: 10px;
+}
+
+.textarea-form-field{
+  min-width:  350px;
+  min-height: 200px;
 }
 
 .quest-form-separator{
