@@ -25,6 +25,8 @@ export default function SequenceForm({index, removeSequence, register, control})
         fetchSequences();
         fetchActionTypes();
         fetchselectElements();
+
+        console.log(pnjs)
     }, []);
 
     const { fields, append, remove } = useFieldArray({ control, name: `sequences[${index}].actions` });
@@ -99,8 +101,8 @@ export default function SequenceForm({index, removeSequence, register, control})
                         <div className="field-group">
                             <label htmlFor={`sequences[${index}].lastSequence`}> Sequence précédante </label>
                             <select className="select-form-field" {...register( `sequences[${index}].lastSequence`)} >
-                                <option value="0">Aucune séquence précédante</option>
-                                {sequences.length > 0 && sequences.map(sequence => <option key={"last"+sequence.id} value={sequence.id}>{sequence.name}</option>)}
+                                <option value={0}>Aucune séquence précédante</option>
+                                {sequences.length > 0 && sequences.map(sequence => <option key={sequence.id} value={sequence.id}>{sequence.name}</option>)}
                             </select>
                         </div>
 
@@ -108,7 +110,7 @@ export default function SequenceForm({index, removeSequence, register, control})
                             <label htmlFor={`sequences[${index}].nextSequence`}> Sequence suivante </label>
                             <select className="select-form-field" {...register( `sequences[${index}].nextSequence`)}>
                                 <option value="0">Aucune séquence suivante</option>
-                                {sequences.length > 0 && sequences.map(sequence => <option key={"next"+sequence.id} value={sequence.id}>{sequence.name}</option>)}
+                                {sequences.length > 0 && sequences.map(sequence => <option key={"next"+sequence.id} value={""+sequence.id}>{sequence.name}</option>)}
                             </select>
                         </div>
 
@@ -116,7 +118,7 @@ export default function SequenceForm({index, removeSequence, register, control})
                             <label htmlFor={`sequences[${index}].pnj`}> Pnj de la séquence </label>
                             <select className="select-form-field" {...register( `sequences[${index}].pnj`)} >
                                 <option value="0">Aucun pnj</option>
-                                {pnjs.length > 0 && pnjs.map(pnj => <option key={"pnj"+pnj.id} value={pnj.id}>{pnj.name}</option>)}
+                                {pnjs.length > 0 && pnjs.map(pnj => <option key={"pnj"+pnj.id} value={""+pnj.id}>{pnj.name}</option>)}
                             </select>
                         </div>
                     </div>

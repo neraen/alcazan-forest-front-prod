@@ -6,7 +6,7 @@ function getAllQuests() {
 }
 
 function getQuest(questId) {
-    return axios.post(`${API_URL}quest`, {questId: questId}).then(response => response.data);
+    return axios.post(`${API_URL}quest`, {questId: questId});
 }
 
 function getQuestsInfoForSelect() {

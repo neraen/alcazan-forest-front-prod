@@ -14,10 +14,9 @@ export default function QuestForm({questId}){
         handleSubmit,
         control,
         reset,
+        setValue,
         formState: {isSubmitting}
-    } = useForm({
-        questInfos
-    });
+    } = useForm();
 
     useEffect(() => {
         fetchQuestInfo();
@@ -32,8 +31,18 @@ export default function QuestForm({questId}){
 
 
     const fetchQuestInfo = async () => {
-        const questInfosFetch = await QuestMakerApi.getQuest(questId);
-        setQuestInfo(questInfosFetch);
+        const questInfosFetch = await QuestMakerApi.getQuest(questId).then((response) => {
+            const quest = {...response.data}
+            const sequences = quest?.sequences.map(sequence => {
+                return {...sequence, pnj: sequence.pnj.toString()}
+            })
+            quest.sequences = sequences
+
+            console.log(quest)
+
+            setQuestInfo(quest);
+            reset(quest)
+        });
     }
 
     const fetchSelectContent = async () => {
@@ -48,8 +57,7 @@ export default function QuestForm({questId}){
         isLast: false,
         dialogueContent:"",
         dialogueId: 0,
-        pnjName: "",
-        pnjId: 0,
+        pnj: 0,
         actions: [],
         recompense: []
     };

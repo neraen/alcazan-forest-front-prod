@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {updateJoueurState} from "../../../store/actions";
 import UserActionApi from "../../../services/UserActionApi";
 import pnjApi from "../../../services/pnjApi";
+import ReactHtmlParser from "react-html-parser";
 
 
 const QuestView = (props) => {
@@ -26,7 +27,7 @@ const QuestView = (props) => {
     return(
         <div className="quest-modal-body">
                 <div>
-                    {sequence && sequence.dialogue}<br />
+                    {sequence && <div>{ ReactHtmlParser(sequence.dialogue) }</div> } <br />
                     {sequence && sequence.actions.map(action => <><button onClick={() => handleAction(action.actionLink, action.actionParams, action.actionId)} className="btn-action">{action.actionName}</button><br/> </>)}
                 </div>
         </div>

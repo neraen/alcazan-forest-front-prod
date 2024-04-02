@@ -19,6 +19,7 @@ const Pnj = (props) => {
 
     useEffect(() => {
         //getSequence()
+        getPnjInfos()
     }, []);
 
     const getSequence = async () =>  {
@@ -34,6 +35,7 @@ const Pnj = (props) => {
     const getPnjInfos = async () => {
         const pnjInfos = await pnjApi.getPnjInfos(props.pnj.pnjId)
         setPnjInfo(pnjInfos);
+        console.log(pnjInfos)
         toggleDialogPnj()
     }
 
@@ -48,14 +50,22 @@ const Pnj = (props) => {
 
 
     return <>
-        <div className="pnj" style={{backgroundImage: "url(../../../img/pnj/"+props.pnj.pnjSkin+".png)"}} onClick={getPnjInfos}>
+        <div className="pnj" style={{backgroundImage: "url(../../../img/pnj/"+props.pnj.pnjSkin+".png)"}}>
             <div className="pnj-hover d-none flex-column">
                 <div className="pnj-name">{props.pnj.pnjName}</div>
                 <div className="pnj-description">{props.pnj.pnjDescription}</div>
             </div>
         </div>
 
-        <PnjModal toggleDialogPnj={toggleDialogPnj} isDialogShowed={isDialogAvailable()} pnjId={props.pnj.pnjId} title={pnjInfo.title} typePnj={pnjInfo.typePnj} typeShop={pnjInfo.typeShop} data={pnjInfo.items}/>
+        {pnjInfo && pnjInfo.length > 0 && (
+            <PnjModal toggleDialogPnj={toggleDialogPnj}
+                      isDialogShowed={isDialogAvailable()}
+                      pnjId={props.pnj.pnjId} title={pnjInfo.title}
+                      typePnj={pnjInfo.typePnj}
+                      typeShop={pnjInfo.typeShop}
+                      data={pnjInfo.items}/>
+            )
+        }
 
         {/*{clicked && sequence !== [] &&*/}
         {/*<Modal*/}

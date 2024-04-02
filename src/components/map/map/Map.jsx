@@ -130,10 +130,6 @@ class Map extends React.Component {
             this.setState({unabledCases: this.getUnabledMove()});
             this.props.removePlayerTarget();
         }
-
-
-
-
     }
 
     verifiyMove(abscisse, ordonnee){
