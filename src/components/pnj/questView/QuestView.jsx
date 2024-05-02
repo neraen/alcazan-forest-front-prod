@@ -27,7 +27,7 @@ const QuestView = (props) => {
     return(
         <div className="quest-modal-body">
                 <div>
-                    {sequence && <div>{ ReactHtmlParser(sequence.dialogue) }</div> } <br />
+                    {sequence && ReactHtmlParser(sequence.dialogue) } <br />
                     {sequence && sequence.actions.map(action => <><button onClick={() => handleAction(action.actionLink, action.actionParams, action.actionId)} className="btn-action">{action.actionName}</button><br/> </>)}
                 </div>
         </div>

@@ -14,6 +14,7 @@ class PnjModal extends React.Component{
     }
 
     render() {
+        console.log(this.props.typePnj)
         return  <Modal
             isShowing={this.props.isDialogShowed}
             hide={this.props.toggleDialogPnj}

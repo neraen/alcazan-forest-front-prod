@@ -1,0 +1,26 @@
+.shop-container{
+  margin: -1rem
+}
+
+.shop-mode{
+  display: flex;
+  justify-content: center;
+  flex: 1 1;
+  flex-direction: row;
+  padding: 20px;
+  background: #052527;
+  color: #FBCE58;
+  margin: 0;
+  cursor: pointer;
+}
+
+.shop-mode-choice{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+
+  &:nth-child(1){
+    border-right: solid 1px aliceblue;
+  }
+}

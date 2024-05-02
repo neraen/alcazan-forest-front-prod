@@ -1,55 +1,27 @@
-import React  from "react"
-import {connect} from "react-redux";
-import {updateJoueurState} from "../../../store/actions";
-import UserActionApi from "../../../services/UserActionApi";
+import React, {useState} from "react"
+import ShopBuy from "./shopBuy/ShopBuy";
+import ShopSell from "./ShopSell/ShopSell";
 
 
 const ShopView = (props) => {
 
-    const handleAchat = async (item) => {
-        const playerMoneyAfterBuy = +props.joueurState.money - +item.prixAchat;
-        if(playerMoneyAfterBuy >= 0){
-            const playerMoney = await UserActionApi.buyItem(item.idEquipement)
-            props.updateJoueurState({money: playerMoney.money})
-        }
+    const [activeTab, setActiveTab] = useState("buy");
+
+    const handleSetActiveTab = (tabName) => {
+        setActiveTab(tabName);
     }
 
     return(
-        <div className="shop-items">
-            { props.items.map((item) =>
+        <div className="shop-container">
+            <div className="shop-mode">
+                <div className="shop-mode-choice" onClick={() => handleSetActiveTab("buy")}>Acheter</div>
+                <div className="shop-mode-choice" onClick={() => handleSetActiveTab("sell")}>Vendre</div>
+            </div>
 
-                <div className={"shop-item " + item.rarityName}>
-                    <div className="shop-item-header">
-                        {item.nomEquipement}
-                    </div>
-                    <div className="shop-item-body">
-                        <div className="block-carac-img-item">
-                            <img className="inventaire-item-img" src={'../img/equipement/'+item.position+'/'+item.icone}/>
-                            <div className="shop-item-carac">
-                                {item.caracteristiques.map((caracteristique) =>
-                                    <div key={'caracteristique'+caracteristique.id}>
-                                        {caracteristique.nom[0].toUpperCase()+caracteristique.nom.slice(1)} : + {caracteristique.valeur}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                        <hr />
-                        <div className="inventaire-item-element">
-                            <div className="inventaire-item-element-strong">Prix : {item.prixAchat} Pièces d'or </div>
-
-                        </div>
-                    </div>
-                    <div className="shop-item-footer">
-                        Niveau requis : {item.levelMinEquipement}
-                    </div>
-
-                    <button onClick={() => handleAchat(item)}>Acheter</button>
-                </div>
-            )}
+            {activeTab === "buy" && <ShopBuy items={props.items}/>}
+            {activeTab === "sell" && <ShopSell />}
         </div>
     )
 }
 
-export default connect((state, ownProperties) =>{
-    return {joueurState: {...state.data.joueurState}, ownProperties}
-}, {updateJoueurState})(ShopView)
+export default ShopView

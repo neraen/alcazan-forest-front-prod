@@ -36,7 +36,6 @@ const Pnj = (props) => {
         const pnjInfos = await pnjApi.getPnjInfos(props.pnj.pnjId)
         setPnjInfo(pnjInfos);
         console.log(pnjInfos)
-        toggleDialogPnj()
     }
 
     const isDialogAvailable = () => {
@@ -48,16 +47,21 @@ const Pnj = (props) => {
         return distanceCalculator.computeDistance(props.abscisse, props.ordonnee, props.positionJoueur.abscisse, props.positionJoueur.ordonnee) < 2;
     }
 
+    const controlToggleDialogPnj = () => {
+        if(isPlayerNearPnj()){
+            toggleDialogPnj()
+        }
+    }
 
     return <>
-        <div className="pnj" style={{backgroundImage: "url(../../../img/pnj/"+props.pnj.pnjSkin+".png)"}}>
+        <div className="pnj" style={{backgroundImage: "url(../../../img/pnj/"+props.pnj.pnjSkin+".png)"}} onClick={controlToggleDialogPnj}>
             <div className="pnj-hover d-none flex-column">
                 <div className="pnj-name">{props.pnj.pnjName}</div>
                 <div className="pnj-description">{props.pnj.pnjDescription}</div>
             </div>
         </div>
 
-        {pnjInfo && pnjInfo.length > 0 && (
+
             <PnjModal toggleDialogPnj={toggleDialogPnj}
                       isDialogShowed={isDialogAvailable()}
                       pnjId={props.pnj.pnjId} title={pnjInfo.title}
@@ -65,7 +69,7 @@ const Pnj = (props) => {
                       typeShop={pnjInfo.typeShop}
                       data={pnjInfo.items}/>
             )
-        }
+
 
         {/*{clicked && sequence !== [] &&*/}
         {/*<Modal*/}
