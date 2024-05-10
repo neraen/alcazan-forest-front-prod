@@ -64,7 +64,7 @@ class Equipements extends React.Component {
                                             {equipement.nomEquipement}
                                         </div>
                                         <div className="inventaire-item-hover-body">
-                                            <div className="inventaire-item-title">- Caractéritiques -</div>
+                                            <div className="inventaire-item-title">- Caractéristiques -</div>
                                             {equipement.caracteristiques.map((caracteristique) =>
                                                 <div key={'caracteristique'+caracteristique.id}>
                                                     {caracteristique.nom[0].toUpperCase()+caracteristique.nom.slice(1)} : + {caracteristique.valeur}
@@ -101,7 +101,7 @@ class Equipements extends React.Component {
                                         {equipement.nomEquipement}
                                     </div>
                                     <div className="inventaire-item-hover-body">
-                                        <div className="inventaire-item-title">- Caractéritiques -</div>
+                                        <div className="inventaire-item-title">- Caractéristiques -</div>
                                         {equipement.caracteristiques.map((caracteristique) =>
                                             <div key={'caracteristique'+caracteristique.id}>
                                                 {caracteristique.nom[0].toUpperCase()+caracteristique.nom.slice(1)} : + {caracteristique.valeur}

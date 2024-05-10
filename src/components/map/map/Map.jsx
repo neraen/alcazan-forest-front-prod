@@ -46,6 +46,10 @@ class Map extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+
+    }
+
     async fetchMapData(){
         const mapId = this.props.joueurState.mapId ? this.props.joueurState.mapId : this.state.mapId
         const data = await MapApi.find(mapId);
