@@ -10,7 +10,7 @@ import mapMakerApi from "../../../services/MapMakerApi";
 import monsterApi from "../../../../services/monsterApi";
 
 
-export default function ActionForm({action, register, sequenceIndex, actionIndex}) {
+export default function ActionForm({action, register, sequenceIndex, actionIndex, removeAction}) {
 
     const [fields, setFields] =  useState([]);
     const [fieldContent, setFieldContent] =  useState([]);
@@ -61,8 +61,15 @@ export default function ActionForm({action, register, sequenceIndex, actionIndex
 
     }
 
+    const onRemove = () => {
+        removeAction(actionIndex);
+    };
+
     return (
         <div className="action-container">
+            <button type="button" onClick={onRemove}>
+                Supprimer
+            </button>
             <h6>{action.actionName && action.actionName || "Nouveau" + " : " + action.actionTypeName}</h6>
             <input className="input-form-field" {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].actionName`)}/>
             {fields && fields.length > 0 && fields.map((field, index) => {

@@ -148,7 +148,7 @@ export default function SequenceForm({index, removeSequence, register, control})
 
                 <div className="quest-maker-actions">
                     {fields.map((action, actionIndex) => {
-                        return <ActionForm key={"action"+actionIndex+index} action={action} sequenceIndex={index} actionIndex={actionIndex} register={register}/>
+                        return <ActionForm key={"action"+actionIndex+index} action={action} sequenceIndex={index} actionIndex={actionIndex} register={register} removeAction={remove}/>
                     })}
                 </div>
 

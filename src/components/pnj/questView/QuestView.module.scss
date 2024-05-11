@@ -1,0 +1,45 @@
+.quest-modal-dialog{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.quest-modal-avatar{
+  margin-right: 30px;
+  border: solid 1px #333333;
+  box-shadow: 1px 1px 3px #333333;
+  background: rgba(0, 0, 0, 0.1);
+  color: aliceblue;
+  justify-content: center;
+  align-items: center;
+}
+
+.quest-modal-actions{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -4px;
+  .quest-modal-btn-action{
+    background: #052527;
+    padding: 10px;
+    border: solid 2px #e6ccb2;
+    border-radius: 10px;
+    color: #e6ccb2;
+    margin-right: 10px;
+  }
+}
+
+
+
+
+@media screen and (max-width: 1700px) {
+  .quest-modal-avatar{
+    max-width: 120px;
+    img{
+      max-width: 120px;
+    }
+  }
+  .quest-modal-dialog{
+    font-size: 14px;
+  }
+}

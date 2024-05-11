@@ -16,14 +16,16 @@
 
 /** MODALES **/
 
+@import "../components/modal/Modal.module";
 @import "../components/pnj/shopView/ShopView.module";
+@import "../components/pnj/questView/QuestView.module";
 
 
 /*@import url(../../public/fonts/BerryRotunda.ttf);*/
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #90e0ef #333;
+  scrollbar-color: #e9c46a #052527;
 }
 
 /* Works on Chrome, Edge, and Safari */

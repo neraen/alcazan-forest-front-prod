@@ -13,25 +13,30 @@ class PnjModal extends React.Component{
         console.log(props);
     }
 
-    render() {
-        console.log(this.props.typePnj)
-        return  <Modal
-            isShowing={this.props.isDialogShowed}
-            hide={this.props.toggleDialogPnj}
-            title={this.props.title}>
-            {this.props.typePnj === "shop" && (
-                <ShopView typeShop={this.props.typeShop} items={this.props.data}/>
-            )}
-            {this.props.typePnj === "quest" &&(
-                <QuestView pnjId={this.props.pnjId} />
-            )}
-            {this.props.typePnj === "action" &&(
-                <ActionView pnjId={this.props.pnjId} />
-            )}
-            {this.props.typePnj === "guilde" &&(
-                <GuildeView pnjId={this.props.pnjId} />
-            )}
+    renderComponent(){
+        switch (this.props.pnj.typePnj) {
+            case "shop":
+                return <ShopView typeShop={this.props.pnj.typeShop} items={this.props.pnj.items} />;
+            case "quest":
+                return <QuestView pnj={this.props.pnj} />;
+            case "action":
+                return <ActionView pnjId={this.props.pnj.pnjId} />;
+            case "guilde":
+                return <GuildeView pnjId={this.props.pnj.pnjId} />;
+            default:
+                return null; // ou un composant par défaut, si nécessaire
+        }
+    }
 
+    render() {
+        console.log(this.props.pnj.typePnj)
+        return  <Modal
+                isShowing={this.props.isDialogShowed}
+                hide={this.props.toggleDialogPnj}
+                title={this.props.pnj.title}
+                avatar={this.props.pnj.avatar}
+        >
+            {this.renderComponent()}
         </Modal>
     }
 }

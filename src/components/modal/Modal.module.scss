@@ -1,0 +1,72 @@
+.custom-modal-title{
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Modern Antiqua', cursive;
+}
+
+.modal-background{
+  background-image: url('parchemin.png');
+  height: 52vh;
+  width: 39vw;
+  position: absolute;
+  top: 15px;
+  left: 150px;
+  z-index: 49;
+
+}
+
+.modal-custom {
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(2px);
+  position: absolute;
+  text-align: center;
+  font-family: 'Modern Antiqua', cursive;
+  height: 52vh;
+  width: 39vw;
+  z-index: 50;
+  color: #370617;
+  overflow-y: scroll;
+  overflow-x : hidden;
+
+  text-shadow: 1px 1px 1px #444;
+  box-shadow: 10px 10px 15px #333;
+}
+
+.custom-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: solid 1px #333333;
+}
+
+.custom-modal-body{
+  padding: 10px;
+}
+
+.modal-close-button {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: black;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
+@media screen and (max-width: 1700px) {
+  .modal-custom {
+    height: 60vh;
+    width: 52vw;
+    overflow-y: scroll;
+    overflow-x : hidden
+  }
+
+  .modal-background{
+    height: 60vh;
+    width: 52vw;
+    top: 15px;
+    left: 15px;
+  }
+}

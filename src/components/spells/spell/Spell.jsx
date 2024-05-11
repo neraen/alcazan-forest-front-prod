@@ -14,18 +14,10 @@ const Spell = (props) => {
 
 
     useEffect(() => {
-        if(passedTime >= 100){
-            if(!disable){
-                document.querySelector(".spell-filter-" + props.spell.id).style.background = 'none';
-            }else{
-                document.querySelector(".spell-filter-" + props.spell.id).style.background = 'rgba(255,0,0,0.35)';
-            }
-        }else{
-            document.querySelector(".spell-filter-" + props.spell.id).style.background = 'conic-gradient(rgba(0, 0, 0, 0.6) '+ passedTime +'% ,rgba(0, 0, 0, 0.1)  '+ passedTime +'%)';
-        }
 
         if(props.target.type === "player"){
             const distance = distanceCalculator.computeDistance(props.target.abscisseTarget, props.target.ordonneeTarget, props.positionJoueur.abscisse, props.positionJoueur.ordonnee);
+            console.log(props.spell.portee < distance && props.spell.portee !== 0)
             if(props.spell.portee < distance && props.spell.portee !== 0){
                 setDisable(true);
             }else{
@@ -37,8 +29,16 @@ const Spell = (props) => {
 
         if(props.allDisabled){
             setDisable(true);
+        }
+
+        if(passedTime >= 100){
+            if(!disable){
+                document.querySelector(".spell-filter-" + props.spell.id).style.background = 'none';
+            }else{
+                document.querySelector(".spell-filter-" + props.spell.id).style.background = 'rgba(255,0,0,0.35)';
+            }
         }else{
-            setDisable(false);
+            document.querySelector(".spell-filter-" + props.spell.id).style.background = 'conic-gradient(rgba(0, 0, 0, 0.6) '+ passedTime +'% ,rgba(0, 0, 0, 0.1)  '+ passedTime +'%)';
         }
     })
 

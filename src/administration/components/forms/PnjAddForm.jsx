@@ -38,7 +38,7 @@ class PnjAddForm extends React.Component{
     render(){
         return (
             <form>
-                <Select name="map" label="map visée : " value={this.state.pnjId} onChange={(event) => this.handleChangePnj(event)}>
+                <Select name="map" label="PNJ : " value={this.state.pnjId} onChange={(event) => this.handleChangePnj(event)}>
                     {this.state.pnjInfos && this.state.pnjInfos.map(pnj =>
                         <option key={pnj.id} value={pnj.id}>{pnj.name}</option>
                     )}

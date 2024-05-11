@@ -15,6 +15,7 @@ const QuestView = (props) => {
 
 
     useEffect(()=>{
+        console.log(props);
         fetchSequenceData();
     }, []);
 
@@ -26,6 +27,7 @@ const QuestView = (props) => {
     }, [sequence]);
 
     useEffect(() => {
+        console.log(sequence)
         if (sequence) {
             let index = 0;
             const typingInterval = setInterval(() => {
@@ -60,7 +62,8 @@ const QuestView = (props) => {
 
 
     const fetchSequenceData = async () => {
-        const sequenceData = await pnjApi.getSequence(props.pnjId)
+        console.log(props.pnj)
+        const sequenceData = await pnjApi.getSequence(props.pnj.id)
         setSequence(sequenceData);
     }
 
@@ -71,10 +74,31 @@ const QuestView = (props) => {
 
     return(
         <div className="quest-modal-body">
-                <div>
-                    {sequence && ReactHtmlParser(dialogueText) } <br />
-                    {sequence && !isTyping && sequence.actions.map(action => <><button onClick={() => handleAction(action.actionLink, action.actionParams, action.actionId)} className="btn-action">{action.actionName}</button><br/> </>)}
+            <div className="quest-modal-dialog">
+                <div className="quest-modal-avatar">
+                    {props.pnj.avatar && <img src={"img/pnj/" + props.pnj.avatar} />}
+                    <div className="quest-modal-pnj-name">
+                        {props.pnj.name}
+                    </div>
                 </div>
+                <div className="quest-modal-text">
+                    { /* ReactHtmlParser(dialogueText) */}
+                    <i>{sequence && ReactHtmlParser(sequence.dialogue)} </i> <br />
+                </div>
+            </div>
+            <hr />
+            <div className="quest-modal-actions">
+                {sequence && sequence.actions.map(action =>
+                    <>
+                        <button
+                            onClick={() => handleAction(action.actionLink, action.actionParams, action.actionId)}
+                            className="quest-modal-btn-action">
+                            {action.actionName}
+                        </button>
+                        <br/>
+                    </>)
+                }
+            </div>
         </div>
     )
 }

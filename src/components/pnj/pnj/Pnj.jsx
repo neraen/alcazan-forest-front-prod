@@ -62,29 +62,9 @@ const Pnj = (props) => {
         </div>
 
 
-            <PnjModal toggleDialogPnj={toggleDialogPnj}
-                      isDialogShowed={isDialogAvailable()}
-                      pnjId={props.pnj.pnjId} title={pnjInfo.title}
-                      typePnj={pnjInfo.typePnj}
-                      typeShop={pnjInfo.typeShop}
-                      data={pnjInfo.items}/>
-            )
-
-
-        {/*{clicked && sequence !== [] &&*/}
-        {/*<Modal*/}
-        {/*    isShowing={isDialogShowed}*/}
-        {/*    hide={toggleDialogPnj}*/}
-        {/*    title={sequence && sequence[0].dialogTitle}*/}
-        {/*>*/}
-        {/*    <div>*/}
-        {/*        {sequence && sequence[0].dialogContent}*/}
-        {/*        {sequence && sequence.map(action => <><button onClick={() => handleAction(action.actionLink, action.actionParams)} className="btn-action">{action.actionName}</button><br/> </>)}*/}
-
-
-        {/*    </div>*/}
-        {/*</Modal>*/}
-        {/*}*/}
+        <PnjModal toggleDialogPnj={toggleDialogPnj}
+                  isDialogShowed={isDialogAvailable()}
+                  pnj={pnjInfo}/>
     </>
 }
 
