@@ -5,8 +5,8 @@ function register(user){
     return axios.post(USER_API, user)
 }
 
-function applyUserAction(link, params, actionId){
-    return axios.post(API_URL + link, {...JSON.parse(params), actionId: actionId}).then(response => response.data)
+function applyUserAction(link, params, actionId, sequenceId){
+    return axios.post(API_URL + link, {...JSON.parse(params), actionId: actionId, sequenceId: sequenceId}).then(response => response.data)
 }
 
 function takeConsommable(consommableId){

@@ -3,7 +3,7 @@ import {API_URL} from "../config";
 
 
 function getSequence(pnjId){
-    return axios.post(API_URL + "pnj/sequance", {pnjId: pnjId}).then(response => response.data)
+    return axios.post(API_URL + "pnj/sequence", {pnjId: pnjId}).then(response => response.data)
 }
 
 function create(pnj){

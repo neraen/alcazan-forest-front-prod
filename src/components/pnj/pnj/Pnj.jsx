@@ -39,6 +39,8 @@ const Pnj = (props) => {
     }
 
     const isDialogAvailable = () => {
+        console.log(isDialogShowed)
+        console.log(isPlayerNearPnj())
         return isDialogShowed && isPlayerNearPnj();
     }
 

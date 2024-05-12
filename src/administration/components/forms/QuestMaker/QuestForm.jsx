@@ -3,51 +3,74 @@ import '../../../../styles/app.css'
 import {useFieldArray, useForm} from "react-hook-form";
 import QuestMakerApi from "../../../services/QuestMakerApi";
 import SequenceForm from "./SequenceForm";
+import EquipementApi from "../../../../services/EquipementApi";
+import consommableApi from "../../../../services/consommableApi";
+import objectApi from "../../../../services/objectApi";
+import MapMakerApi from "../../../services/MapMakerApi";
 
 export default function QuestForm({questId}){
 
     const [questInfos, setQuestInfo] = useState([])
     const [selectContent, setSelectContent] = useState([])
+    const [pnjs, setPnjs] = useState([]);
+    const [equipements, setEquipements] = useState([]);
+    const [consommables, setConsommables] = useState([]);
+    const [objets, setObjets] = useState([]);
+    const [loading, setLoading] = useState(true);
+
 
     const {
         register,
         handleSubmit,
         control,
         reset,
-        setValue,
         formState: {isSubmitting}
     } = useForm();
 
     useEffect(() => {
         fetchQuestInfo();
         fetchSelectContent();
+        fetchSelectElements();
     }, []);
 
     useEffect(() => {
         if (questInfos) {
+            console.log(questInfos)
             reset(questInfos);
         }
+
     }, [questInfos, reset]);
 
 
     const fetchQuestInfo = async () => {
-        const questInfosFetch = await QuestMakerApi.getQuest(questId).then((response) => {
+        await QuestMakerApi.getQuest(questId).then((response) => {
             const quest = {...response.data}
-            const sequences = quest?.sequences.map(sequence => {
-                return {...sequence, pnj: sequence.pnj.toString()}
-            })
-            quest.sequences = sequences
-
             console.log(quest)
 
             setQuestInfo(quest);
-            reset(quest)
         });
     }
 
     const fetchSelectContent = async () => {
         const selectContentFetch = await QuestMakerApi.getQuestsInfoForSelect();
         setSelectContent(selectContentFetch);
+    }
+
+    const fetchSelectElements = async () =>{
+        const equipements = await EquipementApi.getAllEquipements();
+        setEquipements(equipements);
+
+        const consommables = await consommableApi.getAllConsommables();
+        setConsommables(consommables);
+
+        const objets = await objectApi.getAllObjects();
+        setObjets(objets);
+
+        const pnjs = await MapMakerApi.getPnjInfoForSelect();
+        setPnjs(pnjs);
+
+        setLoading(false);
+        //reset(questInfos)
     }
 
     const emptySequence = {
@@ -71,7 +94,7 @@ export default function QuestForm({questId}){
     return (
 
         <div>
-            {selectContent && (
+            {selectContent && !loading && (
                 <form onSubmit={handleSubmit(submit)}>
                     <div className="quest-info-form">
                         <h2> Informations de la quête </h2>
@@ -110,7 +133,17 @@ export default function QuestForm({questId}){
                     <div className="quest-maker-central-part sequences">
                         <div className="add-form-btn" onClick={() => append(emptySequence)}>Ajouter une sequence</div>
                         {fields && fields.map((sequence, index) => {
-                            return <SequenceForm key={index} index={index} control={control} remove={remove} register={register}/>
+                            console.log(fields)
+                            return <SequenceForm key={index}
+                                                 index={index}
+                                                 control={control}
+                                                 remove={remove}
+                                                 register={register}
+                                                 pnjs={pnjs}
+                                                 objets={objets}
+                                                 consommables={consommables}
+                                                 equipements={equipements}
+                            />
                         })}
                     </div>
                 </form>

@@ -18,7 +18,7 @@ class PnjModal extends React.Component{
             case "shop":
                 return <ShopView typeShop={this.props.pnj.typeShop} items={this.props.pnj.items} />;
             case "quest":
-                return <QuestView pnj={this.props.pnj} />;
+                return <QuestView pnj={this.props.pnj} toggleDialogPnj={this.props.toggleDialogPnj}/>;
             case "action":
                 return <ActionView pnjId={this.props.pnj.pnjId} />;
             case "guilde":

@@ -10,45 +10,18 @@ import {useFieldArray} from "react-hook-form";
 import MapMakerApi from "../../../services/MapMakerApi";
 import ActionForm from "./ActionForm";
 
-export default function SequenceForm({index, removeSequence, register, control}){
+export default function SequenceForm({index, removeSequence, register, control, pnjs, objets, consommables, equipements}){
 
     const [currentActionType, setCurrentActionType] = useState(1);
     const [currentActionTypeName, setCurrentActionTypeName] = useState("");
     const [sequences, setSequences] = useState([]);
     const [actionTypes, setActionTypes] = useState([]);
-    const [pnjs, setPnjs] = useState([]);
-    const [equipements, setEquipements] = useState([]);
-    const [consommables, setConsommables] = useState([]);
-    const [objets, setObjets] = useState([]);
-    
-    useEffect(() => {
-        fetchSequences();
-        fetchActionTypes();
-        fetchselectElements();
 
-        console.log(pnjs)
+    useEffect(() => {
+        fetchActionTypes();
     }, []);
 
     const { fields, append, remove } = useFieldArray({ control, name: `sequences[${index}].actions` });
-
-    const fetchselectElements = async () =>{
-        const equipements = await EquipementApi.getAllEquipements();
-        setEquipements(equipements);
-
-        const consommables = await consommableApi.getAllConsommables();
-        setConsommables(consommables);
-
-        const objets = await objectApi.getAllObjects();
-        setObjets(objets);
-
-        const pnjs = await MapMakerApi.getPnjInfoForSelect();
-        setPnjs(pnjs);
-    }
-
-    const fetchSequences = async () =>{
-        const sequences = await sequenceApi.getAllSequences();
-        setSequences(sequences);
-    }
 
     const fetchActionTypes = async () =>{
         const actionTypes = await actionTypeApi.getAllActionTypes();
@@ -63,7 +36,8 @@ export default function SequenceForm({index, removeSequence, register, control})
         const action = {
             actionTypeId: currentActionType,
             actionTypeName: actionTypes.find(actionType => actionType.id == currentActionType).name,
-            actionName: ""
+            actionName: "",
+            actionMessage: ""
         }
 
         append(action)

@@ -9,57 +9,11 @@ import ReactHtmlParser from "react-html-parser";
 const QuestView = (props) => {
 
     const [sequence, setSequence] = useState();
-    const [dialogueText, setDialogueText] = useState('');
-    const [isTyping, setIsTyping] = useState(true);
-
-
 
     useEffect(()=>{
         console.log(props);
         fetchSequenceData();
     }, []);
-
-    useEffect(()=>{
-        if(sequence){
-            listenKeyboard();
-        }
-
-    }, [sequence]);
-
-    useEffect(() => {
-        console.log(sequence)
-        if (sequence) {
-            let index = 0;
-            const typingInterval = setInterval(() => {
-                if (index < sequence.dialogue.length && isTyping) {
-                    setDialogueText(prevText => prevText + sequence.dialogue[index]);
-                    index++;
-                } else {
-                    setIsTyping(false);
-                    clearInterval(typingInterval);
-                }
-            }, 30);
-
-            return () => clearInterval(typingInterval);
-        }
-    }, [sequence, isTyping])
-
-    const handleKeybord = useCallback((event) => {
-        console.log(event.key);
-        console.log(isTyping);
-        if (isTyping) {
-            setDialogueText(sequence.dialogue);
-            setIsTyping(false);
-        }
-    }, [isTyping, sequence]);
-
-    const listenKeyboard = () => {
-        document.addEventListener("keypress", (event) => {
-            console.log(sequence);
-            handleKeybord(event)
-        });
-    };
-
 
     const fetchSequenceData = async () => {
         console.log(props.pnj)
@@ -68,8 +22,15 @@ const QuestView = (props) => {
     }
 
     const handleAction = async (link, params, actionId) => {
-        const messageData = await UserActionApi.applyUserAction(link, params, actionId);
+        const newSequence = await UserActionApi.applyUserAction(link, params, actionId, sequence.sequenceId);
+        if(newSequence.hasConditionalAction){
+            props.toggleDialogPnj();
+        }else{
+            setSequence(newSequence);
+        }
+
         //toast(messageData.message);
+
     }
 
     return(
@@ -83,21 +44,32 @@ const QuestView = (props) => {
                 </div>
                 <div className="quest-modal-text">
                     { /* ReactHtmlParser(dialogueText) */}
-                    <i>{sequence && ReactHtmlParser(sequence.dialogue)} </i> <br />
+                    <i>{sequence && sequence.respectSequenceConditions && ReactHtmlParser(sequence.dialogue)} </i>
+                    <i>{sequence && !sequence.respectSequenceConditions && ReactHtmlParser(sequence.messages)} </i>
                 </div>
             </div>
             <hr />
             <div className="quest-modal-actions">
-                {sequence && sequence.actions.map(action =>
+                {sequence && sequence.respectSequenceConditions && sequence.actions.map(action =>
                     <>
                         <button
-                            onClick={() => handleAction(action.actionLink, action.actionParams, action.actionId)}
+                            onClick={() => handleAction(action.actionApiLink, action.actionParams, action.actionId)}
                             className="quest-modal-btn-action">
                             {action.actionName}
                         </button>
                         <br/>
-                    </>)
-                }
+                    </>
+                )}
+
+                {sequence && !sequence.respectSequenceConditions && (
+                    <>
+                        <button
+                            onClick={() => props.toggleDialogPnj()}
+                            className="quest-modal-btn-action">
+                            S'en aller
+                        </button>
+                    </>
+                )}
             </div>
         </div>
     )

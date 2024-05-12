@@ -14,20 +14,22 @@ export default function ActionForm({action, register, sequenceIndex, actionIndex
 
     const [fields, setFields] =  useState([]);
     const [fieldContent, setFieldContent] =  useState([]);
+    const [isLoading, setIsLoading] =  useState(false);
 
     useEffect(() => {
         fetchAllFieldsAndValues();
     }, []);
 
     const fetchAllFieldsAndValues = async () => {
+        setIsLoading(true)
         const fields = await actionTypeApi.getAllFields(action.actionTypeId);
         setFields(fields);
 
-        console.log(fields)
-        console.log(action)
+        console.log(action.actionTypeName)
 
         switch (action.actionTypeName) {
             case "donnerObjet":
+                console.log(fieldContent)
                 const objets = await objectApi.getAllObjects();
                 setFieldContent(objets);
                 break;
@@ -58,7 +60,7 @@ export default function ActionForm({action, register, sequenceIndex, actionIndex
             default:
                 break;
         }
-
+        setIsLoading(false)
     }
 
     const onRemove = () => {
@@ -70,10 +72,11 @@ export default function ActionForm({action, register, sequenceIndex, actionIndex
             <button type="button" onClick={onRemove}>
                 Supprimer
             </button>
-            <h6>{action.actionName && action.actionName || "Nouveau" + " : " + action.actionTypeName}</h6>
+            <h6>{action.actionTypeName && action.actionTypeName}</h6>
+            <h6>{action.actionName && action.actionName}</h6>
             <input className="input-form-field" {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].actionName`)}/>
-            {fields && fields.length > 0 && fields.map((field, index) => {
-                return (field.type === "select" && fieldContent && fieldContent.length > 0) && (
+            {fields && fields.length > 0 && !isLoading && fields.map((field, index) => {
+                return (field.type === "select") && (
                     <div className="field-group">
                         <label htmlFor=""></label>
                          <select className="select-form-field" key={index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${field.name}`)} >
@@ -90,6 +93,10 @@ export default function ActionForm({action, register, sequenceIndex, actionIndex
                     </div>
                 )
             })}
+            <div className="field-group">
+                <label>Message de rappel de l'action</label>
+                <input  className="input-form-field" {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].actionMessage`)} type="text"/>
+            </div>
         </div>
     )
 
