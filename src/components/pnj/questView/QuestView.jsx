@@ -9,6 +9,7 @@ import ReactHtmlParser from "react-html-parser";
 const QuestView = (props) => {
 
     const [sequence, setSequence] = useState();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(()=>{
         console.log(props);
@@ -22,13 +23,14 @@ const QuestView = (props) => {
     }
 
     const handleAction = async (link, params, actionId) => {
+        setIsLoading(true)
         const newSequence = await UserActionApi.applyUserAction(link, params, actionId, sequence.sequenceId);
         if(newSequence.hasConditionalAction){
             props.toggleDialogPnj();
         }else{
             setSequence(newSequence);
         }
-
+        setIsLoading(false)
         //toast(messageData.message);
 
     }
@@ -44,11 +46,12 @@ const QuestView = (props) => {
                 </div>
                 <div className="quest-modal-text">
                     { /* ReactHtmlParser(dialogueText) */}
-                    <i>{sequence && sequence.respectSequenceConditions && ReactHtmlParser(sequence.dialogue)} </i>
-                    <i>{sequence && !sequence.respectSequenceConditions && ReactHtmlParser(sequence.messages)} </i>
+                    <i>{!isLoading && sequence && (sequence.respectSequenceConditions) && ReactHtmlParser(sequence.dialogue)} </i>
+                    <i>{!isLoading && sequence && !sequence.respectSequenceConditions && ReactHtmlParser(sequence.messages)} </i>
                 </div>
             </div>
             <hr />
+
             <div className="quest-modal-actions">
                 {sequence && sequence.respectSequenceConditions && sequence.actions.map(action =>
                     <>
