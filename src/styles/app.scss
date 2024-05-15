@@ -20,6 +20,10 @@
 @import "../components/pnj/shopView/ShopView.module";
 @import "../components/pnj/questView/QuestView.module";
 
+/** Profil */
+
+@import "../pages/profilPage/ProfilPage.module";
+
 
 /*@import url(../../public/fonts/BerryRotunda.ttf);*/
 
@@ -96,7 +100,7 @@ main{
 }
 
 .main-profil-page{
-  background: url(../img/sword.jpg);
+  //background: url(../img/sword.jpg);
   background-size: cover!important;
   background-position-y: center;
   content: "";

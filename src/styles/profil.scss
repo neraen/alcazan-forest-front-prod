@@ -11,7 +11,7 @@
 
 }
 
-.profil-header{
+.profil-headerold{
   display: flex;
   justify-content: center;
   background: rgba(0,0,0,0.4);
@@ -62,11 +62,13 @@
 
 .profil{
   /*background: #212529e3;*/
-  background: url(../img/gui/MainWindowCharacter/Panel.png);
+  //background: url(../img/gui/MainWindowCharacter/Panel.png);
+  background: rgb(1,23,4);
+  background: radial-gradient(circle, rgba(1,23,4,1) 50%, rgba(5,5,3,1) 100%, rgba(2,54,71,1) 100%);
   background-size: 100% 100%;
   padding: 60px 100px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   border-radius: 7px;
   color: aliceblue;
   /*backdrop-filter: blur(20px);*/

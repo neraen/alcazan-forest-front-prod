@@ -1,0 +1,25 @@
+.profil-header{
+  background-image: url(../../img/hm2.png);
+  background-size: cover;
+  display: flex;
+  justify-content: center ;
+  align-items: center;
+  border-bottom: solid 1px #e09f3e;
+  position: relative;
+  a{
+    color: #e6ccb2;
+    text-decoration: none;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -10px; /* Align with the border-bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width:  10px 10px 0 10px;  /* Adjust the size of the notch */
+    border-style: solid;
+    border-color: #e09f3e transparent  transparent  transparent  ; /* Match the border-bottom color */
+    width: 0;
+    height: 0;
+  }
+}

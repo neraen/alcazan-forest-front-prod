@@ -46,7 +46,7 @@ const QuestView = (props) => {
                 </div>
                 <div className="quest-modal-text">
                     { /* ReactHtmlParser(dialogueText) */}
-                    <i>{!isLoading && sequence && (sequence.respectSequenceConditions) && ReactHtmlParser(sequence.dialogue)} </i>
+                    <i>{!isLoading && sequence && sequence.respectSequenceConditions && ReactHtmlParser(sequence.dialogue)} </i>
                     <i>{!isLoading && sequence && !sequence.respectSequenceConditions && ReactHtmlParser(sequence.messages)} </i>
                 </div>
             </div>
