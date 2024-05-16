@@ -157,7 +157,7 @@ const Profil = (props) => {
                          </div>
                      </div>
                  )}
-                 <img className="" src="../../../img/gui/MainWindowCharacter/inventaire_masculin.png"/>
+                 <img className="" src="../../../img/silouhette.png"/>
              </div>
 
             <div className="caracteristiques">
