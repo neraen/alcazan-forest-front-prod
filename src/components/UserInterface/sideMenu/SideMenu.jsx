@@ -1,17 +1,21 @@
 import React from 'react'
 import {Link} from "react-router-dom";
+import useModal from "../../../hooks/useModal";
+import InventoryModal from "../../modals/inventoryModal/InventoryModal";
 
 const SideMenu = (props) => {
+    const { isShowing: isDialogInventoryShowed, toggle: toggleDialogInventory } = useModal();
     return <>
         <div className="side-menu" >
             <Link to="/carte" className="side-menu-link text-decoration-none">
                 <img className="side-menu-icon" src="/img/icons/map.png" alt=""/>
                 <span>Carte</span>
             </Link>
-            <Link to="/inventaire" className="side-menu-link text-decoration-none">
+            <div onClick={toggleDialogInventory} className="side-menu-link text-decoration-none inventory-btn">
                 <img className="side-menu-icon" src="/img/icons/bag.png" alt=""/>
                 <span>Inventaire</span>
-            </Link>
+                <InventoryModal isDialogInventoryShowed={isDialogInventoryShowed} toggleDialogInventory={toggleDialogInventory}/>
+            </div>
             <Link to="/personnage/profil" className="side-menu-link text-decoration-none">
                 <img className="side-menu-icon" src="/img/icons/people.png" alt=""/>
                 <span>Profil</span>
