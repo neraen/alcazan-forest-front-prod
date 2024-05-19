@@ -1,4 +1,10 @@
+.equipements-character-container{
+  flex: 1;
+  background-image: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 1));
+  position: relative;
+  top: -10px;
+  left: -10px;
+}
 .equipements-character-class{
-
   height: 350px;
 }

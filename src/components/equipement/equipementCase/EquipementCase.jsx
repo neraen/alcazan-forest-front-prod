@@ -10,9 +10,10 @@ export default function EquipementCase ({equipement, shouldRefreshInventory}) {
     }
 
     return (
-        <div onDoubleClick={() => {handleEquipEquipement(equipement.idEquipement); shouldRefreshInventory()}}  className="inventaire-item" key={equipement.idEquipement}>
-            <img className="inventaire-item-img" src={'../img/equipement/'+equipement.position+'/'+equipement.imageEquipement}/>
-            <div className="inventaire-item-quantity">{equipement.quantity}</div>
+        <div onDoubleClick={() => {handleEquipEquipement(equipement.idEquipement); shouldRefreshInventory()}}
+             className={"inventaire-item " + equipement.rarityName} key={equipement.idEquipement}>
+            <img className="inventaire-item-case-img" src={'../img/equipement/'+equipement.position+'/'+equipement.imageEquipement}/>
+            <div className="inventaire-item-case-quantity">{equipement.quantity}</div>
             <EquipementHover equipement={equipement}/>
         </div>
     );

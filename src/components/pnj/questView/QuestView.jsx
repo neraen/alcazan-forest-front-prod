@@ -53,25 +53,25 @@ const QuestView = (props) => {
             <hr />
 
             <div className="quest-modal-actions">
-                {sequence && sequence.respectSequenceConditions && sequence.actions.map(action =>
-                    <>
+                {sequence && sequence.respectSequenceConditions && sequence.actions.map((action, index) =>
+                    <div key={index}>
                         <button
                             onClick={() => handleAction(action.actionApiLink, action.actionParams, action.actionId)}
                             className="quest-modal-btn-action">
                             {action.actionName}
                         </button>
                         <br/>
-                    </>
+                    </div>
                 )}
 
                 {sequence && !sequence.respectSequenceConditions && (
-                    <>
+                    <div>
                         <button
                             onClick={() => props.toggleDialogPnj()}
                             className="quest-modal-btn-action">
                             S'en aller
                         </button>
-                    </>
+                    </div>
                 )}
             </div>
         </div>

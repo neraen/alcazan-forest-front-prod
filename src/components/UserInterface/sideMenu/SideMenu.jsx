@@ -14,8 +14,9 @@ const SideMenu = (props) => {
             <div onClick={toggleDialogInventory} className="side-menu-link text-decoration-none inventory-btn">
                 <img className="side-menu-icon" src="/img/icons/bag.png" alt=""/>
                 <span>Inventaire</span>
-                <InventoryModal isDialogInventoryShowed={isDialogInventoryShowed} toggleDialogInventory={toggleDialogInventory}/>
+
             </div>
+            <InventoryModal isDialogInventoryShowed={isDialogInventoryShowed} toggleDialogInventory={toggleDialogInventory}/>
             <Link to="/personnage/profil" className="side-menu-link text-decoration-none">
                 <img className="side-menu-icon" src="/img/icons/people.png" alt=""/>
                 <span>Profil</span>

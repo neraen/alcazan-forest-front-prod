@@ -9,7 +9,7 @@ export default function EquipementCharacter ({equipements, shouldRefreshInventor
     }
 
     return (
-        <>
+        <div className="equipements-character-container">
             {equipements && equipements.map((equipement) =>
                 <div onDoubleClick={() => {handleTakeOffEquipement(equipement.idEquipement); shouldRefreshInventory()}} className={"item-case "+equipement.position}>
                     <img className="icone-equipement" src={"../img/equipement/"+equipement.position+"/"+equipement.imageEquipement} alt="" />
@@ -17,7 +17,7 @@ export default function EquipementCharacter ({equipements, shouldRefreshInventor
                 </div>
             )}
             <img className="equipements-character-class" src="../../../img/silouhette.png"/>
-        </>
+        </div>
     )
 
 }

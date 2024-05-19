@@ -1,7 +1,8 @@
 import React from "react";
 
-const Modal = ({ isShowing, hide, title, ...props }) =>
-    isShowing ?
+const Modal = ({ isShowing, hide, title, ...props }) => {
+    console.log(isShowing);
+    return isShowing ?
         <>
             <div className="modal-overlay" style={props.modalPosition}>
                 <div className="modal-custom modal-position">
@@ -19,7 +20,7 @@ const Modal = ({ isShowing, hide, title, ...props }) =>
                 </div>
             </div>
         </>
-        : null;
+        : null};
 
 
 export default Modal;

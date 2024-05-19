@@ -27,10 +27,16 @@
 /** inventaire **/
 
 @import "../components/inventory/inventory/Inventory.module";
+@import "../components/inventory/inventoryMinified/InventoryMinified.module";
+@import "../components/modals/inventoryModal/InventoryModal.module";
+
+
 
 /** equipements **/
 
 @import "../components/equipement/equipementCharacter/EquipementCharacter.module";
+@import "../components/equipement/equipementCase/EquipementCase.module";
+@import "../components/equipement/equipementHover/EquipementHover.module";
 
 
 /*@import url(../../public/fonts/BerryRotunda.ttf);*/

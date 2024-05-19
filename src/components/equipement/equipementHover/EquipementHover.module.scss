@@ -1,0 +1,116 @@
+.inventaire-item-hover, .shop-item {
+  background: rgba(255,255,255, 0.4);
+  min-width: 184px;
+  width: 360px;
+  padding: 3px;
+  position: absolute;
+  border-radius: 6px;
+  text-align: center;
+  color: aliceblue;
+  cursor: pointer;
+  font-family: cursive;
+  top: 25px;
+  left: 25px;
+  display: none;
+  z-index: 99999;
+  transform: translate(0, 0);
+  border: solid black 1px;
+  overflow: visible;
+}
+
+.inventaire-item-hover::before, .shop-item::before {
+  content: "";
+  width: 102%;
+  height: 101%;
+  border-radius: 8px;
+  position: absolute;
+  z-index: -1;
+  top: -0.75%;
+  left: -0.8%;
+  animation: spin 2.5s linear infinite;
+}
+
+.inventaire-item-hover::after, .shop-item::after {
+  content: "";
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  transform: scale(0.8);
+  filter: blur(calc(200 / 6));
+  opacity: 1;
+  transition: opacity .5s;
+  animation: spin 3.5s linear infinite;
+}
+
+.inventaire-item-hover-header, .shop-item-header{
+  font-size: 1.15em;
+}
+
+.inventaire-item-hover-header, .inventaire-item-hover-footer, .inventaire-item-hover-body, .shop-item-header, .shop-item-body, .shop-item-footer{
+  backdrop-filter: blur(20px);
+  background: rgba(0,0,0,0.9);
+}
+
+.inventaire-item:hover .inventaire-item-hover, .item-case:hover .inventaire-item-hover{
+  display: flex!important;
+  flex-direction: column;
+  z-index: 10000;
+  border-radius: 5px;
+}
+
+
+
+
+.inventaire-item-hover.commun:before, .shop-item.commun:before, .inventaire-item-hover.commun:after, .shop-item.commun:after{
+  background-image: linear-gradient(
+                  var(--rotate)
+          , #adb5bd, #6c757d 43%, #495057);
+}
+
+.inventaire-item-hover.peu-commun:before, .shop-item.peu-commun:before, .inventaire-item-hover.peu-commun:after, .shop-item.peu-commun:after{
+  background-image: linear-gradient(
+                  var(--rotate)
+          , #9ef01a, #70e000 43%, #008000);
+}
+
+.inventaire-item-hover.rare:before, .shop-item.rare:before, .inventaire-item-hover.rare:after{
+  background-image: linear-gradient(
+                  var(--rotate)
+          , #5ddcff, #3c67e3 43%, #4e00c2);
+}
+
+.inventaire-item-hover.epique:before, .shop-item.epique:before, .inventaire-item-hover.epuique:after{
+  background-image: linear-gradient(
+                  var(--rotate)
+          , #ada7ff, #a06cd5 43%, #4e00c2);
+}
+
+.inventaire-item-hover.legendaire:before, .shop-item.legendaire:before, .inventaire-item-hover.legendaire:after{
+  background-image: linear-gradient(
+                  var(--rotate)
+          , #fee440, #ffd60a 43%, #ffc300);
+}
+
+.inventaire-item-hover.heroique::before, .shop-item.heroique:before, .inventaire-item-hover.heroique::after {
+  background-image: linear-gradient(
+                  var(--rotate), #d00000, #e85d04, #ffb703, #43aa8b, #3d5a80, #5a189a);
+}
+
+.inventaire-item-hover.heroique .inventaire-item-hover-header, .inventaire-item-hover.heroique .inventaire-item-hover-footer{
+  backdrop-filter: blur(20px);
+  background: rgba(0,0,0,0.9);
+}
+
+.inventaire-item-hover.heroique .inventaire-item-hover-body{
+  backdrop-filter: blur(20px);
+  background: rgba(0,0,0,0.9);
+}
+
+.inventaire-item-hover .inventaire-item-hover-header{
+  border-radius: 7px 7px 0 0;
+}
+
+.inventaire-item-hover .inventaire-item-hover-footer{
+  border-radius: 0 0 7px 7px;
+}

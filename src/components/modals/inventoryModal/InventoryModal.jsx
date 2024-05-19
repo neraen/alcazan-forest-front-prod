@@ -2,21 +2,31 @@ import React, {useEffect, useState} from "react";
 import Modal from "../../modal/Modal";
 import EquipementCharacter from "../../equipement/equipementCharacter/EquipementCharacter";
 import InventaireApi from "../../../services/InventaireApi";
+import InventoryMinified from "../../inventory/inventoryMinified/InventoryMinified";
+import Loader from "../../loader/Loader";
 
-export default function InventoryModal({isDialogInventoryShowed, toggleDialogInventory, title}){
+export default function InventoryModal({isDialogInventoryShowed, toggleDialogInventory}){
 
-    const [modalPosition, setModalPosition] = useState({})
+    const [modalPosition, setModalPosition] = useState({});
+    const [items, setItems] = useState({});
+    const [equipementWeared, setEquipementWeared] = useState({});
 
     useEffect(() => {
         computeModalPosition()
         fetchEquipementEquipe();
-    }, [isDialogInventoryShowed])
+        fetchAllPlayerItems();
+    }, [])
 
-    const [equipementWeared, setEquipementWeared] = useState({});
+
 
     const fetchEquipementEquipe = async () => {
         const dataEquipementEquipe = await InventaireApi.getEquipementEquipe();
         setEquipementWeared(dataEquipementEquipe)
+    }
+
+    const fetchAllPlayerItems = async () => {
+        const allInventoryItems = await InventaireApi.getPlayerInventaire();
+        setItems(allInventoryItems)
     }
 
     const computeModalPosition = () => {
@@ -42,16 +52,21 @@ export default function InventoryModal({isDialogInventoryShowed, toggleDialogInv
         })
     }
 
+    const getIsDialogInventoryShowed = () => {
+        console.log('ca passe ici et ', isDialogInventoryShowed)
+        return isDialogInventoryShowed;
+    }
+
     return (
         <>
-        {modalPosition && equipementWeared && (
-            <Modal isShowing={isDialogInventoryShowed} toggle={toggleDialogInventory} title="Inventaire" modalPosition={modalPosition}>
+        {modalPosition && equipementWeared && items && (
+            <Modal isShowing={getIsDialogInventoryShowed()} hide={toggleDialogInventory} title="Inventaire" modalPosition={modalPosition}>
                 <div className="inventaire-modal-container">
-                    <InventoryMinified />
+                    <InventoryMinified items={items}/>
                     <EquipementCharacter equipements={equipementWeared} />
                 </div>
             </Modal>
-        )}
+        ) || <Loader />}
         </>
     )
 }
