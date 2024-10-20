@@ -1,5 +1,7 @@
 import EquipementCase from "../../equipement/equipementCase/EquipementCase";
 import {useState} from "react";
+import ConsommableElement from "../consommableElement/ConsommableElement";
+import ObjetElement from "../objetElement/ObjetElement";
 
 export default function InventoryMinified({items}){
 
@@ -41,38 +43,11 @@ export default function InventoryMinified({items}){
                 {(itemsTypeSelected === "all" || itemsTypeSelected === "equipement") && items.equipements.map((equipement) =>
                     <EquipementCase equipement={equipement} shouldRefreshInventory={shouldRefreshInventory}/>
                 )}
-                {(itemsTypeSelected === "all" || itemsTypeSelected === "consommable") && items.equipements.map((equipement) =>
-                    <EquipementCase equipement={equipement} shouldRefreshInventory={shouldRefreshInventory}/>
+                {(itemsTypeSelected === "all" || itemsTypeSelected === "consommable") && items.consommables.map((consommable) =>
+                    <ConsommableElement consommable={consommable} shouldRefreshInventory={shouldRefreshInventory}/>
                 )}
-                {(itemsTypeSelected === "all" || itemsTypeSelected === "objet") && items.equipements.map((equipement) =>
-                    <EquipementCase equipement={equipement} shouldRefreshInventory={shouldRefreshInventory}/>
-                )}
-                {(itemsTypeSelected === "all" || itemsTypeSelected === "equipement") && items.equipements.map((equipement) =>
-                    <EquipementCase equipement={equipement} shouldRefreshInventory={shouldRefreshInventory}/>
-                )}
-                {(itemsTypeSelected === "all" || itemsTypeSelected === "consommable") && items.equipements.map((equipement) =>
-                    <EquipementCase equipement={equipement} shouldRefreshInventory={shouldRefreshInventory}/>
-                )}
-                {(itemsTypeSelected === "all" || itemsTypeSelected === "objet") && items.equipements.map((equipement) =>
-                    <EquipementCase equipement={equipement} shouldRefreshInventory={shouldRefreshInventory}/>
-                )}
-                {(itemsTypeSelected === "all" || itemsTypeSelected === "equipement") && items.equipements.map((equipement) =>
-                    <EquipementCase equipement={equipement} shouldRefreshInventory={shouldRefreshInventory}/>
-                )}
-                {(itemsTypeSelected === "all" || itemsTypeSelected === "consommable") && items.equipements.map((equipement) =>
-                    <EquipementCase equipement={equipement} shouldRefreshInventory={shouldRefreshInventory}/>
-                )}
-                {(itemsTypeSelected === "all" || itemsTypeSelected === "objet") && items.equipements.map((equipement) =>
-                    <EquipementCase equipement={equipement} shouldRefreshInventory={shouldRefreshInventory}/>
-                )}
-                {(itemsTypeSelected === "all" || itemsTypeSelected === "equipement") && items.equipements.map((equipement) =>
-                    <EquipementCase equipement={equipement} shouldRefreshInventory={shouldRefreshInventory}/>
-                )}
-                {(itemsTypeSelected === "all" || itemsTypeSelected === "consommable") && items.equipements.map((equipement) =>
-                    <EquipementCase equipement={equipement} shouldRefreshInventory={shouldRefreshInventory}/>
-                )}
-                {(itemsTypeSelected === "all" || itemsTypeSelected === "objet") && items.equipements.map((equipement) =>
-                    <EquipementCase equipement={equipement} shouldRefreshInventory={shouldRefreshInventory}/>
+                {(itemsTypeSelected === "all" || itemsTypeSelected === "objet") && items.objets.map((objet) =>
+                    <ObjetElement objet={objet} shouldRefreshInventory={shouldRefreshInventory}/>
                 )}
             </div>
         </div>   
