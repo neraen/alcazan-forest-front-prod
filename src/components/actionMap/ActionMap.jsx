@@ -10,9 +10,11 @@ const ActionMap = (props) => {
         //toast(messageData.message);
     }
 
+
     return(
         <div onClick={() => handleAction(props.action.actionLink, props.action.actionParams, props.action.actionId)}>""</div>
     )
 }
+
 
 export default ActionMap
