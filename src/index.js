@@ -19,6 +19,8 @@ import HistoryPage from "./pages/historyPage/HistoryPage";
 import MessageriePage from "./pages/messageriePage/MessageriePage";
 import './styles/app.scss'
 import ProfilJoueur from "./components/profilJoueur/ProfilJoueur";
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 authAPI.setup();
 
@@ -61,6 +63,7 @@ const Index =  () => {
                 <footer className="footer">
                     Clement Silvestre - jeu en cours de construction
                 </footer>
+                <ToastContainer position="bottom-right" theme="dark"/>
 
             </HashRouter>
         </AuthContext.Provider>

@@ -1,98 +1,65 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import '../../../../styles/app.css'
-import sequenceApi from "../../../../services/sequenceApi";
-import actionTypeApi from "../../../services/actionTypeApi";
-import EquipementApi from "../../../../services/EquipementApi";
-import consommableApi from "../../../../services/consommableApi";
-import objectApi from "../../../../services/objectApi";
-import RecompenseForm from "./RecompenseForm";
 import {useFieldArray} from "react-hook-form";
-import MapMakerApi from "../../../services/MapMakerApi";
+import {useQuestEditor} from "../../../contexts/QuestEditorContext";
 import ActionForm from "./ActionForm";
+import RecompenseForm from "./RecompenseForm";
 
-export default function SequenceForm({index, removeSequence, register, control, pnjs, objets, consommables, equipements}){
+/**
+ * Une séquence de la quête : dialogue + actions + récompense. L'ordre des
+ * séquences EST leur position (boutons monter/descendre) — plus de champs
+ * position / isLast / séquence précédente-suivante à remplir à la main.
+ */
+export default function SequenceForm({index, total, register, control, removeSequence, moveSequence}){
 
-    const [currentActionType, setCurrentActionType] = useState(1);
-    const [currentActionTypeName, setCurrentActionTypeName] = useState("");
-    const [sequences, setSequences] = useState([]);
-    const [actionTypes, setActionTypes] = useState([]);
+    const {actionTypeConfig, referentiels} = useQuestEditor();
+    const typeNames = Object.keys(actionTypeConfig);
+    const [newActionType, setNewActionType] = useState(typeNames[0]);
 
-    useEffect(() => {
-        fetchActionTypes();
-    }, []);
+    const {fields, append, remove} = useFieldArray({control, name: `sequences.${index}.actions`, keyName: "fieldId"});
 
-    const { fields, append, remove } = useFieldArray({ control, name: `sequences[${index}].actions` });
-
-    const fetchActionTypes = async () =>{
-        const actionTypes = await actionTypeApi.getAllActionTypes();
-        setActionTypes(actionTypes);
-    }
-
-    const handleActionTypeChange = ({currentTarget}) => {
-        setCurrentActionType(currentTarget.value)
-    }
-    
-    const handleAddAction = () =>{
-        const action = {
-            actionTypeId: currentActionType,
-            actionTypeName: actionTypes.find(actionType => actionType.id == currentActionType).name,
-            actionName: "",
-            actionMessage: ""
-        }
-
-        append(action)
-    }
-
-    const onRemove = () => {
-        removeSequence(index);
+    const handleAddAction = () => {
+        append({
+            id: 0,
+            type: newActionType,
+            label: "",
+            message: "",
+            quantity: 0,
+            objetId: 0,
+            equipementId: 0,
+            consommableId: 0,
+            bossId: 0,
+            pnjId: 0,
+            carteId: 0,
+            effect: "",
+            effectParams: ""
+        });
     };
-    
+
     return (
         <div className="sequence-container">
-            <h2></h2>
-            <button type="button" onClick={onRemove}>
-                Supprimer
-            </button>
-            <div className="sequence-form-container">
+            <h2>Séquence {index + 1}</h2>
+            <div className="sequence-toolbar">
+                <button type="button" disabled={index === 0} onClick={() => moveSequence(index, index - 1)}>▲ Monter</button>
+                <button type="button" disabled={index === total - 1} onClick={() => moveSequence(index, index + 1)}>▼ Descendre</button>
+                <button type="button" onClick={() => removeSequence(index)}>Supprimer la séquence</button>
+            </div>
+            <input type="hidden" {...register(`sequences.${index}.id`, {valueAsNumber: true})}/>
 
+            <div className="sequence-form-container">
                 <div className="sequence-info-form">
                     <div className="sequence-form-left">
                         <div className="field-group">
-                            <label htmlFor={`sequences[${index}].nomSequence`}> Nom de la séquence </label>
-                            <input className="input-form-field" type="text" {...register( `sequences[${index}].nomSequence`)}/>
+                            <label htmlFor={`sequences.${index}.nomSequence`}> Nom de la séquence </label>
+                            <input className="input-form-field" type="text" {...register(`sequences.${index}.nomSequence`)}/>
                         </div>
                         <div className="field-group">
-                            <label htmlFor={ `sequences[${index}].isLast`}>Est-ce la dernière séquence ? </label>
-                            <input className="input-form-field" type="checkbox" {...register( `sequences[${index}].isLast`)} />
-                        </div>
-                        <div className="field-group">
-                            <label htmlFor={`sequences[${index}].position`}> Position de la séquence </label>
-                            <input className="input-form-field" type="number" {...register( `sequences[${index}].position`)}/>
-                        </div>
-                    </div>
-
-                    <div className="sequence-form-right">
-                        <div className="field-group">
-                            <label htmlFor={`sequences[${index}].lastSequence`}> Sequence précédante </label>
-                            <select className="select-form-field" {...register( `sequences[${index}].lastSequence`)} >
-                                <option value={0}>Aucune séquence précédante</option>
-                                {sequences.length > 0 && sequences.map(sequence => <option key={sequence.id} value={sequence.id}>{sequence.name}</option>)}
-                            </select>
-                        </div>
-
-                        <div className="field-group">
-                            <label htmlFor={`sequences[${index}].nextSequence`}> Sequence suivante </label>
-                            <select className="select-form-field" {...register( `sequences[${index}].nextSequence`)}>
-                                <option value="0">Aucune séquence suivante</option>
-                                {sequences.length > 0 && sequences.map(sequence => <option key={"next"+sequence.id} value={""+sequence.id}>{sequence.name}</option>)}
-                            </select>
-                        </div>
-
-                        <div className="field-group">
-                            <label htmlFor={`sequences[${index}].pnj`}> Pnj de la séquence </label>
-                            <select className="select-form-field" {...register( `sequences[${index}].pnj`)} >
-                                <option value="0">Aucun pnj</option>
-                                {pnjs.length > 0 && pnjs.map(pnj => <option key={"pnj"+pnj.id} value={""+pnj.id}>{pnj.name}</option>)}
+                            <label htmlFor={`sequences.${index}.pnjId`}> PNJ de la séquence </label>
+                            <select className="select-form-field" {...register(`sequences.${index}.pnjId`, {valueAsNumber: true})}>
+                                <option value={0}>— Choisir un PNJ —</option>
+                                {referentiels.pnjs.map(pnj =>
+                                    <option key={pnj.id} value={pnj.id}>{pnj.name}</option>
+                                )}
                             </select>
                         </div>
                     </div>
@@ -101,42 +68,45 @@ export default function SequenceForm({index, removeSequence, register, control, 
 
             <div className="sequence-dialogue-container">
                 <div className="field-group">
-                    <label htmlFor={`sequences[${index}].dialogueTitre`}> Titre du dialogue </label>
-                    <input className="input-form-field" {...register(`sequences[${index}].dialogueTitre`)}/>
+                    <label htmlFor={`sequences.${index}.dialogueTitre`}> Titre du dialogue </label>
+                    <input className="input-form-field" {...register(`sequences.${index}.dialogueTitre`)}/>
                 </div>
                 <div className="field-group">
-                    <label htmlFor={`sequences[${index}].dialogueTitre`}> Titre du dialogue </label>
-                    <textarea className="textarea-form-field" {...register( `sequences[${index}].dialogueContent`)}/>
+                    <label htmlFor={`sequences.${index}.dialogueContenu`}> Contenu du dialogue (un paragraphe par ligne) </label>
+                    <textarea className="textarea-form-field" {...register(`sequences.${index}.dialogueContenu`)}/>
                 </div>
             </div>
 
             <hr className="quest-form-separator"/>
-            
+
             <div className="quest-maker-actions-container">
                 <div className="quest-maker-actions-form">
-                    <div className="add-form-btn" onClick={() => handleAddAction()}>Ajouter une action</div>
-                    <select className="select-form-field" value={currentActionType} onChange={(event) => handleActionTypeChange(event)}>
-                        {actionTypes && actionTypes.length > 0 && actionTypes.map(actionType => <option key={"actionType"+actionType.id} value={actionType.id}>{actionType.name}</option>)}
+                    <div className="add-form-btn" onClick={handleAddAction}>Ajouter une action</div>
+                    <select className="select-form-field" value={newActionType} onChange={(event) => setNewActionType(event.target.value)}>
+                        {typeNames.map(typeName =>
+                            <option key={typeName} value={typeName}>{actionTypeConfig[typeName].label}</option>
+                        )}
                     </select>
                 </div>
 
                 <div className="quest-maker-actions">
-                    {fields.map((action, actionIndex) => {
-                        return <ActionForm key={"action"+actionIndex+index} action={action} sequenceIndex={index} actionIndex={actionIndex} register={register} removeAction={remove}/>
-                    })}
+                    {fields.map((action, actionIndex) =>
+                        <ActionForm
+                            key={action.fieldId}
+                            action={action}
+                            sequenceIndex={index}
+                            actionIndex={actionIndex}
+                            register={register}
+                            removeAction={remove}
+                        />
+                    )}
                 </div>
 
                 <hr className="quest-form-separator"/>
                 <div className="quest-maker-actions">
-                    <RecompenseForm sequenceIndex={index}
-                                    register={register}
-                                    objets={objets}
-                                    equipements={equipements}
-                                    consommables={consommables}/>
+                    <RecompenseForm sequenceIndex={index} register={register}/>
                 </div>
-
             </div>
         </div>
     )
 }
-

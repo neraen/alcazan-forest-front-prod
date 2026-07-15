@@ -1,103 +1,75 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import '../../../../styles/app.css'
-import actionTypeApi from "../../../services/actionTypeApi";
-import objectApi from "../../../../services/objectApi";
-import EquipementApi from "../../../../services/EquipementApi";
-import MapApi from "../../../../services/MapApi";
-import consommableApi from "../../../../services/consommableApi";
-import bossApi from "../../../../services/bossApi";
-import mapMakerApi from "../../../services/MapMakerApi";
-import monsterApi from "../../../../services/monsterApi";
+import {useQuestEditor} from "../../../contexts/QuestEditorContext";
 
-
+/**
+ * Une action d'une séquence. Le rendu est 100 % piloté par la config du
+ * type (/quest/editor/config) : chaque champ déclare son nom, son type
+ * (select / number / json) et son catalogue. Plus aucun fetch local ni
+ * construction de nom de champ par concaténation.
+ */
 export default function ActionForm({action, register, sequenceIndex, actionIndex, removeAction}) {
 
-    const [fields, setFields] =  useState([]);
-    const [fieldContent, setFieldContent] =  useState([]);
-    const [isLoading, setIsLoading] =  useState(false);
+    const {actionTypeConfig, referentiels} = useQuestEditor();
+    const config = actionTypeConfig[action.type];
+    const basePath = `sequences.${sequenceIndex}.actions.${actionIndex}`;
 
-    useEffect(() => {
-        fetchAllFieldsAndValues();
-    }, []);
-
-    const fetchAllFieldsAndValues = async () => {
-        setIsLoading(true)
-        const fields = await actionTypeApi.getAllFields(action.actionTypeId);
-        setFields(fields);
-
-        console.log(action.actionTypeName)
-
-        switch (action.actionTypeName) {
-            case "donnerObjet":
-                console.log(fieldContent)
-                const objets = await objectApi.getAllObjects();
-                setFieldContent(objets);
-                break;
-            case "donnerEquipement":
-                const equipements = await EquipementApi.getAllEquipements();
-                setFieldContent(equipements);
-                break;
-            case "donnerConsommable":
-                const consommables = await consommableApi.getAllConsommables();
-                setFieldContent(consommables);
-                break;
-            case "battreBoss":
-                const bosses = await bossApi.getAllBosses();
-                setFieldContent(bosses)
-                break;
-            case "battreMonstre":
-                const monstres = await monsterApi.getAllMonsters();
-                setFieldContent(monstres)
-                break;
-            case "visiterCarte":
-                const cartes = await MapApi.getAllMaps();
-                setFieldContent(cartes)
-                break;
-            case "parlerPnj":
-                const pnjs = await mapMakerApi.getPnjInfoForSelect();
-                setFieldContent(pnjs)
-                break;
-            default:
-                break;
-        }
-        setIsLoading(false)
+    if(!config){
+        return (
+            <div className="action-container">
+                Type d'action inconnu : {action.type}
+                <button type="button" onClick={() => removeAction(actionIndex)}>Supprimer</button>
+            </div>
+        );
     }
 
-    const onRemove = () => {
-        removeAction(actionIndex);
+    const renderField = (field) => {
+        switch (field.type){
+            case "select":
+                return (
+                    <select className="select-form-field" {...register(`${basePath}.${field.name}`, field.catalog ? {valueAsNumber: true} : {})}>
+                        <option value={field.catalog ? 0 : ""}>— {field.label} —</option>
+                        {field.catalog && referentiels[field.catalog].map(item =>
+                            <option key={item.id} value={item.id}>{item.name}</option>
+                        )}
+                        {field.options && field.options.map(option =>
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                        )}
+                    </select>
+                );
+            case "json":
+                return <textarea className="textarea-form-field" placeholder='{"clé": "valeur"}' {...register(`${basePath}.${field.name}`)}/>;
+            case "number":
+            default:
+                return <input className="input-form-field" type={field.type} {...register(`${basePath}.${field.name}`, field.type === "number" ? {valueAsNumber: true} : {})}/>;
+        }
     };
 
     return (
         <div className="action-container">
-            <button type="button" onClick={onRemove}>
-                Supprimer
-            </button>
-            <h6>{action.actionTypeName && action.actionTypeName}</h6>
-            <h6>{action.actionName && action.actionName}</h6>
-            <input className="input-form-field" {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].actionName`)}/>
-            {fields && fields.length > 0 && !isLoading && fields.map((field, index) => {
-                return (field.type === "select") && (
-                    <div className="field-group">
-                        <label htmlFor=""></label>
-                         <select className="select-form-field" key={index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${field.name}`)} >
-                            <option value={0}>selectionner {field.name}</option>
-                            {fieldContent && fieldContent.length > 0 && fieldContent.map((content, index) => {
-                                return <option key={content.name + actionIndex} value={content.id}>{content.name}</option>
-                            })}
-                        </select>
-                    </div>
-                ) || (
-                    <div className="field-group">
-                        <label>{field.name[0].toUpperCase() + field.name.substring(1)}</label>
-                        <input  className="input-form-field" key={"input"+field.name+index} {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].${"action"+field.name[0].toUpperCase() + field.name.substring(1)}`)} type={field.type}/>
-                    </div>
-                )
-            })}
+            <button type="button" onClick={() => removeAction(actionIndex)}>Supprimer</button>
+            <h6>{config.label}</h6>
+            <input type="hidden" {...register(`${basePath}.id`, {valueAsNumber: true})}/>
+            <input type="hidden" {...register(`${basePath}.type`)}/>
+
             <div className="field-group">
-                <label>Message de rappel de l'action</label>
-                <input  className="input-form-field" {...register(`sequences[${sequenceIndex}].actions[${actionIndex}].actionMessage`)} type="text"/>
+                <label>Libellé du bouton</label>
+                <input className="input-form-field" type="text" {...register(`${basePath}.label`)}/>
             </div>
+
+            {config.fields.map(field =>
+                <div className="field-group" key={field.name}>
+                    <label>{field.label}</label>
+                    {renderField(field)}
+                </div>
+            )}
+
+            {config.isCondition && (
+                <div className="field-group">
+                    <label>Message si la condition n'est pas remplie</label>
+                    <input className="input-form-field" type="text" {...register(`${basePath}.message`)}/>
+                </div>
+            )}
         </div>
     )
-
 }

@@ -1,13 +1,5 @@
 import axios from 'axios';
-import {API_URL, USER_API} from "../config";
-
-function register(user){
-    return axios.post(USER_API, user)
-}
-
-function applyUserAction(link, params, actionId, sequenceId){
-    return axios.post(API_URL + link, {...JSON.parse(params), actionId: actionId, sequenceId: sequenceId}).then(response => response.data)
-}
+import {API_URL} from "../config";
 
 function takeConsommable(consommableId){
     return axios.post(API_URL + 'joueur/use/consommable', {consommableId: consommableId}).then(response => response.data)
@@ -30,7 +22,6 @@ function removeFriend(friendId){
 }
 
 export default {
-    applyUserAction,
     buyItem,
     takeConsommable,
     joinGuilde,

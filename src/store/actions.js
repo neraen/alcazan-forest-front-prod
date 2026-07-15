@@ -7,6 +7,8 @@ export const FETCH_TARGET_SUCCESS = "fetch target success";
 export const FETCH_TARGET_ERROR = "fetch target error";
 export const UPDATE_POSITION_JOUEUR = "update position joueur";
 export const UPDATE_JOUEUR_STATE = "update joueur state";
+export const OPEN_PNJ_INTERACTION = "open pnj interaction";
+export const CLOSE_PNJ_INTERACTION = "close pnj interaction";
 
 export const SET_CASES = "set cases";
 export const UPDATE_DIFF_CASES = "update diff cases";
@@ -16,23 +18,6 @@ export const ADD_WRAP_TOOL = "add wrap tool"
 export const ADD_WRAP_CASE = "add wrap case"
 export const ADD_PNJ_CASE = "add pnj case"
 export const ADD_MONSTER_CASE = "add monster case"
-
-
-export const UPDATE_QUEST_MAKER = "update quest maker";
-export const SET_QUEST_MAKER_SEQUENCES = "set quest maker sequences";
-export const ADD_QUEST_MAKER_SEQUENCE = "add quest maker sequence";
-export const UPDATE_QUEST_MAKER_SEQUENCE = "update quest maker sequences";
-export const REMOVE_QUEST_MAKER_SEQUENCE = "remove quest maker sequence";
-
-
-export const SET_QUEST_MAKER_ACTIONS = "set quest maker actions";
-export const ADD_QUEST_MAKER_ACTION = "add quest maker action";
-export const UPDATE_QUEST_MAKER_ACTION = "update quest maker action";
-export const REMOVE_QUEST_MAKER_ACTION = "remove quest maker action";
-
-export const UPDATE_QUEST_MAKER_RECOMPENSE = "update quest maker recompense";
-
-
 
 
 export const updatePlayerTarget = (payload) => {
@@ -97,6 +82,21 @@ export const updateJoueurState = (joueurState) => {
     }
 }
 
+/* L'interaction PNJ active (une seule à la fois) : la modale est rendue
+   une seule fois par PnjInteractionHost, les tuiles Pnj ne font que dispatch. */
+export const openPnjInteraction = ({pnjId, abscisse, ordonnee}) => {
+    return{
+        type: OPEN_PNJ_INTERACTION,
+        pnjInteraction: {pnjId, abscisse, ordonnee}
+    }
+}
+
+export const closePnjInteraction = () => {
+    return{
+        type: CLOSE_PNJ_INTERACTION
+    }
+}
+
 export const setCases = (cases) => {
     return{
         type: SET_CASES,
@@ -150,90 +150,5 @@ export const addWrapTool= (wrap) => {
     return{
         type: ADD_WRAP_TOOL,
         wrap
-    }
-}
-
-/************ SEQUENCES QUEST MAKER ************/
-export const setQuestMakerSequences = (sequences) => {
-    return{
-        type: SET_QUEST_MAKER_SEQUENCES,
-        sequences
-    }
-}
-
-export const updateQuestMakerSequence = (index, sequence) => {
-    return{
-        type: UPDATE_QUEST_MAKER_SEQUENCE,
-        index,
-        sequence
-    }
-}
-
-export const addQuestMakerSequence = (sequence) => {
-    return{
-        type: ADD_QUEST_MAKER_SEQUENCE,
-        sequence
-    }
-}
-
-export const removeQuestMakerSequence = (index) => {
-    return{
-        type: REMOVE_QUEST_MAKER_SEQUENCE,
-        index
-    }
-}
-
-/************ ACTIONS QUEST MAKER ************/
-export const setQuestMakerActions = (actions) => {
-    return{
-        type: SET_QUEST_MAKER_ACTIONS,
-        actions
-    }
-}
-
-export const updateQuestMakerAction = (action, sequenceIndex, actionIndex) => {
-    return{
-        type: UPDATE_QUEST_MAKER_ACTION,
-        action,
-        sequenceIndex,
-        actionIndex
-    }
-}
-
-export const addQuestMakerAction = (action, sequenceIndex) => {
-    return{
-        type: ADD_QUEST_MAKER_ACTION,
-        action,
-        sequenceIndex
-    }
-}
-
-export const removeQuestMakerAction = (index) => {
-    return{
-        type: REMOVE_QUEST_MAKER_ACTION,
-        index
-    }
-}
-
-export const updateQuestMakerSequenceRecompense = (recompense, sequenceIndex) => {
-    return{
-        type: UPDATE_QUEST_MAKER_RECOMPENSE,
-        recompense,
-        sequenceIndex
-    }
-}
-
-/* export const setQuestMakerSequenceRecompense = (recompense) => {
-    return{
-        type: SET_QUEST_MAKER_RECOMPENSE,
-        recompense
-    }
-} s*/
-
-
-export const updateQuestMaker = (fields) => {
-    return{
-        type: UPDATE_QUEST_MAKER,
-        fields
     }
 }

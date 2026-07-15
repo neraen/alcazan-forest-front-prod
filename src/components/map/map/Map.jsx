@@ -38,7 +38,9 @@ class Map extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(prevProps.joueurState.needRefresh !== this.props.joueurState.needRefresh){
+        // Uniquement sur le front montant : la remise à false ci-dessous
+        // redéclenchait un second fetch de la carte.
+        if(!prevProps.joueurState.needRefresh && this.props.joueurState.needRefresh){
             this.fetchMapData();
             this.props.updateJoueurState({
                 needRefresh: false
@@ -47,7 +49,7 @@ class Map extends React.Component {
     }
 
     componentWillUnmount() {
-
+        document.removeEventListener("keypress", this.keyboardHandler);
     }
 
     async fetchMapData(){
@@ -60,7 +62,10 @@ class Map extends React.Component {
     }
 
     listenKeyboard() {
-        document.addEventListener("keypress",  (event) => this.handleKeybord(event))
+        // Handler mémorisé pour pouvoir le retirer au démontage
+        // (l'ancien listener anonyme s'accumulait à chaque montage de Map).
+        this.keyboardHandler = (event) => this.handleKeybord(event);
+        document.addEventListener("keypress", this.keyboardHandler)
     }
 
     handleKeybord(event){
@@ -199,7 +204,7 @@ class Map extends React.Component {
                               hasMonstre={uniqueCase.hasMonstre ? uniqueCase.hasMonstre : false}
                               hasPnj={uniqueCase.pnjName ? {pnjId: uniqueCase.pnjId, pnjName: uniqueCase.pnjName, pnjSkin: uniqueCase.pnjSkin, pnjAvatar: uniqueCase.pnjAvatar, pnjDescription: uniqueCase.pnjDescription} : false}
                               hasBoss={uniqueCase.bossName ? {bossId: uniqueCase.bossId, bossName: uniqueCase.bossName, bossSkin: uniqueCase.bossSkin} : false}
-                              hasAction={uniqueCase.actionName ? {actionName: uniqueCase.actionName, actionLink: uniqueCase.actionLink, actionParams: uniqueCase.actionParams} : false}
+                              hasAction={uniqueCase.actionName ? {actionName: uniqueCase.actionName, actionId: uniqueCase.actionId} : false}
                               isUnabled={this.state.unabledCases.includes(uniqueCase.carteCarreauId)}
                         />
                     </div>

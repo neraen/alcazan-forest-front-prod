@@ -10,6 +10,11 @@ export const playerStatsReducer = (state = {
             abscisseTarget: 0,
             ordonneeTarget:0
         },
+        pnjInteraction: {
+            pnjId: null,
+            abscisse: null,
+            ordonnee: null
+        },
         joueurState: {
             idJoueur: 0,
             experience: 0,
@@ -35,12 +40,6 @@ export const playerStatsReducer = (state = {
             },
             cases: [],
             diffCases: [],
-        },
-        questMaker: {
-            alignement: 0,
-            objet: 0,
-            level: 0,
-            sequences: []
         }
     },
     loading: false,
@@ -96,6 +95,18 @@ export const playerStatsReducer = (state = {
             return {
                 ...state,
                 data: {...state.data, joueurState: {...state.data.joueurState, ...action.joueurState}}
+            }
+        }
+        case actions.OPEN_PNJ_INTERACTION: {
+            return {
+                ...state,
+                data: {...state.data, pnjInteraction: action.pnjInteraction}
+            }
+        }
+        case actions.CLOSE_PNJ_INTERACTION: {
+            return {
+                ...state,
+                data: {...state.data, pnjInteraction: {pnjId: null, abscisse: null, ordonnee: null}}
             }
         }
         case actions.SET_CASES: {
@@ -168,108 +179,6 @@ export const playerStatsReducer = (state = {
                 data: {...state.data, mapMaker: {...state.data.mapMaker, mode: action.mode}}
             }
         }
-        case actions.UPDATE_QUEST_MAKER: {
-            return {
-                ...state,
-                data: {...state.data, questMaker: {...state.data.questMaker, ...action.fields}}
-            }
-        }
-        case actions.SET_QUEST_MAKER_SEQUENCES: {
-            return {
-                ...state,
-                data: {...state.data, questMaker: {...state.data.questMaker, sequences: action.sequences}}
-            }
-        }
-        case actions.ADD_QUEST_MAKER_SEQUENCE: {
-            return {
-                ...state,
-                data: {...state.data, questMaker: {...state.data.questMaker, sequences: [...state.data.questMaker.sequences, action.sequence]}}
-            }
-        }
-        case actions.UPDATE_QUEST_MAKER_SEQUENCE: {
-            const sequences = state.data.questMaker.sequences.map((sequence, index) => {
-                if(index === action.index){
-                    return {...action.sequence}
-                }else{
-                    return sequence
-                }
-            });
-            return {
-                ...state,
-                data: {...state.data, questMaker: {...state.data.questMaker, sequences: sequences}}
-            }
-        }
-        case actions.REMOVE_QUEST_MAKER_SEQUENCE: {
-            const sequences = state.data.questMaker.sequences.splice(action.index, 1);
-            return {
-                ...state,
-                data: {...state.data, questMaker: {...state.data.questMaker, sequences: sequences}}
-            }
-        }
-        case actions.SET_QUEST_MAKER_ACTIONS: {
-            return {
-                ...state,
-                data: {...state.data, questMaker: {...state.data.questMaker, actions: action.actions}}
-            }
-        }
-        case actions.ADD_QUEST_MAKER_ACTION: {
-            const sequences = state.data.questMaker.sequences.map((sequence, index) => {
-                if(index === action.sequenceIndex){
-                    const actions = [...state.data.questMaker.sequences[action.sequenceIndex].actions, action.action]
-                    sequence.actions = actions;
-                    return sequence
-                }else{
-                    return sequence
-                }
-            });
-            return {
-                ...state,
-                data: {...state.data, questMaker: {...state.data.questMaker, sequences: sequences}}
-            }
-        }
-        case actions.UPDATE_QUEST_MAKER_ACTION: {
-            const sequences = state.data.questMaker.sequences.map((sequence, index) => {
-                if(index === action.sequenceIndex){
-                    return {...sequence, actions: sequence.actions.map((currentAction, index) => {
-                        if(index === action.actionIndex){
-                            console.log(action.action)
-                            return {...action.action}
-                        }else{
-                            return currentAction
-                        }
-                    })}
-                }else{
-                    return sequence
-                }
-            });
-
-            return {
-                ...state,
-                data: {...state.data, questMaker: {...state.data.questMaker, sequences: sequences}}
-            }
-        }
-        case actions.REMOVE_QUEST_MAKER_ACTION : {
-            const actions = state.data.questMaker.actions.splice(action.index, 1);
-            return {
-                ...state,
-                data: {...state.data, questMaker: {...state.data.questMaker, sequences: action.sequences}}
-            }
-        }
-        case actions.UPDATE_QUEST_MAKER_RECOMPENSE: {
-            const sequences = state.data.questMaker.sequences.map((sequence, index) => {
-                if(index === action.sequenceIndex){
-                    return {...sequence, recompense: action.recompense}
-                }else{
-                    return sequence
-                }
-            });
-
-            return {
-                ...state,
-                data: {...state.data, questMaker: {...state.data.questMaker, sequences: sequences}}
-            }
-        }
-
         default: {
             return state;
         }

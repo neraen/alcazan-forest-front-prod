@@ -1,41 +1,43 @@
 import axios from 'axios';
 import {API_URL} from "../../config";
 
-function getAllQuests() {
-    return axios.post(`${API_URL}quests`, {}).then(response => response.data);
+/**
+ * API du QuestMaker (préfixe /api/quest/editor, réservé ROLE_ADMIN).
+ * save() fait création ET mise à jour : id absent/0 = création. La réponse
+ * de save est la quête rechargée (ids définitifs) au même format que get.
+ */
+
+function list() {
+    return axios.post(`${API_URL}quest/editor/list`, {}).then(response => response.data);
 }
 
-function getQuest(questId) {
-    return axios.post(`${API_URL}quest`, {questId: questId});
+function get(questId) {
+    return axios.post(`${API_URL}quest/editor/get`, {questId: questId}).then(response => response.data);
 }
 
-function getQuestsInfoForSelect() {
-    return axios.post(`${API_URL}quest/infos`, {}).then(response => response.data);
+/** Tous les catalogues (objets, PNJ, boss, cartes…) en un seul appel. */
+function referentiels() {
+    return axios.post(`${API_URL}quest/editor/referentiels`, {}).then(response => response.data);
 }
 
-function deleteQuest(questId) {
-    return axios.post(`${API_URL}quest/delete`, {questId: questId});
+/** Config des types d'action : quels champs afficher pour quel type. */
+function config() {
+    return axios.post(`${API_URL}quest/editor/config`, {}).then(response => response.data);
 }
 
-function updateQuest(questId, quest) {
-    return axios.post(`${API_URL}quest/update`, {questId: questId, quest: quest});
+function save(quest) {
+    return axios.post(`${API_URL}quest/editor/save`, quest).then(response => response.data);
 }
 
-function createQuest(questName) {
-    return axios.post(`${API_URL}quest/create`, {name: questName});
+function remove(questId) {
+    return axios.post(`${API_URL}quest/editor/delete`, {questId: questId}).then(response => response.data);
 }
-
-function getAllActionTypes() {
-    return axios.post(`${API_URL}action/types`, {}).then(response => response.data);
-}
-
 
 export default {
-    getAllQuests,
-    getQuest,
-    updateQuest,
-    createQuest,
-    getQuestsInfoForSelect,
-    deleteQuest,
-    getAllActionTypes,
+    list,
+    get,
+    referentiels,
+    config,
+    save,
+    remove
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import UsernameBlock from "../../components/UserInterface/usernameBlock/UsernameBlock";
 import SideMenu from "../../components/UserInterface/sideMenu/SideMenu";
 import Map from "../../components/map/map/Map";
+import PnjInteractionHost from "../../components/pnj/pnjInteractionHost/PnjInteractionHost";
 import SpellBar from "../../components/UserInterface/spellBar/SpellBar";
 import UsersApi from "../../services/UsersApi";
 import Loader from "../../components/loader/Loader";
@@ -133,6 +134,7 @@ class MapPage extends React.Component{
                         </div>
                     <SideMenu />
                     <div className="map-container mr-5" >
+                        <PnjInteractionHost />
                         {this.state.display && <Map setMapLoaded={() => this.setMapLoaded()} user={this.state.user} needRefresh={this.props.joueurState.needRefresh}/> || <Loader />}
                         <div className="footer-block">
                             {this.state.display && <SpellBar setSpellsLoaded={() => this.setSpellsLoaded()} newExperience={this.props.joueurState.newExperience}/>}

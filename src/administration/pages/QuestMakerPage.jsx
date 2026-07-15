@@ -1,64 +1,89 @@
-import React from 'react';
-import Select from "../../components/forms/select/Select";
-import Field from "../../components/forms/field/Field";
+import React, {useEffect, useState} from 'react';
+import {toast} from "react-toastify";
 import QuestMakerApi from "../services/QuestMakerApi";
-import {connect} from "react-redux";
+import QuestEditorContext from "../contexts/QuestEditorContext";
 import QuestForm from "../components/forms/QuestMaker/QuestForm";
 
-class QuestMakerPage extends React.Component{
+/**
+ * QuestMaker : liste des quêtes + édition d'une quête (QuestForm).
+ * Les référentiels et la config des types d'action sont fetchés UNE fois
+ * ici et distribués par contexte. La création passe par le même formulaire
+ * que l'édition (save sans id).
+ */
+const QuestMakerPage = () => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            questId: 1,
-            name: ""
-        }
-    }
+    const [quests, setQuests] = useState([]);
+    const [selectedQuestId, setSelectedQuestId] = useState(null);
+    const [editorData, setEditorData] = useState(null);
 
-    async componentDidMount (){
-        const quests = await QuestMakerApi.getAllQuests();
-        this.setState({quests});
-    }
+    useEffect(() => {
+        const fetchEditorData = async () => {
+            const [questList, referentiels, actionTypeConfig] = await Promise.all([
+                QuestMakerApi.list(),
+                QuestMakerApi.referentiels(),
+                QuestMakerApi.config()
+            ]);
+            setQuests(questList);
+            setEditorData({referentiels, actionTypeConfig});
+        };
 
-    handleChangeQuest(event){
-        const questId = event.target.value;
-        this.setState({questId});
-    }
+        fetchEditorData().catch(() => toast.error("Impossible de charger le QuestMaker."));
+    }, []);
 
-    handleSubmit(){
-        QuestMakerApi.updateQuest(this.state.questId, this.props.questMaker);
-    }
-
-    handleChangeQuestName(event){
-        const name = event.target.value;
-        this.setState({name})
-    }
-
-    async handleSubmitQuestName(){
-        await QuestMakerApi.createQuest(this.state.name);
-    }
-
-    render(){
-        return <>
-            <form className="form-add-quest" action="">
-                <Field name="name" label="Nom de la quête" type="text" value={this.state.name} onChange={(event) => this.handleChangeQuestName(event)} />
-                <div className="map-maker-btn-validation" onClick={() => this.handleSubmitQuestName()}>Creer une quête</div>
-            </form>
-            <h1>Editer une quête</h1>
-            <div className="quest-page-maker-container">
-                <select className="select-form-field" onChange={(event) => this.handleChangeQuest(event)}>
-                    {this.state.quests && this.state.quests.map(quest =>
-                        <option key={quest.id} value={quest.id}>{quest.name}</option>
-                    )}
-                </select>
-                <QuestForm questId={this.state.questId}/>
-
-            </div>
-        </>
+    const refreshList = async (savedQuest) => {
+        setQuests(await QuestMakerApi.list());
+        setSelectedQuestId(savedQuest.id);
     };
 
-}
+    const handleDelete = async () => {
+        if(!selectedQuestId || !window.confirm("Supprimer définitivement cette quête ?")){
+            return;
+        }
+        try {
+            await QuestMakerApi.remove(selectedQuestId);
+            toast.success("Quête supprimée.");
+            setSelectedQuestId(null);
+            setQuests(await QuestMakerApi.list());
+        } catch (error) {
+            toast.error(error.response?.data?.error || "La suppression a échoué.");
+        }
+    };
 
-export default connect((state, ownProps) => {
-    return {questMaker: state.data.questMaker, ownProps};
-})(QuestMakerPage);
+    if(!editorData){
+        return <h1>Chargement du QuestMaker…</h1>;
+    }
+
+    return (
+        <QuestEditorContext.Provider value={editorData}>
+            <h1>QuestMaker</h1>
+            <div className="quest-page-maker-container">
+                <div className="quest-maker-toolbar">
+                    <select
+                        className="select-form-field"
+                        value={selectedQuestId ?? ""}
+                        onChange={(event) => setSelectedQuestId(event.target.value ? Number(event.target.value) : null)}
+                    >
+                        <option value="">— Choisir une quête —</option>
+                        {quests.map(quest =>
+                            <option key={quest.id} value={quest.id}>{quest.name}</option>
+                        )}
+                    </select>
+                    <button type="button" className="map-maker-btn-validation" onClick={() => setSelectedQuestId(0)}>
+                        Créer une quête
+                    </button>
+                    {selectedQuestId > 0 && (
+                        <button type="button" className="map-maker-btn-validation" onClick={handleDelete}>
+                            Supprimer la quête
+                        </button>
+                    )}
+                </div>
+
+                {selectedQuestId !== null && (
+                    <QuestForm key={selectedQuestId} questId={selectedQuestId} onSaved={refreshList}/>
+                )}
+            </div>
+        </QuestEditorContext.Provider>
+    );
+};
+
+export default QuestMakerPage;
