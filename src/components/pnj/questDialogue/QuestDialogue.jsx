@@ -3,6 +3,9 @@ import {connect} from "react-redux";
 import {toast} from "react-toastify";
 import {updateJoueurState} from "../../../store/actions";
 import questApi from "../../../services/questApi";
+import GameButton from "../../ui/gameButton/GameButton";
+import PnjAvatar from "../PnjAvatar";
+import styles from "../PnjDialogue.module.scss";
 
 /**
  * Vue quête d'un PNJ, pilotée par le contrat structuré du back :
@@ -77,43 +80,37 @@ const QuestDialogue = (props) => {
             case "available":
                 return (
                     <>
-                        <button onClick={handleStart} className="quest-modal-btn-action">Accepter la quête</button>
-                        <br/>
-                        <button onClick={props.onClose} className="quest-modal-btn-action">S'en aller</button>
+                        <button type="button" onClick={handleStart} className={styles.primary}>Accepter la quête</button>
+                        <GameButton onClick={props.onClose}>S'en aller</GameButton>
                     </>
                 );
             case "inProgress":
                 return step && step.actions.map(action =>
-                    <div key={action.actionId}>
-                        <button onClick={() => handleAction(action.actionId)} className="quest-modal-btn-action">
-                            {action.label}
-                        </button>
-                        <br/>
-                    </div>
+                    <button key={action.actionId} type="button" onClick={() => handleAction(action.actionId)}
+                            className={styles.primary}>
+                        {action.label}
+                    </button>
                 );
             case "locked":
             case "done":
             default:
-                return <button onClick={props.onClose} className="quest-modal-btn-action">S'en aller</button>;
+                return <GameButton onClick={props.onClose}>S'en aller</GameButton>;
         }
     }
 
     return (
-        <div className="quest-modal-body">
-            <div className="quest-modal-dialog">
-                <div className="quest-modal-avatar">
-                    {props.pnj.avatar && <img src={"img/pnj/" + props.pnj.avatar} alt={props.pnj.name}/>}
-                    <div className="quest-modal-pnj-name">{props.pnj.name}</div>
-                </div>
-                <div className="quest-modal-text">
+        <div className={styles.body}>
+            <div className={styles.dialog}>
+                <PnjAvatar pnj={props.pnj}/>
+                <div className={styles.text}>
                     {renderDialogue()}
                     {blockedMessages.length > 0 && status !== "locked" && blockedMessages.map((message, index) =>
-                        <p key={index} className="quest-modal-blocked-message"><i>{message}</i></p>
+                        <p key={index} className={styles.blocked}><i>{message}</i></p>
                     )}
                 </div>
             </div>
-            <hr/>
-            <div className="quest-modal-actions">
+            <div className={styles.separator}/>
+            <div className={styles.actions}>
                 {renderActions()}
             </div>
         </div>

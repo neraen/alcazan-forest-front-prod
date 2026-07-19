@@ -1,0 +1,438 @@
+.body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 22px;
+  padding: 28px 40px;
+}
+
+/* Variante modale (maquette ProfileScreen "modal") : paddings resserrés */
+.bodyCompact {
+  gap: 20px;
+  padding: 22px 20px;
+
+  .leftColumn {
+    width: 430px;
+    gap: 18px;
+  }
+}
+
+.leftColumn {
+  width: 480px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: 0;
+}
+
+/* --- Couleur par caractéristique (consommée par les cartes et les lignes) --- */
+
+.constitution {
+  --stat-color: var(--stat-constitution);
+}
+
+.force {
+  --stat-color: var(--stat-force);
+}
+
+.dexterite {
+  --stat-color: var(--stat-dexterite);
+}
+
+.intelligence {
+  --stat-color: var(--stat-intelligence);
+}
+
+.concentration {
+  --stat-color: var(--stat-concentration);
+}
+
+.chance {
+  --stat-color: var(--stat-chance);
+}
+
+/* --- Carte identité + informations --- */
+
+.identityCard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  object-fit: cover;
+}
+
+.identityText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pseudo {
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.identityMeta {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.separator {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-half), transparent);
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 11px;
+  background: var(--row-bg);
+  border: 1px solid var(--gold-softer);
+}
+
+.infoLabel {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.infoValue {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* --- Carte équipement (base + bonus par stat) --- */
+
+.equipCard {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sectionNote {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.equipRows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.equipRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 11px;
+  background: var(--row-bg);
+}
+
+.equipDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--stat-color);
+}
+
+.equipLabel {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-soft);
+}
+
+.equipBase {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.equipBonus {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--bonus);
+}
+
+.equipTotal {
+  min-width: 46px;
+  text-align: right;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+/* --- Colonne caractéristiques --- */
+
+.statsCard {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pointsBadge {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  border-radius: 22px;
+  background: var(--badge-neutral-bg);
+  border: 1px solid var(--gold-divider);
+}
+
+.pointsBadgeActive {
+  background: var(--level-soft-bg);
+  border-color: var(--level-border);
+
+  .pointsBadgeValue {
+    color: var(--level);
+  }
+}
+
+.pointsBadgeLabel {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.pointsBadgeValue {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-faint);
+}
+
+.statsGrid {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  align-content: start;
+  padding-right: 4px;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border-radius: var(--radius-card);
+  background: var(--row-bg);
+  border: 1px solid var(--gold-card-border);
+}
+
+.statHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.statIcon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: var(--radius-nav);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--stat-color);
+  background: color-mix(in srgb, var(--stat-color) 13%, transparent);
+  border: 1px solid color-mix(in srgb, var(--stat-color) 40%, transparent);
+}
+
+.statText {
+  flex: 1;
+  min-width: 0;
+}
+
+.statLabel {
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--text);
+}
+
+.statDetail {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-faint);
+}
+
+.statDetailBonus {
+  color: var(--bonus);
+}
+
+.statPending {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--bonus);
+}
+
+.statControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stepper {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-nav);
+  border: 1px solid var(--gold-mini-border);
+  background: var(--row-bg);
+  color: var(--gold);
+  font-size: 25px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: var(--transition);
+
+  &:hover:not(:disabled) {
+    background: var(--gold-card-border);
+    color: var(--gold-hover);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.statTotal {
+  flex: 1;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+}
+
+.feedback {
+  margin-right: auto;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: var(--radius-slot);
+  background: color-mix(in srgb, var(--bonus) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--bonus) 45%, transparent);
+  color: var(--bonus);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.reset {
+  padding: 15px 26px;
+  border-radius: var(--radius-nav);
+  border: 1px solid var(--gold-border-strong);
+  cursor: pointer;
+  background: transparent;
+  color: var(--gold);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  transition: var(--transition);
+
+  &:hover:not(:disabled) {
+    background: var(--gold-bg-hover);
+    color: var(--gold-hover);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.validate {
+  min-width: 220px;
+  padding: 15px 34px;
+  border-radius: var(--radius-nav);
+  border: none;
+  cursor: pointer;
+  background: var(--gold);
+  color: var(--ink);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  transition: var(--transition);
+
+  &:hover:not(:disabled) {
+    background: var(--gold-hover);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .body {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .leftColumn {
+    width: 100%;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}

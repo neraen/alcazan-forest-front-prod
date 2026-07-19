@@ -2,8 +2,13 @@ import React from "react"
 import {connect} from "react-redux";
 import {updateJoueurState} from "../../../../store/actions";
 import UserActionApi from "../../../../services/UserActionApi";
+import {rarityClass} from "../../../inventory/screen/itemUtils";
+import styles from "./ShopBuy.module.scss";
 
-
+/**
+ * Étal du marchand : cartes d'équipement à la vente (bordure de rareté,
+ * caractéristiques, prix, niveau requis).
+ */
 const ShopBuy = (props) => {
 
     const handleAchat = async (item) => {
@@ -14,36 +19,37 @@ const ShopBuy = (props) => {
         }
     }
 
+    const canAfford = (item) => +props.joueurState.money >= +item.prixAchat;
+
     return(
-        <div className="shop-items">
+        <div className={styles.grid}>
             { props.items.map((item) =>
-
-                <div className={"shop-item " + item.rarityName}>
-                    <div className="shop-item-header">
-                        {item.nomEquipement}
-                    </div>
-                    <div className="shop-item-body">
-                        <div className="block-carac-img-item">
-                            <img className="inventaire-item-img" src={'../img/equipement/'+item.position+'/'+item.icone}/>
-                            <div className="shop-item-carac">
-                                {item.caracteristiques.map((caracteristique) =>
-                                    <div key={'caracteristique'+caracteristique.id}>
-                                        {caracteristique.nom[0].toUpperCase()+caracteristique.nom.slice(1)} : + {caracteristique.valeur}
-                                    </div>
-                                )}
-                            </div>
+                <div key={item.idEquipement} className={`${styles.card} ${styles[rarityClass(item.rarityName)]}`}>
+                    <div className={styles.cardHeader}>{item.nomEquipement}</div>
+                    <div className={styles.cardBody}>
+                        <div className={styles.thumb}>
+                            <img className={styles.thumbIcon}
+                                 src={'../img/equipement/'+item.position+'/'+item.icone} alt={item.nomEquipement}/>
                         </div>
-                        <hr />
-                        <div className="inventaire-item-element">
-                            <div className="inventaire-item-element-strong">Prix : {item.prixAchat} Pièces d'or </div>
-
+                        <div className={styles.caracs}>
+                            {item.caracteristiques.map((caracteristique) =>
+                                <span key={'caracteristique'+caracteristique.id} className={styles.carac}>
+                                    +{caracteristique.valeur} {caracteristique.nom}
+                                </span>
+                            )}
                         </div>
                     </div>
-                    <div className="shop-item-footer">
-                        Niveau requis : {item.levelMinEquipement}
+                    <div className={styles.cardMeta}>
+                        <span className={styles.price}>
+                            <img className={styles.coin} src="/img/gui/Money03.png" alt="Or"/>
+                            {item.prixAchat} Pièces d'or
+                        </span>
+                        <span className={styles.levelMin}>Niveau requis : {item.levelMinEquipement}</span>
                     </div>
-
-                    <button onClick={() => handleAchat(item)}>Acheter</button>
+                    <button type="button" className={styles.buy} disabled={!canAfford(item)}
+                            onClick={() => handleAchat(item)}>
+                        Acheter
+                    </button>
                 </div>
             )}
         </div>

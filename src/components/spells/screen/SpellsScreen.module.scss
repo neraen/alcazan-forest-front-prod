@@ -1,0 +1,518 @@
+.loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Accent par type de sort --- */
+
+.attack {
+  --accent: var(--stat-intelligence);
+}
+
+.soin {
+  --accent: var(--stat-dexterite);
+}
+
+.buff {
+  --accent: var(--level);
+}
+
+.autre {
+  --accent: var(--gold);
+}
+
+/* --- Corps --- */
+
+.body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* --- Grimoire --- */
+
+.grimoire {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.grimoireHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.grimoireBar {
+  width: 6px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--gold);
+}
+
+.grimoireTitle {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.grimoireHint {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-faint);
+}
+
+.spellList {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+.spellCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius-card);
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  background: var(--panel-soft);
+  border: 1px solid var(--gold-nav-border);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  transition: var(--transition);
+
+  &:hover:not(.spellCardSelected) {
+    border-color: var(--gold-border-strong);
+  }
+}
+
+.spellCardSelected {
+  background: var(--gold-softer);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold-modal-line), 0 8px 22px rgba(0, 0, 0, 0.4);
+}
+
+.spellThumb {
+  width: 66px;
+  height: 66px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  border: 2px solid var(--accent);
+  background: var(--spell-thumb-bg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  display: flex;
+}
+
+.spellThumbImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.spellInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.spellNameRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spellName {
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--text);
+}
+
+.typeBadge {
+  padding: 2px 10px;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid var(--accent);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.spellDesc {
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--text-soft);
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.spellChips {
+  display: flex;
+  gap: 8px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-tab);
+  background: var(--badge-neutral-bg);
+  border: 1px solid var(--gold-card-border);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-ice);
+}
+
+.chipGlyph {
+  color: var(--gold);
+}
+
+.spellSlotColumn {
+  min-width: 66px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  border-left: 1px solid var(--gold-card-border);
+  padding-left: 14px;
+}
+
+.spellSlotLabel {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.spellSlotValue {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--text-dim3);
+}
+
+.spellSlotAssigned {
+  color: var(--gold);
+}
+
+/* --- Panneau de détail --- */
+
+.detail {
+  width: 480px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: var(--radius-panel);
+  background: var(--panel-inner-light);
+  border: 1px solid var(--gold-divider);
+  padding: 22px;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.detailHead {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.detailThumb {
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+  border-radius: var(--radius-panel);
+  border: 3px solid var(--accent);
+  background: var(--spell-thumb-bg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+}
+
+.detailThumbImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detailTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.detailName {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--text);
+}
+
+.detailDesc {
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--text-soft);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.statRows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 11px;
+  background: var(--row-bg);
+  border: 1px solid var(--gold-card-border);
+}
+
+.statIcon {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statIconGold {
+  color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 14%, transparent);
+}
+
+.statIconGreen {
+  color: var(--stat-dexterite);
+  background: color-mix(in srgb, var(--stat-dexterite) 14%, transparent);
+}
+
+.statIconBlue {
+  color: var(--mp-label);
+  background: color-mix(in srgb, var(--mp-label) 14%, transparent);
+}
+
+.statLabel {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.statValue {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.assignLabel {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.slotPicker {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.slotButton {
+  padding: 12px 0;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-divider);
+  background: var(--row-bg);
+  color: var(--text-ice);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover {
+    border-color: var(--gold);
+  }
+}
+
+.slotButtonActive {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.unassign {
+  padding: 11px;
+  border-radius: 11px;
+  border: 1px solid var(--danger-border);
+  background: transparent;
+  color: var(--danger-text);
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover {
+    background: var(--danger-bg-hover);
+    color: var(--danger-text-hover);
+  }
+}
+
+/* --- Barre de sorts (pied) --- */
+
+.hotbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 24px 20px;
+  background: var(--modal-footer-bg);
+  border-top: 1px solid var(--gold-modal-line);
+}
+
+.hotbarText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hotbarLabel {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--gold);
+}
+
+.hotbarSub {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-faint);
+}
+
+.hotbarSlots {
+  margin-left: auto;
+  display: flex;
+  gap: 12px;
+}
+
+.hotbarSlot {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  border-radius: 13px;
+  padding: 0;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--gold-nav-border);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  transition: var(--transition);
+
+  &:hover {
+    border-color: var(--gold-chevron);
+  }
+}
+
+.hotbarSlotFilled {
+  background: var(--spell-thumb-bg);
+  border-color: color-mix(in srgb, var(--accent) 80%, transparent);
+  box-shadow: none;
+}
+
+.hotbarSlotSelected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold-half);
+}
+
+.hotbarKey {
+  position: absolute;
+  top: 4px;
+  left: 7px;
+  z-index: 2;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-dim3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.hotbarKeyFilled {
+  color: var(--gold-hover);
+}
+
+.hotbarIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Mode compact : écrans de portable ≤ 900px de haut (14") */
+@media screen and (max-height: 899px) {
+  .body {
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .detail {
+    width: 420px;
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .spellCard {
+    padding: 10px 14px;
+  }
+
+  .spellThumb {
+    width: 56px;
+    height: 56px;
+  }
+
+  .detailThumb {
+    width: 78px;
+    height: 78px;
+  }
+
+  .hotbar {
+    padding: 10px 20px 12px;
+  }
+
+  .hotbarSlot {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-slot);
+  }
+}

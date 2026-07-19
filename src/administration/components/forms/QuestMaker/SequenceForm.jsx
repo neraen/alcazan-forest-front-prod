@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import '../../../../styles/app.css'
 import {useFieldArray} from "react-hook-form";
 import {useQuestEditor} from "../../../contexts/QuestEditorContext";
 import ActionForm from "./ActionForm";

@@ -2,11 +2,11 @@ import React, { useEffect, useState} from 'react'
 import Profil from "../../components/profil/profil/profil";
 import UsersApi from "../../services/UsersApi";
 import authAPI from "../../services/authAPI";
-import {Link, Redirect} from "react-router-dom";
-import Switch from "react-bootstrap/Switch";
+import {NavLink, Redirect, Switch} from "react-router-dom";
 import PrivateRoute from "../../components/PrivateRoute";
 import ProfilSpells from "../../components/profil/profilSpells/ProfilSpells";
 import Options from "../../components/profil/options/Options";
+import styles from "./ProfilPage.module.scss";
 
 const ProfilPage = ({match, history}) => {
 
@@ -23,13 +23,13 @@ const ProfilPage = ({match, history}) => {
         setUser(user)
     }
 
-    return <>
-        <main className="main-profil-page ">
-            <div className="profil-header">
-                <h3 className="inventaire-title"><Link activeClassName="inventaire-active" to='/personnage/profil' >Profil</Link></h3>
-                <h3 className="inventaire-title"><Link activeClassName="inventaire-active" to='/personnage/sorts' >Sorts</Link></h3>
-                <h3 className="inventaire-title"><Link activeClassName="inventaire-active" to='/personnage/options' >Options</Link></h3>
-            </div>
+    return (
+        <div className={styles.page}>
+            <nav className={styles.subnav}>
+                <NavLink to='/personnage/profil' className={styles.subnavItem} activeClassName={styles.subnavActive}>Profil</NavLink>
+                <NavLink to='/personnage/sorts' className={styles.subnavItem} activeClassName={styles.subnavActive}>Sorts</NavLink>
+                <NavLink to='/personnage/options' className={styles.subnavItem} activeClassName={styles.subnavActive}>Options</NavLink>
+            </nav>
 
             <Switch>
                 <PrivateRoute path="/personnage/profil" component={() => <Profil history={history} pseudo={pseudo} user={user} />}/>
@@ -37,9 +37,8 @@ const ProfilPage = ({match, history}) => {
                 <PrivateRoute path="/personnage/options" component={() => <Options />}/>
                 {history.location.pathname === '/personnage' && <Redirect to="/personnage/profil"></Redirect>}
             </Switch>
-
-        </main>
-    </>
+        </div>
+    )
 }
 
 export default ProfilPage

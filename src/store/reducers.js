@@ -31,7 +31,8 @@ export const playerStatsReducer = (state = {
             level : 0,
             killMessage: '',
             message: '',
-            needRefresh: false
+            needRefresh: false,
+            consommableBarVersion: 0
         },
         mapMaker:{
             mode: {

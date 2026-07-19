@@ -4,6 +4,8 @@ import {connect} from "react-redux";
 import {fetchTargetInfo, updateJoueurState, removePlayerTarget} from "../../../store/actions";
 import distanceCalculator from "../../../services/distanceCalculator";
 import target from "../../target/Target";
+import Slot from "../../ui/slot/Slot";
+import styles from "./Spell.module.scss";
 
 
 const Spell = (props) => {
@@ -146,10 +148,11 @@ const Spell = (props) => {
 
     return <>
         <div title={props.spell.nom} className="spell-container" onClick={handleAttack}>
-            <div className={"spell-filter spell-filter-" + props.spell.id}>{time > 0 && (time/1000).toLocaleString('fr-FR', {maximumFractionDigits: 1})}</div>
-            <div  className="spell">
-                <img src={"../../../img/spell/" + props.spell.icone} className="img-spell"/>
-            </div>
+            <Slot src={"/img/spell/" + props.spell.icone} alt={props.spell.nom}>
+                <div className={`${styles.cooldown} spell-filter-${props.spell.id}`}>
+                    {time > 0 && (time/1000).toLocaleString('fr-FR', {maximumFractionDigits: 1})}
+                </div>
+            </Slot>
         </div>
     </>
 }

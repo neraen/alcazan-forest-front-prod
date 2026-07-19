@@ -1,18 +1,16 @@
 import React from "react"
 import {connect} from "react-redux";
 import {updateJoueurState} from "../../../../store/actions";
+import styles from "./ShopSell.module.scss";
 
-
+/**
+ * Vente au marchand — fonctionnalité pas encore implémentée côté jeu.
+ */
 const ShopSell = () => {
-
-    const handleSell = async (item) => {
-
-    }
-
     return(
-        <div className="shop-player-items">
-            Items du joueur
-        </div>
+        <p className={styles.placeholder}>
+            Le marchand n'achète rien pour le moment. Revenez plus tard !
+        </p>
     )
 }
 

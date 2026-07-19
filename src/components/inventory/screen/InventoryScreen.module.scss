@@ -1,0 +1,345 @@
+.loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Monnaies de l'en-tête (via headerRight du ModalShell) --- */
+
+.currency {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius-slot);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--gold-field-border);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.currencyIcon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.currencyGold {
+  color: var(--gold);
+}
+
+.currencyPa {
+  color: var(--pa-label);
+}
+
+.currencyPm {
+  color: var(--mp-label);
+}
+
+/* --- Corps --- */
+
+.body {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  min-height: 0;
+}
+
+/* --- Sac (colonne gauche) --- */
+
+.bag {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: var(--radius-card);
+  background: var(--panel-inner-strong);
+  border: 1px solid var(--gold-field-border);
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 10px 4px 8px;
+  border-radius: var(--radius-slot);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover:not(.tabActive) {
+    background: var(--gold-softer);
+  }
+}
+
+.tabActive {
+  background: var(--gold);
+  border-color: var(--gold);
+
+  .tabLabel {
+    color: var(--ink);
+  }
+
+  .tabIcon {
+    filter: none;
+  }
+}
+
+.tabIcon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.tabLabel {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-ice);
+}
+
+.tabCount {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-dim2);
+}
+
+.tabActive .tabCount {
+  color: var(--ink);
+}
+
+/* --- Recherche --- */
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  height: 44px;
+  border-radius: 11px;
+  background: var(--panel-inner);
+  border: 1px solid var(--gold-field-border);
+}
+
+.searchIcon {
+  color: var(--text-dim2);
+  flex-shrink: 0;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+
+  &::placeholder {
+    color: var(--text-dim2);
+  }
+}
+
+/* --- Grille d'objets --- */
+
+.gridScroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 4px;
+  border-radius: var(--radius-card);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.rarity-commun {
+  --rarity: var(--rarity-commun);
+}
+
+.rarity-peu-commun {
+  --rarity: var(--rarity-peu-commun);
+}
+
+.rarity-rare {
+  --rarity: var(--rarity-rare);
+}
+
+.rarity-epique {
+  --rarity: var(--rarity-epique);
+}
+
+.rarity-legendaire {
+  --rarity: var(--rarity-legendaire);
+}
+
+.rarity-heroique {
+  --rarity: var(--rarity-heroique);
+}
+
+.cell {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--radius-nav);
+  padding: 0;
+  cursor: pointer;
+  background: var(--parchment);
+  border: 2.5px solid var(--rarity);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.cellSelected {
+  border-color: var(--gold);
+  box-shadow: var(--halo-gold), 0 8px 22px rgba(0, 0, 0, 0.45);
+}
+
+.rarityDot {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--rarity);
+}
+
+.cellSelected .rarityDot {
+  background: var(--gold);
+}
+
+.cellIcon {
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+}
+
+.qty {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: var(--radius-tab);
+  background: var(--qty-badge-bg);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.emptyBag {
+  grid-column: 1 / -1;
+  padding: 40px 0;
+  text-align: center;
+  color: var(--text-dim2);
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* --- Fiche personnage (colonne droite) --- */
+
+.character {
+  width: 588px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-radius: var(--radius-panel);
+  background: var(--panel-inner-light);
+  border: 1px solid var(--gold-divider);
+  padding: 18px;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.characterHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.characterBar {
+  width: 6px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--gold);
+}
+
+.characterTitle {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.characterMeta {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-mute);
+}
+
+@media screen and (max-width: 1400px) {
+  .character {
+    width: 460px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Mode compact : écrans de portable ≤ 900px de haut (14") */
+@media screen and (max-height: 899px) {
+  .body {
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .bag {
+    gap: 10px;
+  }
+
+  .tab {
+    padding: 7px 4px 5px;
+  }
+
+  .search {
+    height: 38px;
+  }
+
+  .character {
+    padding: 14px;
+    gap: 10px;
+  }
+}

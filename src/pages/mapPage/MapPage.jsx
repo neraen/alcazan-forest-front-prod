@@ -7,8 +7,10 @@ import SpellBar from "../../components/UserInterface/spellBar/SpellBar";
 import UsersApi from "../../services/UsersApi";
 import Loader from "../../components/loader/Loader";
 import Target from "../../components/target/Target";
+import Panel from "../../components/ui/panel/Panel";
 import { connect } from "react-redux";
 import {updateJoueurState} from "../../store/actions";
+import styles from "./MapPage.module.scss";
 
 import 'intro.js/introjs.css';
 import { Steps, Hints } from 'intro.js-react';
@@ -24,13 +26,14 @@ class MapPage extends React.Component{
             isMapLoaded: false,
             isSpellsLoaded: false,
             isBarLoaded: false,
+            zoneName: "",
             steps: [
                 {
-                    element: '.lifeBar',
+                    element: '.js-life-gauge',
                     intro: "Ici se trouve votre barre de vie, si elle est vide vous irez au cimetière et votre résurection vous coutera en expérience."
                 },
                 {
-                    element: '.manaBar',
+                    element: '.js-mana-gauge',
                     intro: "Maintenant, votre barre de mana utile pour lancer des sortilèges",
                 },
                 {
@@ -42,7 +45,7 @@ class MapPage extends React.Component{
                     intro: "Ensuite le nombre de points de mouvements, à 0 vous ne pourrez plus bouger et serez à la merci de vos ennemies (gain : 20 par heures)",
                 },
                 {
-                    element: '.spell-bar',
+                    element: '.js-spell-bar',
                     intro: 'La barre de sorts contient les capacités que vous pouvez utiliser, les consommables et les effets qui agissent sur votre personnage',
                 },
                 {
@@ -59,8 +62,8 @@ class MapPage extends React.Component{
         }
     }
 
-    setMapLoaded(){
-        this.setState({isMapLoaded: true});
+    setMapLoaded(zoneName){
+        this.setState({isMapLoaded: true, zoneName: zoneName});
     }
 
     setSpellsLoaded(){
@@ -105,46 +108,40 @@ class MapPage extends React.Component{
     }
 
     render(){
-        return (<>
-            <main className="map-page">
-                <div className="top-container raw">
-                    <div className="side-block-container">
-                        <div className="side-block px-5">
-                            <div className="banner-map">
-                                <h1 className="text-center title-map-font">Tutoriel boisé</h1>
-                            </div>
-                            <Steps
-                                enabled={this.isIntroJsAllowed()}
-                                steps={this.state.steps}
-                                initialStep={0}
-                                options={{tooltipPosition: "right", tooltipClass: "intro-js-tooltip", highlightClass: "intro-js-highlight"}}
-                                onExit={(stepIndex) => this.onExit(stepIndex)}
-                                onBeforeExit={(stepIndex) => this.onBeforeExit(stepIndex)}
-                            />
-                            <UsernameBlock user={this.state.user}/>
-                            <Target />
+        return (
+            <div className={styles.page}>
+                <Steps
+                    enabled={this.isIntroJsAllowed()}
+                    steps={this.state.steps}
+                    initialStep={0}
+                    options={{tooltipPosition: "right", tooltipClass: "intro-js-tooltip", highlightClass: "intro-js-highlight"}}
+                    onExit={(stepIndex) => this.onExit(stepIndex)}
+                    onBeforeExit={(stepIndex) => this.onBeforeExit(stepIndex)}
+                />
 
-                        </div>
-
-                        {(this.props.joueurState.message.length > 0) && (
-                            <div className="block-notification">
-                                <div dangerouslySetInnerHTML={{__html: this.props.joueurState.message}}></div>
-                            </div>
-                        )}
-                        </div>
+                <aside className={styles.sidebar}>
+                    <UsernameBlock user={this.state.user} zoneName={this.state.zoneName}/>
+                    <Target />
                     <SideMenu />
-                    <div className="map-container mr-5" >
-                        <PnjInteractionHost />
-                        {this.state.display && <Map setMapLoaded={() => this.setMapLoaded()} user={this.state.user} needRefresh={this.props.joueurState.needRefresh}/> || <Loader />}
-                        <div className="footer-block">
-                            {this.state.display && <SpellBar setSpellsLoaded={() => this.setSpellsLoaded()} newExperience={this.props.joueurState.newExperience}/>}
-                        </div>
+
+                    {(this.props.joueurState.message.length > 0) && (
+                        <Panel className={styles.notification}>
+                            <div dangerouslySetInnerHTML={{__html: this.props.joueurState.message}}></div>
+                        </Panel>
+                    )}
+                </aside>
+
+                <div className={styles.main}>
+                    <PnjInteractionHost />
+                    <div className={styles.mapViewport}>
+                        {this.state.display && <Map setMapLoaded={(zoneName) => this.setMapLoaded(zoneName)} user={this.state.user} needRefresh={this.props.joueurState.needRefresh}/> || <Loader />}
                     </div>
-
+                    {this.state.display && <SpellBar setSpellsLoaded={() => this.setSpellsLoaded()} newExperience={this.props.joueurState.newExperience}/>}
+                    {/* Hôte des modales de jeu (GameModal) : elles superposent la zone de carte */}
+                    <div id="game-modal-root"/>
                 </div>
-
-            </main>
-        </>  )
+            </div>
+        )
     }
 }
 

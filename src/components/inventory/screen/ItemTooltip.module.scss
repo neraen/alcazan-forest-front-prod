@@ -1,0 +1,138 @@
+.tooltip {
+  position: fixed;
+  z-index: 1400; /* au-dessus du contenu de la modale (overlay 1200) */
+  pointer-events: none;
+  width: max-content;
+  max-width: 320px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: var(--radius-card);
+  background: var(--panel-solid);
+  border: 1px solid var(--gold-modal-line);
+  border-left: 3px solid var(--rarity);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  animation: tooltipIn 0.12s ease;
+}
+
+@keyframes tooltipIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.rarity-commun { --rarity: var(--rarity-commun); }
+.rarity-peu-commun { --rarity: var(--rarity-peu-commun); }
+.rarity-rare { --rarity: var(--rarity-rare); }
+.rarity-epique { --rarity: var(--rarity-epique); }
+.rarity-legendaire { --rarity: var(--rarity-legendaire); }
+.rarity-heroique { --rarity: var(--rarity-heroique); }
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.name {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.rarity {
+  color: var(--rarity);
+}
+
+.dot {
+  color: var(--text-faint);
+}
+
+.type {
+  color: var(--text-faint);
+}
+
+.equipped {
+  margin-left: 2px;
+  padding: 1px 7px;
+  border-radius: var(--radius-tab);
+  background: var(--gold-softer);
+  border: 1px solid var(--gold-card-border);
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.caracs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.carac {
+  padding: 2px 8px;
+  border-radius: var(--radius-tab);
+  background: var(--badge-neutral-bg);
+  border: 1px solid var(--gold-card-border);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--bonus);
+  text-transform: capitalize;
+}
+
+.desc {
+  font-size: 12.5px;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--text-soft);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 6px;
+  border-top: 1px solid var(--gold-divider);
+}
+
+.value {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+.coin {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+.levelMin {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.qty {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-mute);
+}

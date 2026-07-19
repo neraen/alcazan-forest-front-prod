@@ -1,0 +1,37 @@
+.resources {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.resource {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+}
+
+.iconRound {
+  border-radius: 50%;
+}
+
+.gold {
+  color: var(--gold);
+}
+
+.pa {
+  color: var(--pa-label);
+}
+
+.pm {
+  color: var(--mp-label);
+}

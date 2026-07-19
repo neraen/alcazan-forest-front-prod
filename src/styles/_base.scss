@@ -1,28 +1,64 @@
-body{
-  margin: 0;
-  font-family: var(--font-family);
-  color: var(--text-color);
-  background-color: var(--gray-2);
-}
+// Styles de base globaux : reset léger, typo par défaut, scrollbars, sélection.
+// Les polices Cinzel + Nunito Sans sont chargées dans public/index.html.
 
-h1, h2, h3, h4{
-  margin: 0
-}
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-ul{
-  list-style: none;
-  padding-left: 0px;
-  margin: 0px;
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-bottom);
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
 }
 
-input{
-  font-family: var(--font-family);
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: var(--font-title);
 }
 
-::placeholder{
-  font-size: var(--font-family);
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+}
+
+a {
+  color: var(--gold);
+  transition: var(--transition);
+
+  &:hover {
+    color: var(--gold-hover);
+  }
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+/* Scrollbars fines, or sur vert sombre */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) var(--panel-solid);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--panel-solid);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--gold);
+  border-radius: var(--radius-slot);
 }

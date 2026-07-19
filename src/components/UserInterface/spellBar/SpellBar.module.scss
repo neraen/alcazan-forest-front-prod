@@ -1,0 +1,50 @@
+.actionBar {
+  flex-shrink: 0;
+  border-top: 1px solid var(--gold-soft);
+  background: var(--actionbar-bg);
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.xpRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.xpLabel {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+}
+
+.xpGauge {
+  flex: 1;
+}
+
+.xpValues {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.slotGroup {
+  display: flex;
+  gap: 7px;
+}
+
+.divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--gold-divider);
+}

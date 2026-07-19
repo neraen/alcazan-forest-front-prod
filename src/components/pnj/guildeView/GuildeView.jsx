@@ -1,10 +1,13 @@
 import React from "react"
 import {toast} from "react-toastify";
 import UserActionApi from "../../../services/UserActionApi";
+import GameButton from "../../ui/gameButton/GameButton";
+import styles from "./GuildeView.module.scss";
 
 /**
  * Registre des guildes d'un PNJ "guilde". Les données arrivent en props
  * depuis PnjInteractionHost ({dialogue, guildes}) : plus de fetch interne.
+ * Le dialogue s'écrit lettre à lettre (effet machine à écrire conservé).
  */
 class GuildeView extends React.Component {
 
@@ -52,36 +55,32 @@ class GuildeView extends React.Component {
     render(){
         const guildes = this.props.guildeData.guildes || [];
         return(
-            <div className="quest-modal-body">
-                <div className="guilde-body-transition dungeons-font">{this.state.writtedDialogue}</div><br />
+            <div className={styles.body}>
+                <p className={styles.dialogue}>{this.state.writtedDialogue}</p>
+
                 {guildes.length > 0 && (
                     <>
-                        <h2 className="title-guilde-list">Liste des guildes</h2>
-                        <table className="table-guilde-list">
-                            <tbody>
-                            <tr className="tr-guilde-list">
-                                <th className="th-guilde-list">Nom</th>
-                                <th className="th-guilde-list">Description</th>
-                                <th className="th-guilde-list">Niveau</th>
-                                <th className="th-guilde-list">Icone</th>
-                                <th className="th-guilde-list">Actions</th>
-                            </tr>
+                        <div className={styles.listHead}>
+                            <span className={styles.listBar}/>
+                            <span className={styles.listTitle}>Liste des guildes</span>
+                        </div>
+                        <div className={styles.guildes}>
                             {guildes.map(guilde => (
-                                <tr key={guilde.id} className="tr-guilde-list">
-                                    <td className="th-guilde-list">{guilde.nom}</td>
-                                    <td className="th-guilde-list">{guilde.description}</td>
-                                    <td className="th-guilde-list">{guilde.niveau}</td>
-                                    <td className="th-guilde-list">{guilde.icone}</td>
-                                    <td className="th-guilde-list flex-row">
-                                        <button onClick={() => this.handleJoinGuilde(guilde.id)}>Rejoindre</button>
-                                        <button>Détails</button>
-                                    </td>
-                                </tr>
+                                <div key={guilde.id} className={styles.guildeRow}>
+                                    <div className={styles.guildeInfo}>
+                                        <span className={styles.guildeName}>{guilde.nom}</span>
+                                        <span className={styles.guildeDesc}>{guilde.description}</span>
+                                    </div>
+                                    <span className={styles.guildeLevel}>
+                                        <span className={styles.guildeLevelLabel}>Niveau</span>
+                                        <span className={styles.guildeLevelValue}>{guilde.niveau}</span>
+                                    </span>
+                                    <GameButton onClick={() => this.handleJoinGuilde(guilde.id)}>Rejoindre</GameButton>
+                                </div>
                             ))}
-                            </tbody>
-                        </table>
+                        </div>
                     </>
-                    )}
+                )}
             </div>
         )
     }

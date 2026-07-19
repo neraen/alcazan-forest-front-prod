@@ -1,5 +1,4 @@
 import React from 'react'
-import '../../styles/app.css'
 import {connect} from "react-redux";
 import {toggleCollisionCase, updateDiffCases, addMonsterCase, addPnjCase, addWrapCase} from "../../store/actions";
 

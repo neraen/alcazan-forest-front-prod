@@ -1,25 +1,30 @@
 import React, {useState} from "react"
 import ShopBuy from "./shopBuy/ShopBuy";
 import ShopSell from "./ShopSell/ShopSell";
+import styles from "./ShopView.module.scss";
 
-
+/**
+ * Échoppe d'un PNJ marchand : onglets Acheter / Vendre.
+ */
 const ShopView = (props) => {
 
     const [activeTab, setActiveTab] = useState("buy");
 
-    const handleSetActiveTab = (tabName) => {
-        setActiveTab(tabName);
-    }
-
     return(
-        <div className="shop-container">
-            <div className="shop-mode">
-                <div className="shop-mode-choice" onClick={() => handleSetActiveTab("buy")}>Acheter</div>
-                <div className="shop-mode-choice" onClick={() => handleSetActiveTab("sell")}>Vendre</div>
+        <div className={styles.container}>
+            <div className={styles.tabs}>
+                <button type="button"
+                        className={`${styles.tab} ${activeTab === "buy" ? styles.tabActive : ""}`}
+                        onClick={() => setActiveTab("buy")}>Acheter</button>
+                <button type="button"
+                        className={`${styles.tab} ${activeTab === "sell" ? styles.tabActive : ""}`}
+                        onClick={() => setActiveTab("sell")}>Vendre</button>
             </div>
 
-            {activeTab === "buy" && <ShopBuy items={props.items}/>}
-            {activeTab === "sell" && <ShopSell />}
+            <div className={styles.content}>
+                {activeTab === "buy" && <ShopBuy items={props.items}/>}
+                {activeTab === "sell" && <ShopSell />}
+            </div>
         </div>
     )
 }

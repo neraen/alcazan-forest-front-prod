@@ -1,0 +1,43 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar {
+  width: 6px;
+  border-radius: 3px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+
+.mdBar {
+  height: 18px;
+}
+
+.lgBar {
+  height: 20px;
+}
+
+.xlBar {
+  height: 24px;
+}
+
+.title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.md {
+  font-size: 20px;
+}
+
+.lg {
+  font-size: 22px;
+}
+
+.xl {
+  font-size: 26px;
+}

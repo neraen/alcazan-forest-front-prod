@@ -1,0 +1,304 @@
+.bar {
+  flex-shrink: 0;
+  min-height: 128px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 24px;
+  background: var(--modal-footer-bg);
+  border-top: 1px solid var(--gold-modal-line);
+}
+
+.placeholder {
+  color: var(--text-dim2);
+  font-size: 14px;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.rarity-commun {
+  --rarity: var(--rarity-commun);
+}
+
+.rarity-peu-commun {
+  --rarity: var(--rarity-peu-commun);
+}
+
+.rarity-rare {
+  --rarity: var(--rarity-rare);
+}
+
+.rarity-epique {
+  --rarity: var(--rarity-epique);
+}
+
+.rarity-legendaire {
+  --rarity: var(--rarity-legendaire);
+}
+
+.rarity-heroique {
+  --rarity: var(--rarity-heroique);
+}
+
+.thumb {
+  flex-shrink: 0;
+  width: 92px;
+  height: 92px;
+  border-radius: var(--radius-card);
+  background: var(--parchment);
+  border: 3px solid var(--rarity);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumbIcon {
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.name {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--text);
+}
+
+.rarityBadge {
+  padding: 3px 11px;
+  border-radius: var(--radius-tab);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--rarity);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rarity);
+}
+
+.type {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.caracs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.carac {
+  padding: 2px 9px;
+  border-radius: var(--radius-tab);
+  background: var(--badge-neutral-bg);
+  border: 1px solid var(--gold-card-border);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--bonus);
+  text-transform: capitalize;
+}
+
+.desc {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-soft);
+  font-style: italic;
+  max-width: 720px;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.coin {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.value {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+.levelMin {
+  margin-left: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.equipSlots {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.equipHint {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.slotRow {
+  display: flex;
+  gap: 12px;
+}
+
+.equipSlot {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  padding: 0;
+  cursor: pointer;
+  border-radius: var(--radius-slot);
+  background: var(--slot-empty-bg);
+  border: 2px dashed var(--slot-dash);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+
+  &:hover {
+    border-style: solid;
+    border-color: var(--gold);
+    background: var(--gold-softer);
+    transform: translateY(-2px);
+  }
+}
+
+.equipSlotActive {
+  border-style: solid;
+  border-color: var(--gold);
+  background: var(--gold-softer);
+  box-shadow: var(--halo-gold);
+}
+
+.equipSlotNum {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.equipSlotIcon {
+  width: 74%;
+  height: 74%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+}
+
+.equipSlotGhost {
+  font-size: 26px;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--slot-dash);
+}
+
+.equipSlotCheck {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--rarity-peu-commun);
+  color: #052a10;
+  font-size: 11px;
+  font-weight: 900;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.primary {
+  flex-shrink: 0;
+  min-width: 168px;
+  padding: 12px 24px;
+  border-radius: 11px;
+  border: none;
+  cursor: pointer;
+  background: var(--gold);
+  color: var(--ink);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  transition: var(--transition);
+
+  &:hover {
+    background: var(--gold-hover);
+  }
+}
+
+/* Mode compact : écrans de portable ≤ 900px de haut (14") */
+@media screen and (max-height: 899px) {
+  .bar {
+    min-height: 104px;
+    padding: 12px 20px;
+    gap: 16px;
+  }
+
+  .thumb {
+    width: 74px;
+    height: 74px;
+  }
+
+  .name {
+    font-size: 19px;
+  }
+
+  .desc {
+    font-size: 14px;
+  }
+
+  .primary {
+    padding: 10px 20px;
+  }
+
+  .equipSlot {
+    width: 50px;
+    height: 50px;
+  }
+}

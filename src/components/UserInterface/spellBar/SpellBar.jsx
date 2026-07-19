@@ -1,11 +1,21 @@
 import React, {useEffect, useState} from 'react'
+import {connect} from "react-redux";
 import Spell from "../../spells/spell/Spell";
-import Bar from "../bar/Bar";
 import UsersApi from "../../../services/UsersApi";
 import Consommable from "../../consommable/Consommable";
 import Buff from "../../spells/buff/Buff";
 import UserStatsBlock from "../userStatsBlock/UserStatsBlock";
+import GaugeBar from "../../ui/gaugeBar/GaugeBar";
+import Slot from "../../ui/slot/Slot";
+import styles from "./SpellBar.module.scss";
 
+const SPELL_SLOT_COUNT = 8;
+const CONSOMMABLE_SLOT_COUNT = 2;
+
+/**
+ * Barre d'action sous la carte : ligne XP + slots de sorts, potions et buffs.
+ * La classe js-spell-bar est un hook pour intro.js.
+ */
 const SpellBar = (props) => {
 
     const [experienceData, setExperienceData] = useState({experienceActuelle : 0, experienceMax: 0});
@@ -21,6 +31,21 @@ const SpellBar = (props) => {
         getPlayerSpells()
     }, [])
 
+    // Rafraîchit les consommables de la barre quand l'inventaire en équipe un
+    // sur un emplacement (bump de consommableBarVersion). Ignore le montage initial.
+    useEffect(() => {
+        if(props.consommableBarVersion){
+            refreshConsommables()
+        }
+    }, [props.consommableBarVersion])
+
+    // Rafraîchit les sorts quand l'écran Sorts modifie les assignations.
+    useEffect(() => {
+        if(props.spellBarVersion){
+            refreshSpells()
+        }
+    }, [props.spellBarVersion])
+
     const getExpJoueur = async () => {
        const experienceJoueur = await UsersApi.getExpJoueur();
        setExperienceData(experienceJoueur);
@@ -35,58 +60,80 @@ const SpellBar = (props) => {
         props.setSpellsLoaded(true);
     }
 
+    const refreshConsommables = async () => {
+        const consommables = await UsersApi.getPlayerConsommables();
+        setConsommables(consommables);
+    }
+
+    const refreshSpells = async () => {
+        const spells = await UsersApi.getPlayerSpells();
+        setSpells(spells);
+    }
+
+    // Place chaque sort sur son emplacement assigné (ordre 1-8) ; les sorts sans
+    // assignation remplissent les emplacements libres dans l'ordre.
+    const spellSlots = () => {
+        const slots = Array(SPELL_SLOT_COUNT).fill(null);
+        const unplaced = [];
+        (spells || []).forEach(spell => {
+            const index = spell.ordre >= 1 && spell.ordre <= SPELL_SLOT_COUNT ? spell.ordre - 1 : -1;
+            if (index >= 0 && !slots[index]) {
+                slots[index] = spell;
+            } else {
+                unplaced.push(spell);
+            }
+        });
+        unplaced.forEach(spell => {
+            const free = slots.findIndex(slot => slot === null);
+            if (free >= 0) slots[free] = spell;
+        });
+        return slots;
+    }
+
     const setAllSpellDisabled = (isDisabled) => {
         setAllDisabled(isDisabled)
     }
 
+    const experienceActuelle = props.newExperience !== 0 ? props.newExperience : experienceData.experienceActuelle;
 
-    return <>
-        <div className="spell-bar">
-            <div className="spell-bar-content">
-                <div className="exp-bar-container mb-3">
-                    <div className="exp-icon-container">
-                        <img className="exp-icon" src="/img/gui/Xp.png" />
-                    </div>
-                    {(experienceData) &&
-                    <Bar value={props.newExperience !== 0  ? props.newExperience : experienceData.experienceActuelle} max={experienceData.experienceMax} maxWidth={1000} classN="expBar"/> ||
-                    <Bar value={0} max={99999} maxWidth={1000} classN="expBar"/>
-                    }
-                </div>
-
-                <div className="spells align-items-center">
-                    <div className="d-flex">
-                        {spells && spells.map(spell => (
-                            <Spell allDisabled={allDisabled} setAllSpellDisabled={setAllSpellDisabled} key={spell.id} spell={spell} />
-                        ))}
-                        {spells && [...Array(8 - spells.length)].map((x, i) =>
-                            <div  className="spell" key={i}>
-
-                            </div>
-                        )}
-
-                        <div className="spell-bar-separator">
-
-                        </div>
-
-                        {consommables && consommables.map(consommable => (
-                            <Consommable key={consommable.id} consommable={consommable} />
-                        ))}
-                        {consommables && [...Array(2 - consommables.length)].map((x, i) =>
-                            <div  className="spell" key={i}>
-
-                            </div>
-                        )}
-
-                        <div className="spell-bar-separator">
-
-                        </div>
-
-                        <Buff />
-                    </div>
-                </div>
+    return (
+        <div className={`js-spell-bar ${styles.actionBar}`}>
+            <div className={styles.xpRow}>
+                <span className={styles.xpLabel}>XP</span>
+                <GaugeBar className={styles.xpGauge} variant="xp" showValues={false}
+                          value={experienceActuelle} max={experienceData.experienceMax}/>
+                <span className={styles.xpValues}>{experienceActuelle} / {experienceData.experienceMax}</span>
             </div>
-            <UserStatsBlock />
+
+            <div className={styles.actions}>
+                <div className={styles.slotGroup}>
+                    {spells && spellSlots().map((spell, i) => spell
+                        ? <Spell allDisabled={allDisabled} setAllSpellDisabled={setAllSpellDisabled} key={spell.id} spell={spell} />
+                        : <Slot key={"empty-" + i}/>
+                    )}
+                </div>
+
+                <div className={styles.divider}/>
+
+                <div className={styles.slotGroup}>
+                    {consommables && consommables.map(consommable => (
+                        <Consommable key={consommable.id} consommable={consommable} />
+                    ))}
+                    {consommables && [...Array(Math.max(0, CONSOMMABLE_SLOT_COUNT - consommables.length))].map((x, i) =>
+                        <Slot key={i}/>
+                    )}
+                </div>
+
+                <div className={styles.divider}/>
+
+                <Buff />
+
+                <UserStatsBlock />
+            </div>
         </div>
-    </>
+    )
 }
-export default SpellBar
+export default connect((state) => ({
+    consommableBarVersion: state.data.joueurState.consommableBarVersion,
+    spellBarVersion: state.data.joueurState.spellBarVersion
+}))(SpellBar)

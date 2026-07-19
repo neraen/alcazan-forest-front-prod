@@ -3,6 +3,8 @@ import {connect} from "react-redux";
 import {toast} from "react-toastify";
 import {updateJoueurState} from "../../../store/actions";
 import questApi from "../../../services/questApi";
+import PnjAvatar from "../PnjAvatar";
+import styles from "../PnjDialogue.module.scss";
 
 /**
  * Dialogue d'un PNJ de type "action" (ex. aubergiste) : une séquence sans
@@ -29,20 +31,28 @@ const PnjActionDialogue = (props) => {
     }
 
     if(!props.dialogue){
-        return <div className="quest-modal-body"><p><i>{props.pnj.description}</i></p></div>;
+        return (
+            <div className={styles.body}>
+                <div className={styles.text}><p><i>{props.pnj.description}</i></p></div>
+            </div>
+        );
     }
 
     return (
-        <div className="quest-modal-body">
-            <div>
-                {props.dialogue.dialogue.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+        <div className={styles.body}>
+            <div className={styles.dialog}>
+                <PnjAvatar pnj={props.pnj}/>
+                <div className={styles.text}>
+                    {props.dialogue.dialogue.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+                </div>
+            </div>
+            <div className={styles.separator}/>
+            <div className={styles.actions}>
                 {!isLoading && props.dialogue.actions.map(action =>
-                    <div key={action.actionId}>
-                        <button onClick={() => handleAction(action.actionId)} className="btn-action">
-                            {action.label}
-                        </button>
-                        <br/>
-                    </div>
+                    <button key={action.actionId} type="button" onClick={() => handleAction(action.actionId)}
+                            className={styles.primary}>
+                        {action.label}
+                    </button>
                 )}
             </div>
         </div>

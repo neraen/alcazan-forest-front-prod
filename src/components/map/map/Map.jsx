@@ -56,7 +56,7 @@ class Map extends React.Component {
         const mapId = this.props.joueurState.mapId ? this.props.joueurState.mapId : this.state.mapId
         const data = await MapApi.find(mapId);
         this.setState({cases: data.cases, name: data.mapInfo.nom, isInstance: data.mapInfo.isInstance, mapId: mapId}, () => {
-            this.props.setMapLoaded(true);
+            this.props.setMapLoaded(this.state.name);
         });
         this.setState({unabledCases: this.getUnabledMove()});
     }
@@ -69,6 +69,11 @@ class Map extends React.Component {
     }
 
     handleKeybord(event){
+        // Pas de déplacement quand une modale de jeu est ouverte (inventaire, profil…) :
+        // les touches iraient au jeu pendant une saisie (recherche) ou une consultation.
+        if (document.querySelector('[data-game-modal]')) {
+            return;
+        }
         switch (event.key){
             case "z":
                 if(this.verifiyMove(this.state.abscisseJoueur, this.state.ordonneeJoueur - 1)){
@@ -134,6 +139,8 @@ class Map extends React.Component {
                 abscisseJoueur: mapPosition.abscisse,
                 isInstance: mapData.mapInfo.isInstance
             });
+            // Remonte le nouveau nom de zone à la fiche joueur (présentation uniquement)
+            this.props.setMapLoaded(mapData.mapInfo.nom);
             this.props.updateJoueurState({mapId: mapData.mapId})
             this.props.updatePositionJoueur({abscisse: mapPosition.abscisse, ordonnee:  mapPosition.ordonnee })
             this.setState({unabledCases: this.getUnabledMove()});

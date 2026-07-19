@@ -2,13 +2,24 @@ import React, {useState, useEffect} from 'react'
 import UsersApi from "../../services/UsersApi";
 import ProfilAPI from "../../services/ProfilAPI";
 import UserActionApi from "../../services/UserActionApi";
+import Panel from "../ui/panel/Panel";
+import SectionTitle from "../ui/sectionTitle/SectionTitle";
+import GameButton from "../ui/gameButton/GameButton";
+import CharacterPanel from "../inventory/screen/CharacterPanel";
+import ItemDetailBar from "../inventory/screen/ItemDetailBar";
+import styles from "./ProfilJoueur.module.scss";
 
+/**
+ * Profil public d'un autre joueur : identité + actions sociales à gauche,
+ * équipement porté (paperdoll en lecture seule) à droite.
+ */
 const ProfilJoueur = ({match, history}) => {
 
     const [equipementEquipe, setEquipementEquipe] = useState([])
     const [joueur, setJoueur] = useState([])
     const [isFriend, setIsFriend] = useState(false);
     const [idFriend, setIdFriend] = useState(0);
+    const [selected, setSelected] = useState(null);
     const { pseudo = undefined} = match.params;
 
     useEffect(() => {
@@ -46,76 +57,53 @@ const ProfilJoueur = ({match, history}) => {
         history.replace("/messagerie");
     }
 
+    const infoRows = [
+        {label: "Classe", value: joueur.nomClasse},
+        {label: "Niveau", value: joueur.niveau},
+        {label: "Guilde", value: joueur.nomGuilde || "Aucune"},
+        {label: "Alignement", value: joueur.nomAlignement || "Aucun"},
+    ];
 
-    return <>
-        <main className="main-profil-page ">
+    return (
+        <div className={styles.page}>
+            <div className={styles.body}>
+                <div className={styles.leftColumn}>
+                    <Panel variant="soft" padding="lg" radius="lg" className={styles.card}>
+                        <SectionTitle>{pseudo}</SectionTitle>
+                        {infoRows.map((row) => (
+                            <div key={row.label} className={styles.infoRow}>
+                                <span className={styles.infoLabel}>{row.label}</span>
+                                <span className={styles.infoValue}>{row.value}</span>
+                            </div>
+                        ))}
+                    </Panel>
 
-            <div className="profil-container">
-                <h2>Bannière</h2>
-                <div className="profil-banniere-joueur">
-
+                    <Panel variant="soft" padding="lg" radius="lg" className={styles.card}>
+                        <SectionTitle>Actions</SectionTitle>
+                        <GameButton onClick={addOrRemovePlayerOnFriendList}>
+                            {isFriend ? "Retirer de ma liste d'amis" : "Ajouter à ma liste d'amis"}
+                        </GameButton>
+                        <GameButton onClick={sendMessage}>Envoyer un message</GameButton>
+                    </Panel>
                 </div>
+
+                <Panel variant="soft" padding="lg" radius="lg" className={styles.equipCard}>
+                    <SectionTitle right={
+                        <span className={styles.sectionNote}>Équipement porté</span>
+                    }>
+                        Équipement
+                    </SectionTitle>
+                    <CharacterPanel
+                        character={{pseudo: joueur.pseudo || pseudo, nomClasse: joueur.nomClasse, niveau: joueur.niveau}}
+                        equipements={equipementEquipe}
+                        selectedKey={selected ? selected.key : null}
+                        onSelect={setSelected}
+                    />
+                </Panel>
             </div>
-            <div className="profil profil-main">
-                <div className="informations">
-                    <h2>Informations</h2>
-                    <span>Classe : {joueur.nomClasse}</span>
-                    <span>Niveau : {joueur.niveau}</span>
-                    <span>guilde : {(joueur.nomGuilde !== null) ? joueur.nomGuilde : " Aucune"} </span>
-                    <span>Alignement : {(joueur.nomAlignement !== null) ? joueur.nomAlignement : " Aucun"} </span>
-                </div>
-
-                <div className="actions-profil-joueur">
-                    <h2 className="text-center ">Actions</h2>
-                    <div className="btns-actions-profil">
-                        <button className="profil-btn-white" onClick={addOrRemovePlayerOnFriendList}>
-                            {isFriend && (
-                               <span>Retirer de ma liste d'amis</span>
-                            ) || (
-                                <><img className="profil-btn-white-image" src="../../img/gui/amis.png"/>Ajouter à ma liste d'amis</>
-                            )}
-                        </button>
-                        <button className="profil-btn-white" onClick={sendMessage}><img className="profil-btn-white-image" src="../../img/gui/message.png"/>Envoyer un message</button>
-                    </div>
-                </div>
-
-                <div className="equipement position-relative">
-                    <h2 className="text-center ">Equipement</h2>
-                     {equipementEquipe && equipementEquipe.map((equipement) =>
-                         <div className={"item-case "+equipement.position}><img className="icone-equipement" src={"../img/equipement/"+equipement.position+"/"+equipement.imageEquipement} alt=""/>
-                             <div className={"inventaire-item-hover " + equipement.rarityName}>
-                                 <div className="inventaire-item-hover-header">
-                                     {equipement.nomEquipement}
-                                 </div>
-                                 <div className="inventaire-item-hover-body">
-                                     <div className="inventaire-item-title">- Caractéristiques -</div>
-                                     {equipement.caracteristiques.map((caracteristique) =>
-                                         <div key={'caracteristique'+caracteristique.id}>
-                                             {caracteristique.nom[0].toUpperCase()+caracteristique.nom.slice(1)} : + {caracteristique.valeur}
-                                         </div>
-                                     )}
-                                     <hr />
-                                     <div className="inventaire-item-element">
-                                         <div className="inventaire-item-element-strong">Description : </div>
-                                         <div className="inventaire-item-element-italic"> {equipement.descriptionEquipement} </div>
-                                     </div>
-                                     <div className="inventaire-item-element">
-                                         <div className="inventaire-item-element-strong">valeur : {equipement.prixReventeEquipement} <img src="../../img/gui/MainWindowCharacter/Icons/Money03.png" />  </div>
-
-                                     </div>
-                                 </div>
-                                 <div className="inventaire-item-hover-footer">
-                                     Niveau requis : {equipement.levelMinEquipement}
-                                 </div>
-                             </div>
-                         </div>
-                     )}
-                     <img className="" src="../../img/gui/MainWindowCharacter/inventaire_masculin.png"/>
-                </div>
-            </div>
-        </main>
-
-    </>
+            <ItemDetailBar item={selected}/>
+        </div>
+    )
 }
 
 export default ProfilJoueur

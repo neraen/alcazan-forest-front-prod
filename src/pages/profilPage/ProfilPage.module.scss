@@ -1,25 +1,48 @@
-.profil-header{
-  background-image: url(../../img/hm2.png);
-  background-size: cover;
+.page {
+  min-height: calc(100vh - 72px);
   display: flex;
-  justify-content: center ;
+  flex-direction: column;
+  background: var(--bg-page);
+}
+
+.subnav {
+  flex-shrink: 0;
+  height: 62px;
+  display: flex;
   align-items: center;
-  border-bottom: solid 1px #e09f3e;
+  justify-content: center;
+  gap: 40px;
+  border-bottom: 1px solid var(--gold-subnav-border);
+  background: var(--subnav-bg);
+}
+
+.subnavItem {
   position: relative;
-  a{
-    color: #e6ccb2;
-    text-decoration: none;
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--text-faint);
+  padding: 6px 4px;
+  text-decoration: none;
+  transition: var(--transition);
+
+  &:hover {
+    color: var(--gold-hover);
   }
+}
+
+.subnavActive {
+  font-weight: 700;
+  color: var(--gold);
+
   &::after {
     content: "";
     position: absolute;
-    bottom: -10px; /* Align with the border-bottom */
-    left: 50%;
-    transform: translateX(-50%);
-    border-width:  10px 10px 0 10px;  /* Adjust the size of the notch */
-    border-style: solid;
-    border-color: #e09f3e transparent  transparent  transparent  ; /* Match the border-bottom color */
-    width: 0;
-    height: 0;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--gold);
   }
 }

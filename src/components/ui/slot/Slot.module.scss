@@ -1,0 +1,51 @@
+.slot {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.md {
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-slot);
+}
+
+.mini {
+  width: 25px;
+  height: 25px;
+  border-radius: var(--radius-bar);
+}
+
+.filled {
+  background: var(--panel-solid);
+  transition: var(--transition);
+}
+
+.md.filled {
+  border: 1px solid var(--gold-border);
+}
+
+.mini.filled {
+  border: 1px solid var(--gold-mini-border);
+}
+
+.md.filled:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.empty {
+  border: 1px dashed var(--slot-dash);
+  background: var(--slot-empty-bg);
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

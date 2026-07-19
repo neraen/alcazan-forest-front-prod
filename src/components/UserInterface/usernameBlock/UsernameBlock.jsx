@@ -1,31 +1,45 @@
 import React from 'react'
-import StatBar from "../statBar/StatBar";
 import {connect} from "react-redux";
 import {updateJoueurState} from "../../../store/actions";
 import Loader from "../../loader/Loader";
+import Panel from "../../ui/panel/Panel";
+import GaugeBar from "../../ui/gaugeBar/GaugeBar";
+import styles from "./UsernameBlock.module.scss";
 
+/**
+ * Fiche joueur de la page principale : zone actuelle, avatar + niveau,
+ * pseudo + classe, barres Santé / Mana.
+ * Les classes js-life-gauge / js-mana-gauge sont des hooks pour intro.js.
+ */
 const UsernameBlock = (props) => {
-    let barWidth = 0;
-    const windowWidth = window.innerWidth;
-    if(windowWidth > 1700){
-        barWidth = windowWidth / 10;
-    }else{
-        barWidth = windowWidth / 6
-    }
     return <>
         {(props.joueurState.level && props.joueurState.lifeJoueur) && (
-            <div className="username-block">
-
-
-                <img className="avatar-player" src="/img/gui/CharacterPlayer/Avatar.png" alt=""/>
-                <div className="player-bars">
-                    <h3 className="player-pseudo">{props.user.pseudo}</h3>
-                    <StatBar value={props.joueurState.lifeJoueur} max={props.user.maxLife} maxWidth={barWidth} classN="lifeBar"/>
-                    <StatBar value={props.user.currentMana} max={props.user.maxMana} maxWidth={barWidth} classN="manaBar"/>
-                    <div className="player-level">{props.joueurState.level}</div>
+            <Panel className={styles.card}>
+                <div className={styles.cardHeader}>
+                    <h1 className={styles.zoneName}>{props.zoneName || "…"}</h1>
+                    <span className={styles.zoneTag}>Zone</span>
                 </div>
-                {/*<NavLink className="nav-link text-center" to="/">Messagerie</NavLink>*/}
-            </div>
+                <div className={styles.separator}/>
+
+                <div className={styles.identity}>
+                    <div className={styles.avatarWrap}>
+                        <img className={styles.avatar} src="/img/gui/CharacterPlayer/Avatar.png"
+                             alt={`Avatar de ${props.user.pseudo}`}/>
+                        <span className={styles.levelBadge}>Niv. {props.joueurState.level}</span>
+                    </div>
+                    <div className={styles.names}>
+                        <span className={styles.pseudo}>{props.user.pseudo}</span>
+                        <span className={styles.classe}>{props.user.nomClasse}</span>
+                    </div>
+                </div>
+
+                <div className={styles.gauges}>
+                    <GaugeBar className="js-life-gauge" variant="hp" label="Santé"
+                              value={props.joueurState.lifeJoueur} max={props.user.maxLife}/>
+                    <GaugeBar className="js-mana-gauge" variant="mp" label="Mana"
+                              value={props.user.currentMana} max={props.user.maxMana}/>
+                </div>
+            </Panel>
             ) || (<Loader maxWidth={200} maxHeight={200}/>)
         }
     </>

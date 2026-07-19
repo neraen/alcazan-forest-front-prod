@@ -2,40 +2,56 @@ import React from 'react'
 import {Link} from "react-router-dom";
 import useModal from "../../../hooks/useModal";
 import InventoryModal from "../../modals/inventoryModal/InventoryModal";
+import ProfilModal from "../../modals/profilModal/ProfilModal";
+import SpellsModal from "../../modals/spellsModal/SpellsModal";
+import Panel from "../../ui/panel/Panel";
+import styles from "./SideMenu.module.scss";
 
+/**
+ * Rail de navigation de la colonne gauche : icône ronde + label + chevron.
+ * Inventaire et Profil s'ouvrent en modale au-dessus de la carte ; les autres
+ * items naviguent (les pages pleines existent toujours via le header).
+ */
 const SideMenu = (props) => {
     const { isShowing: isDialogInventoryShowed, toggle: toggleDialogInventory } = useModal();
-    return <>
-        <div className="side-menu" >
-            <Link to="/carte" className="side-menu-link text-decoration-none">
-                <img className="side-menu-icon" src="/img/icons/map.png" alt=""/>
-                <span>Carte</span>
-            </Link>
-            <div onClick={toggleDialogInventory} className="side-menu-link text-decoration-none inventory-btn">
-                <img className="side-menu-icon" src="/img/icons/bag.png" alt=""/>
-                <span>Inventaire</span>
+    const { isShowing: isProfilShowed, toggle: toggleProfil } = useModal();
+    const { isShowing: isSpellsShowed, toggle: toggleSpells } = useModal();
 
-            </div>
+    const linkItems = [
+        {label: "Guilde", to: "/guilde", icon: "/img/icons/flag.png"},
+        {label: "Journal", to: "/historique", icon: "/img/icons/book.png"},
+        {label: "Classement", to: "#", icon: "/img/icons/shild.png"},
+    ];
+
+    const itemContent = (item) => <>
+        <img className={styles.icon} src={item.icon} alt=""/>
+        <span className={styles.label}>{item.label}</span>
+    </>;
+
+    return (
+        <Panel padding="sm" className={styles.rail}>
+            <Link to="/carte" className={styles.item}>
+                {itemContent({label: "Carte", icon: "/img/icons/map.png"})}
+            </Link>
+            <button type="button" onClick={toggleDialogInventory} className={`${styles.item} inventory-btn`}>
+                {itemContent({label: "Inventaire", icon: "/img/icons/bag.png"})}
+            </button>
             <InventoryModal isDialogInventoryShowed={isDialogInventoryShowed} toggleDialogInventory={toggleDialogInventory}/>
-            <Link to="/personnage/profil" className="side-menu-link text-decoration-none">
-                <img className="side-menu-icon" src="/img/icons/people.png" alt=""/>
-                <span>Profil</span>
-            </Link>
-            <Link to="/guilde" className="side-menu-link text-decoration-none">
-                <img className="side-menu-icon" src="/img/icons/flag.png" alt=""/>
-                <span>Guilde</span>
-            </Link>
-            <Link to="/historique" className="side-menu-link text-decoration-none">
-                <img className="side-menu-icon" src="/img/icons/book.png" alt=""/>
-                <span>Journal</span>
-            </Link>
-            <Link className="side-menu-link text-decoration-none">
-                <img className="side-menu-icon" src="/img/icons/shild.png" alt=""/>
-                <span>Classement</span>
-            </Link>
-
-        </div>
-    </>
+            <button type="button" onClick={toggleProfil} className={styles.item}>
+                {itemContent({label: "Profil", icon: "/img/icons/people.png"})}
+            </button>
+            <ProfilModal isShowing={isProfilShowed} toggle={toggleProfil}/>
+            <button type="button" onClick={toggleSpells} className={styles.item}>
+                {itemContent({label: "Sorts", icon: "/img/menu/livre.png"})}
+            </button>
+            <SpellsModal isShowing={isSpellsShowed} toggle={toggleSpells}/>
+            {linkItems.map(item => (
+                <Link key={item.label} to={item.to} className={styles.item}>
+                    {itemContent(item)}
+                </Link>
+            ))}
+        </Panel>
+    )
 }
 
 export default SideMenu

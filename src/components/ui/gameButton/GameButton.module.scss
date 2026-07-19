@@ -1,0 +1,22 @@
+.button {
+  display: inline-block;
+  cursor: pointer;
+  color: var(--gold);
+  background: transparent;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-border-strong);
+  transition: var(--transition);
+
+  &:hover {
+    color: var(--gold);
+    background: var(--gold-bg-hover);
+  }
+}

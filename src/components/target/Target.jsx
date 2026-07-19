@@ -1,10 +1,15 @@
 import React, {Component} from 'react'
-import StatBar from "../UserInterface/statBar/StatBar";
 import {connect} from "react-redux";
 import { fetchTargetInfo, removePlayerTarget } from "../../store/actions";
 import {Link} from "react-router-dom";
+import Panel from "../ui/panel/Panel";
+import GaugeBar from "../ui/gaugeBar/GaugeBar";
+import styles from "./Target.module.scss";
 
-
+/**
+ * Carte de ciblage (joueur / monstre / boss), affichée sous la fiche joueur.
+ * Même langage visuel que la fiche joueur, accent danger pour l'ennemi.
+ */
 class Target extends Component{
 
     constructor(props){
@@ -21,63 +26,72 @@ class Target extends Component{
         }
     }
 
-    render() {
-        let barWidth = 0;
-        const windowWidth = window.innerWidth;
-        if(windowWidth > 1700){
-            barWidth = windowWidth / 10;
-        }else{
-            barWidth = windowWidth / 6
+    // Normalise les trois types de cible pour un rendu unique.
+    getDisplay() {
+        const target = this.props.target;
+        if (target.type === "player") {
+            return {
+                name: target.pseudo,
+                sub: `Niveau ${target.niveau}`,
+                img: "/img/gui/CharacterEnemy/AvatarEnemy.png",
+                hp: {value: target.currentLife, max: target.maxLife},
+                mana: {value: target.currentMana, max: target.maxMana},
+                profilePseudo: target.pseudo,
+            };
         }
+        if (target.type === "monstre") {
+            return {
+                name: target.nomMonstre,
+                sub: `x ${target.quantiteMonstre}`,
+                img: `/img/monstre/${target.imageMonstre}.png`,
+                hp: {value: target.monstreLife, max: target.monstreLifeMax},
+            };
+        }
+        if (target.type === "boss") {
+            return {
+                name: target.bossName,
+                sub: "Boss",
+                img: `/img/boss/${target.bossSkin}.png`,
+                hp: {value: target.bossLife, max: target.bossMaxLife},
+            };
+        }
+        return null;
+    }
+
+    render() {
+        const display = this.props.target.type ? this.getDisplay() : null;
+        if (!display) return null;
+
         return (
-            <>
-
-            {(this.props.target.type === "player" && this.props.target) &&
-            <div className="joueur-cible">
-
-                <div className="target-stats">
-                    <h4 className="joueur-cible-name">{this.props.target.pseudo}</h4>
-                    <StatBar displayText={false} value={this.props.target.currentLife} max={this.props.target.maxLife}
-                             maxWidth={barWidth}
-                             classN="lifeBar"/>
-                    <StatBar displayText={false} value={this.props.target.currentMana} max={this.props.target.maxMana}
-                             maxWidth={barWidth}
-                             classN="manaBar"/>
-                    <div className="avatar-cible-hover"><Link to={"profil/" + this.props.target.pseudo}>Voir profil</Link></div>
-
-                    <div className="joueur-cible-profil-btn-close" title="decibler" onClick={this.props.removePlayerTarget}></div>
-                    <div className="joueur-cible-profil-btn" title="Voir le profil"></div>
-                    <div className="joueur-cible-level" title="Niveau">{this.props.target.niveau}</div>
+            <Panel className={styles.card}>
+                <div className={styles.cardHeader}>
+                    <span className={styles.tag}>Cible</span>
+                    <button type="button" title="Décibler" className={styles.close}
+                            onClick={this.props.removePlayerTarget}>✕</button>
                 </div>
-                <img src="/img/gui/CharacterEnemy/AvatarEnemy.png" alt="avatar" className="avatar-player"/>
-            </div>
-            }
+                <div className={styles.separator}/>
 
-            {(this.props.target.type === "monstre" && this.props.target) &&
-            <div className="joueur-cible">
-                <div className="enemy-bars">
-                <h4 className="joueur-cible-name">{this.props.target.nomMonstre} x {this.props.target.quantiteMonstre} </h4>
-                    <StatBar displayText={false} value={this.props.target.monstreLife} max={this.props.target.monstreLifeMax}
-                             maxWidth={barWidth} classN="lifeBar"/>
+                <div className={styles.identity}>
+                    <img className={styles.avatar} src={display.img} alt={display.name}/>
+                    <div className={styles.names}>
+                        <span className={styles.name}>{display.name}</span>
+                        <span className={styles.sub}>{display.sub}</span>
+                        {display.profilePseudo && (
+                            <Link className={styles.profileLink} to={`/profil/${display.profilePseudo}`}>
+                                Voir le profil
+                            </Link>
+                        )}
+                    </div>
                 </div>
-                <img src={"/img/monstre/" + this.props.target.imageMonstre + ".png"} alt="avatar"
-                     className="avatar-player avatar-monster"/>
-            </div>
-            }
 
-            {(this.props.target.type === "boss" && this.props.target) &&
-            <div className="joueur-cible">
-                <h4 className="joueur-cible-name">{this.props.target.bossName}</h4>
-                <div className="target-stats">
-                    <StatBar displayText={false} value={this.props.target.bossLife} max={this.props.target.bossMaxLife}
-                             maxWidth={barWidth} classN="lifeBar"/>
-
-                    <img src={"/img/boss/" + this.props.target.bossSkin + ".png"} alt="avatar"
-                         className="avatar-player avatar-monster"/>
+                <div className={styles.gauges}>
+                    <GaugeBar variant="hp" label="Santé" value={display.hp.value} max={display.hp.max}/>
+                    {display.mana && (
+                        <GaugeBar variant="mp" label="Mana" value={display.mana.value} max={display.mana.max}/>
+                    )}
                 </div>
-            </div>
-            }
-        </>);
+            </Panel>
+        );
     }
 }
 

@@ -1,8 +1,26 @@
 import React, {useState, useEffect} from 'react'
-import Field from "../../forms/field/Field";
 import UsersApi from "../../../services/UsersApi";
 import InventaireApi from "../../../services/InventaireApi";
 import carateristiqueService from "../../../services/carateristiqueService";
+import Panel from "../../ui/panel/Panel";
+import SectionTitle from "../../ui/sectionTitle/SectionTitle";
+import Glyph from "../../ui/glyphs/Glyph";
+import styles from "./Profil.module.scss";
+
+/**
+ * Écran Profil (variante « plein écran » de la maquette design/react/ProfileScreen) :
+ * identité + informations, bonus d'équipement par caractéristique, répartition des
+ * points de caractéristiques. La logique (state + APIs) est celle d'origine.
+ */
+
+const STATS_META = [
+    {key: "constitution", label: "Constitution", glyph: "heart"},
+    {key: "force", label: "Force", glyph: "strength"},
+    {key: "dexterite", label: "Dextérité", glyph: "target"},
+    {key: "intelligence", label: "Intelligence", glyph: "wisdom"},
+    {key: "concentration", label: "Concentration", glyph: "speed"},
+    {key: "chance", label: "Chance", glyph: "luck"},
+];
 
 const Profil = (props) => {
 
@@ -15,6 +33,10 @@ const Profil = (props) => {
         chance: 0
     });
 
+    // Valeurs telles que persistées en base — sert uniquement à afficher le « +n »
+    // en attente de validation (présentation).
+    const [savedCaracteristiques, setSavedCaracteristiques] = useState(null);
+
     const [caracteristiquesBonus, setCaracteristiquesBonus] = useState({
         armure: 0,
         force: 0,
@@ -26,19 +48,26 @@ const Profil = (props) => {
         critique: 0
     })
 
-    const [equipementEquipe, setEquipementEquipe] = useState([])
-
     const [maxCaracsAllowed, setMaxCaracsAllowed] = useState(0);
+
+    // Message de confirmation affiché après validation (auto-masqué).
+    const [feedback, setFeedback] = useState(null);
 
     useEffect(() => {
         fetchCaracteristiques(props.user.id)
         fetchEquipementEquipe();
     }, []);
 
+    // Masque automatiquement le message de confirmation après quelques secondes.
+    useEffect(() => {
+        if (!feedback) return;
+        const timer = setTimeout(() => setFeedback(null), 4000);
+        return () => clearTimeout(timer);
+    }, [feedback]);
+
     const fetchEquipementEquipe = async () => {
         const dataEquipementEquipe = await InventaireApi.getEquipementEquipe();
         const caracteristiquesBonus  = await carateristiqueService.computeEquipementCaracs(dataEquipementEquipe);
-        setEquipementEquipe(dataEquipementEquipe);
         setCaracteristiquesBonus(caracteristiquesBonus);
     }
 
@@ -50,179 +79,158 @@ const Profil = (props) => {
             caracsToSet = {...caracsToSet, [value.nom] : value.points}
         })
         setCaracteristiques(caracsToSet);
+        setSavedCaracteristiques(caracsToSet);
         setMaxCaracsAllowed(caracsInfo.maxCaracsAllowed);
     }
-
-    const handleChange = ({currentTarget}) => {
-        const {name, value} = currentTarget
-        setCaracteristiques({...caracteristiques, [name]: value})
-    }
-
-
 
     const handleClick = (name, value) => {
         setCaracteristiques({...caracteristiques, [name] :  value})
     }
 
     const handleSubmit = async () => {
-        if(maxCaracsAllowed - getActualCaracacteristiques() >= 0){
-            const message = await UsersApi.updateCaracteristiques(caracteristiques);
-            console.log(message)
-            //toast(message);
+        if(!hasPending || remaining < 0){
+            return;
         }
+        await UsersApi.updateCaracteristiques(caracteristiques);
+        // Les points répartis deviennent la nouvelle base : ils sont désormais verrouillés.
+        setSavedCaracteristiques(caracteristiques);
+        setFeedback("Les points ont été ajoutés.");
+    }
+
+    // Réinitialise la répartition en cours (points non validés) sans toucher aux points déjà validés.
+    const handleReset = () => {
+        if (savedCaracteristiques) {
+            setCaracteristiques(savedCaracteristiques);
+        }
+        setFeedback(null);
     }
 
     const getActualCaracacteristiques = () => {
         return Object.values(caracteristiques).reduce((prevCarac, nextCarac)  => prevCarac + nextCarac);
     }
 
+    const remaining = maxCaracsAllowed - getActualCaracacteristiques();
 
-    return <>
-        <div className="profil profil-main">
-            <div className="informations">
-                <h2>Informations</h2>
-                <span>Classe : Archer</span>
-                <span>Niveau : 12</span>
-                <span>guilde : aucune</span>
-                <span>Alignement : aucun</span>
+    // Classe et niveau sont déjà affichés dans la ligne d'identité dorée juste au-dessus.
+    const infoRows = [
+        {label: "Guilde", value: props.user.nomGuilde || "Aucune"},
+        {label: "Alignement", value: props.user.nomAlignement || "Aucun"},
+    ];
 
-                <h2 className="mt-5">Equipement</h2>
+    const pendingFor = (key) => savedCaracteristiques
+        ? Math.max(0, caracteristiques[key] - savedCaracteristiques[key])
+        : 0;
 
-                <span>constitution : &nbsp;
-                    <span className="font-weight-bold">
-                        <span style={{color: "red"}}> {caracteristiques.constitution } </span> + <span style={{color: "yellowgreen"}}>{caracteristiquesBonus.constitution}</span> &nbsp;
-                        ({caracteristiques.constitution  + caracteristiquesBonus.constitution})
-                    </span>
-                </span>
-                <span>force : &nbsp;
-                    <span className="font-weight-bold">
-                        <span style={{color: "red"}}>  {caracteristiques.force } </span> + <span style={{color: "yellowgreen"}}> {caracteristiquesBonus.force}</span> &nbsp;
-                        ({caracteristiques.force  + caracteristiquesBonus.force})
-                    </span>
-                </span>
-                <span>dexterité : &nbsp;
-                    <span className="font-weight-bold">
-                        <span style={{color: "red"}}> {caracteristiques.dexterite } </span> + <span style={{color: "yellowgreen"}}> {caracteristiquesBonus.dexterite}</span> &nbsp;
-                        ({caracteristiques.dexterite  + caracteristiquesBonus.dexterite})
-                    </span>
-                </span>
-                <span>intelligence : &nbsp;
-                    <span className="font-weight-bold">
-                        <span style={{color: "red"}}> {caracteristiques.intelligence } </span> + <span style={{color: "yellowgreen"}}>{caracteristiquesBonus.intelligence}</span> &nbsp;
-                         ({caracteristiques.intelligence  + caracteristiquesBonus.intelligence})
-                    </span>
-                </span>
-                <span>concentration : &nbsp;
-                    <span className="font-weight-bold">
-                        <span style={{color: "red"}}> {caracteristiques.concentration } </span> + <span style={{color: "yellowgreen"}}>{caracteristiquesBonus.concentration}</span> &nbsp;
-                         ({caracteristiques.concentration  + caracteristiquesBonus.concentration})
-                    </span>
-                </span>
-                <span>chance : &nbsp;
-                    <span className="font-weight-bold">
-                        <span style={{color: "red"}}> {caracteristiques.chance } </span> + <span style={{color: "yellowgreen"}}>{caracteristiquesBonus.chance}</span> &nbsp;
-                         ({caracteristiques.chance  + caracteristiquesBonus.chance})
-                    </span>
-                </span>
-             </div>
+    // Total de points répartis mais pas encore validés.
+    const pendingTotal = STATS_META.reduce((sum, s) => sum + pendingFor(s.key), 0);
+    const hasPending = pendingTotal > 0;
 
-             <div className="equipement position-relative">
-                 <h2 className="text-center ">Equipement</h2>
-                 {equipementEquipe && equipementEquipe.map((equipement) =>
-                     <div className={"item-case "+equipement.position}><img className="icone-equipement" src={"../img/equipement/"+equipement.position+"/"+equipement.imageEquipement} alt=""/>
-                         <div className={"inventaire-item-hover " + equipement.rarityName}>
-                             <div className="inventaire-item-hover-header">
-                                 {equipement.nomEquipement}
-                             </div>
-                             <div className="inventaire-item-hover-body">
-                                 <div className="inventaire-item-title">- Caractéristiques -</div>
-                                 {equipement.caracteristiques.map((caracteristique) =>
-                                     <div key={'caracteristique'+caracteristique.id}>
-                                         {caracteristique.nom[0].toUpperCase()+caracteristique.nom.slice(1)} : + {caracteristique.valeur}
-                                     </div>
-                                 )}
-                                 <hr />
-                                 <div className="inventaire-item-element">
-                                     <div className="inventaire-item-element-strong">Description : </div>
-                                     <div className="inventaire-item-element-italic"> {equipement.descriptionEquipement} </div>
-                                 </div>
-                                 <div className="inventaire-item-element">
-                                     <div className="inventaire-item-element-strong">valeur : {equipement.prixReventeEquipement} <img src="../../../img/gui/MainWindowCharacter/Icons/Money03.png" />  </div>
+    // variant="modal" : paddings resserrés (maquette ProfileScreen variante modale)
+    return (
+        <div className={`${styles.body} ${props.variant === "modal" ? styles.bodyCompact : ""}`}>
+            {/* Colonne gauche : identité + bonus d'équipement */}
+            <div className={styles.leftColumn}>
+                <Panel variant="soft" padding="lg" radius="lg" className={styles.identityCard}>
+                    <div className={styles.identity}>
+                        <img className={styles.avatar} src="/img/gui/CharacterPlayer/Avatar.png"
+                             alt={`Avatar de ${props.user.pseudo}`}/>
+                        <div className={styles.identityText}>
+                            <span className={styles.pseudo}>{props.user.pseudo}</span>
+                            <span className={styles.identityMeta}>
+                                {props.user.nomClasse} · Niveau {props.user.niveau}
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.separator}/>
+                    {infoRows.map((row) => (
+                        <div key={row.label} className={styles.infoRow}>
+                            <span className={styles.infoLabel}>{row.label}</span>
+                            <span className={styles.infoValue}>{row.value}</span>
+                        </div>
+                    ))}
+                </Panel>
 
-                                 </div>
-                             </div>
-                             <div className="inventaire-item-hover-footer">
-                                 Niveau requis : {equipement.levelMinEquipement}
-                             </div>
-                         </div>
-                     </div>
-                 )}
-                 <img className="" src="../../../img/character_guerrier_homme.png"/>
-             </div>
-
-            <div className="caracteristiques">
-                <h2>Caracteristique ({maxCaracsAllowed - getActualCaracacteristiques()})</h2>
-                <div className="champ-caracteristique">
-                    <button className="btn-caracteristique" disabled={(maxCaracsAllowed - getActualCaracacteristiques()) <= 0} onClick={() => handleClick('constitution', caracteristiques.constitution + 1)} ><i>+</i></button>
-                        <Field className="" disabled="disabled" name="constitution" label="Constitution" placeholder="" onChange={handleChange} value={caracteristiques.constitution} />
-                    <button className="btn-caracteristique-reverse" disabled={caracteristiques.constitution <= 0} onClick={() => handleClick('constitution', caracteristiques.constitution - 1)}><i>-</i></button>
-                </div>
-
-                <div className="champ-caracteristique">
-                    <button className="btn-caracteristique" disabled={(maxCaracsAllowed - getActualCaracacteristiques()) <= 0} onClick={() => handleClick('force', caracteristiques.force + 1)}><i>+</i></button>
-                        <Field disabled="disabled" name="force" label="Force" placeholder="" onChange={handleChange} value={caracteristiques.force} />
-                    <button className="btn-caracteristique-reverse" disabled={caracteristiques.force <= 0} onClick={() => handleClick('force', caracteristiques.force - 1)}><i>-</i></button>
-                </div>
-
-                <div className="champ-caracteristique">
-                    <button className="btn-caracteristique" disabled={(maxCaracsAllowed - getActualCaracacteristiques()) <= 0} onClick={() => handleClick('dexterite', caracteristiques.dexterite + 1)}><i>+</i></button>
-                        <Field disabled="disabled" name="dexterite" label="Dextérité" placeholder="" onChange={handleChange} value={caracteristiques.dexterite} />
-                    <button className="btn-caracteristique-reverse" disabled={caracteristiques.dexterite <= 0} onClick={() => handleClick('dexterite', caracteristiques.dexterite - 1)}><i>-</i></button>
-                </div>
-
-                <div className="champ-caracteristique">
-                    <button className="btn-caracteristique" disabled={(maxCaracsAllowed - getActualCaracacteristiques()) <= 0} onClick={() => handleClick('intelligence', caracteristiques.intelligence + 1)}><i>+</i></button>
-                         <Field disabled="disabled" name="intelligence" label="Intelligence" placeholder="" onChange={handleChange} value={caracteristiques.intelligence} />
-                    <button className="btn-caracteristique-reverse" disabled={caracteristiques.intelligence <= 0} onClick={() => handleClick('intelligence', caracteristiques.intelligence -1)}><i>-</i></button>
-                </div>
-
-                <div className="champ-caracteristique">
-                    <button className="btn-caracteristique" disabled={(maxCaracsAllowed - getActualCaracacteristiques()) <= 0} onClick={() => handleClick('concentration', caracteristiques.concentration + 1)}><i>+</i></button>
-                        <Field disabled="disabled" name="concentration" label="Concentration" placeholder="" onChange={handleChange} value={caracteristiques.concentration} />
-                    <button className="btn-caracteristique-reverse" disabled={caracteristiques.concentration <= 0} onClick={() => handleClick('concentration', caracteristiques.concentration-1)}><i>-</i></button>
-                </div>
-
-                <div className="champ-caracteristique">
-                    <button className="btn-caracteristique" disabled={(maxCaracsAllowed - getActualCaracacteristiques()) <= 0} onClick={() => handleClick('chance', caracteristiques.chance + 1)}><i>+</i></button>
-                        <Field disabled="disabled" name="chance" label="Chance" placeholder="" onChange={handleChange} value={caracteristiques.chance} />
-                    <button className="btn-caracteristique-reverse" disabled={caracteristiques.chance <= 0} onClick={() => handleClick('chance', caracteristiques.chance-1)}><i>-</i></button>
-                </div>
-
-                <div className="champ-caracteristique">
-                    <button className="btn-valider-caracs" onClick={handleSubmit}> Valider </button>
-                </div>
+                <Panel variant="soft" padding="lg" radius="lg" className={styles.equipCard}>
+                    <SectionTitle right={<span className={styles.sectionNote}>base + bonus</span>}>
+                        Équipement
+                    </SectionTitle>
+                    <div className={styles.equipRows}>
+                        {STATS_META.map((s) => (
+                            <div key={s.key} className={`${styles.equipRow} ${styles[s.key]}`}>
+                                <span className={styles.equipDot}/>
+                                <span className={styles.equipLabel}>{s.label}</span>
+                                <span className={styles.equipBase}>{caracteristiques[s.key]}</span>
+                                <span className={styles.equipBonus}>+{caracteristiquesBonus[s.key]}</span>
+                                <span className={styles.equipTotal}>
+                                    {caracteristiques[s.key] + caracteristiquesBonus[s.key]}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </Panel>
             </div>
+
+            {/* Colonne droite : répartition des caractéristiques */}
+            <Panel variant="soft" padding="xl" radius="lg" className={styles.statsCard}>
+                <SectionTitle size="xl" right={
+                    <span className={`${styles.pointsBadge} ${remaining > 0 ? styles.pointsBadgeActive : ""}`}>
+                        <span className={styles.pointsBadgeLabel}>points à répartir</span>
+                        <span className={styles.pointsBadgeValue}>{remaining}</span>
+                    </span>
+                }>
+                    Caractéristiques
+                </SectionTitle>
+
+                <div className={styles.statsGrid}>
+                    {STATS_META.map((s) => (
+                        <div key={s.key} className={`${styles.statCard} ${styles[s.key]}`}>
+                            <div className={styles.statHeader}>
+                                <div className={styles.statIcon}>
+                                    <Glyph name={s.glyph}/>
+                                </div>
+                                <div className={styles.statText}>
+                                    <div className={styles.statLabel}>{s.label}</div>
+                                    <div className={styles.statDetail}>
+                                        base {caracteristiques[s.key]} · équip{" "}
+                                        <span className={styles.statDetailBonus}>+{caracteristiquesBonus[s.key]}</span>
+                                    </div>
+                                </div>
+                                {pendingFor(s.key) > 0 && (
+                                    <span className={styles.statPending}>+{pendingFor(s.key)}</span>
+                                )}
+                            </div>
+                            <div className={styles.statControls}>
+                                <button type="button" className={styles.stepper}
+                                        disabled={!savedCaracteristiques || caracteristiques[s.key] <= savedCaracteristiques[s.key]}
+                                        onClick={() => handleClick(s.key, caracteristiques[s.key] - 1)}>−</button>
+                                {/* Base uniquement : le total avec équipement est dans le panneau Équipement */}
+                                <span className={styles.statTotal}>
+                                    {caracteristiques[s.key]}
+                                </span>
+                                <button type="button" className={styles.stepper}
+                                        disabled={remaining <= 0}
+                                        onClick={() => handleClick(s.key, caracteristiques[s.key] + 1)}>+</button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                <div className={styles.footer}>
+                    {feedback && (
+                        <span className={styles.feedback} role="status">{feedback}</span>
+                    )}
+                    <div className={styles.actions}>
+                        <button type="button" className={styles.reset}
+                                disabled={!hasPending}
+                                onClick={handleReset}>Réinitialiser</button>
+                        <button type="button" className={styles.validate}
+                                disabled={!hasPending || remaining < 0}
+                                onClick={handleSubmit}>Valider</button>
+                    </div>
+                </div>
+            </Panel>
         </div>
-        <div className="profil mt-5">
-            <div className="statistiques">
-                <h2>Statistiques générale</h2>
-                <span> Expérience totale : 3 080 690</span>
-                <span> Nombre monstre tués : 5650</span>
-                <span> Richesse max : 1 691 254</span>
-                <span> Morts : 74</span>
-                <span> Argent volé : 11 256</span>
-            </div>
-
-            <div className="statistiques">
-                <h2>Joueur contre joueur</h2>
-                <span> Expérience totale : 3 080 690</span>
-                <span> Nombre monstre tués : 5650</span>
-                <span> Richesse max : 1 691 254</span>
-                <span> Morts : 74</span>
-                <span> Argent volé : 11 256</span>
-            </div>
-        </div>
-    </>
+    )
 }
 
 export default Profil

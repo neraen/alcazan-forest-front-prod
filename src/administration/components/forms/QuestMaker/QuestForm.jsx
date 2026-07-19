@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import '../../../../styles/app.css'
 import {useFieldArray, useForm} from "react-hook-form";
 import {toast} from "react-toastify";
 import QuestMakerApi from "../../../services/QuestMakerApi";

@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react'
-import '../../../styles/app.css'
 import Player from "../../player/Player";
 import Pnj from "../../pnj/pnj/Pnj";
 import Boss from "../../boss/Boss";

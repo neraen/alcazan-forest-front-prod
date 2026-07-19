@@ -1,0 +1,143 @@
+.shell {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-panel-lg);
+  overflow: hidden;
+  background: var(--modal-bg);
+  border: 1px solid var(--modal-border);
+  box-shadow: var(--modal-shadow);
+}
+
+/* Dimensionné par le contenu (dialogues PNJ, quêtes) — GameModal size="auto" */
+.fitContent {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+}
+
+.header {
+  flex-shrink: 0;
+  height: 74px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 24px;
+  background: var(--modal-header-bg);
+  border-bottom: 1px solid var(--gold-modal-line);
+}
+
+.iconBox {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-half);
+  background: var(--gold-softer);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.titles {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  min-width: 0;
+}
+
+.title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 27px;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.subtitle {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.headerRight {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.close {
+  margin-left: 6px;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-modal-line);
+  background: var(--badge-neutral-bg);
+  color: var(--text-ice);
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+
+  &:hover {
+    background: var(--danger-bg-strong);
+    border-color: var(--danger);
+    color: var(--danger-text-strong);
+  }
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mode compact : écrans de portable ≤ 900px de haut (14") — mêmes proportions, resserrées */
+@media screen and (max-height: 899px) {
+  .header {
+    height: 60px;
+    padding: 0 20px;
+  }
+
+  .iconBox {
+    width: 34px;
+    height: 34px;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .title {
+    font-size: 21px;
+  }
+
+  .subtitle {
+    font-size: 11px;
+  }
+
+  .close {
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
+  }
+}

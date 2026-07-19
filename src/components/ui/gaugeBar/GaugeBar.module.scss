@@ -1,0 +1,60 @@
+.gauge {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.label {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hpLabel {
+  color: var(--hp-label);
+}
+
+.mpLabel {
+  color: var(--mp-label);
+}
+
+.xpLabel {
+  color: var(--gold);
+}
+
+.values {
+  color: var(--text-dim);
+}
+
+.track {
+  position: relative;
+  height: 12px;
+  border-radius: var(--radius-bar);
+  background: var(--track);
+  overflow: hidden;
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-bar);
+}
+
+.hp {
+  background: linear-gradient(90deg, var(--hp-from), var(--hp-to));
+}
+
+.mp {
+  background: linear-gradient(90deg, var(--mp-from), var(--mp-to));
+}
+
+.xp {
+  background: linear-gradient(90deg, var(--xp-from), var(--xp-to));
+}

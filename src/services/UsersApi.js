@@ -21,8 +21,24 @@ function getPlayerSpells(){
     return axios.post(API_URL + "joueur/spells" ).then(response => response.data)
 }
 
+function getSpellBook(){
+    return axios.post(API_URL + "joueur/spells/book").then(response => response.data)
+}
+
+function equipSpell(spellId, position){
+    return axios.post(API_URL + "joueur/spell/equip", {spellId, position}).then(response => response.data)
+}
+
+function unequipSpell(spellId){
+    return axios.post(API_URL + "joueur/spell/unequip", {spellId}).then(response => response.data)
+}
+
 function getPlayerConsommables(){
     return axios.post(API_URL + "joueur/consommables" ).then(response => response.data)
+}
+
+function equipConsommable(consommableId, position){
+    return axios.post(API_URL + "joueur/consommable/equip", {consommableId, position}).then(response => response.data)
 }
 
 function getCaracteristiques(id){
@@ -79,7 +95,11 @@ export default {
     updateCaracteristiques,
     getLevelAndExperience,
     getPlayerSpells,
+    getSpellBook,
+    equipSpell,
+    unequipSpell,
     getPlayerConsommables,
+    equipConsommable,
     applyAttaqueToPlayer,
     applyAttaqueToMonster,
     applyAttaqueToBoss,

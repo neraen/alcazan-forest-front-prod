@@ -2,7 +2,6 @@ import React from "react";
 import EquipementApi from "../../../../services/EquipementApi";
 import Field from "../../../../components/forms/field/Field";
 import Select from "../../../../components/forms/select/Select";
-import equipements from "../../../../components/inventory/equipement/Equipements";
 
 class CreateEquipementForm extends React.Component{
 

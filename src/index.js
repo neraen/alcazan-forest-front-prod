@@ -60,9 +60,11 @@ const Index =  () => {
                     </Switch>
 
                 </main>
-                <footer className="footer">
-                    Clement Silvestre - jeu en cours de construction
-                </footer>
+                {!isAuthenticated && (
+                    <footer className="footer">
+                        Clement Silvestre - jeu en cours de construction
+                    </footer>
+                )}
                 <ToastContainer position="bottom-right" theme="dark"/>
 
             </HashRouter>

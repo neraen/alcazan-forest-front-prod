@@ -1,0 +1,15 @@
+.body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.frame {
+  width: 1460px;
+  max-width: 96vw;
+  height: min(916px, calc(100vh - 174px));
+  min-height: 520px;
+  display: flex;
+}

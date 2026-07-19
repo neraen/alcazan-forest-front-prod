@@ -1,0 +1,15 @@
+.body {
+  padding: 28px 40px;
+}
+
+.card {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.placeholder {
+  color: var(--text-mute);
+  font-size: 15px;
+}

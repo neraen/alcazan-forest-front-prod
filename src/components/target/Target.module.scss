@@ -1,0 +1,96 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 20px 16px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tag {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--danger-text);
+}
+
+.close {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-tab);
+  border: 1px solid var(--danger-border);
+  background: transparent;
+  color: var(--danger-text);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+
+  &:hover {
+    background: var(--danger-bg-hover);
+    color: var(--danger-text-hover);
+  }
+}
+
+.separator {
+  height: 1px;
+  background: linear-gradient(90deg, var(--danger-border), transparent);
+}
+
+.identity {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--danger);
+  object-fit: cover;
+  box-shadow: var(--shadow-avatar);
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.name {
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sub {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-mute);
+}
+
+.profileLink {
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.gauges {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

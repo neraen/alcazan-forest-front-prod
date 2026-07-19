@@ -1,22 +1,15 @@
 import React from 'react'
-import Inventory from "../../components/inventory/inventory/Inventory";
+import InventoryScreen from "../../components/inventory/screen/InventoryScreen";
+import styles from "./InventoryPage.module.scss";
 
 const InventoryPage = (props) => {
-
-
-
-    return <>
-        <main className="main-inventory-page">
-            <div className="side-block">
-                {/*<UsernameBlock />*/}
-                {/*<SideMenu />*/}
+    return (
+        <div className={styles.page}>
+            <div className={styles.frame}>
+                <InventoryScreen/>
             </div>
-            <Inventory {...props}/>
-            <div className="footer-block">
-                {/*<SpellBar />*/}
-            </div>
-        </main>
-    </>
+        </div>
+    )
 }
 
 export default InventoryPage

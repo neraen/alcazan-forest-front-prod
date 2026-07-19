@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {toast} from "react-toastify";
-import Modal from "../../modal/Modal";
+import GameModal from "../../ui/gameModal/GameModal";
+import ModalShell from "../../ui/gameModal/ModalShell";
 import Loader from "../../loader/Loader";
 import QuestDialogue from "../questDialogue/QuestDialogue";
 import PnjActionDialogue from "../pnjActionDialogue/PnjActionDialogue";
@@ -67,13 +68,29 @@ const PnjInteractionHost = (props) => {
 
     const title = () => {
         if(!interaction){
-            return "";
+            return "…";
         }
         switch (interaction.view){
             case "quest":
                 return interaction.quest.name;
             case "shop":
                 return interaction.shop.title || interaction.pnj.name;
+            default:
+                return interaction.pnj.name;
+        }
+    }
+
+    const subtitle = () => {
+        if(!interaction){
+            return "";
+        }
+        switch (interaction.view){
+            case "quest":
+                return `Quête · ${interaction.pnj.name}`;
+            case "shop":
+                return `Échoppe · ${interaction.pnj.name}`;
+            case "guilde":
+                return `Guildes · ${interaction.pnj.name}`;
             default:
                 return interaction.pnj.name;
         }
@@ -94,9 +111,13 @@ const PnjInteractionHost = (props) => {
     }
 
     return (
-        <Modal isShowing={true} hide={props.closePnjInteraction} title={title()}>
-            {interaction ? renderView() : <Loader/>}
-        </Modal>
+        <GameModal isOpen={true} onClose={props.closePnjInteraction} size="auto">
+            <ModalShell fit="content" iconSrc="/img/icons/people.png"
+                        title={title()} subtitle={subtitle()}
+                        onClose={props.closePnjInteraction}>
+                {interaction ? renderView() : <Loader/>}
+            </ModalShell>
+        </GameModal>
     )
 }
 

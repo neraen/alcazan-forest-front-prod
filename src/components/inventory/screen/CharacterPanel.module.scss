@@ -1,0 +1,323 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+  flex: 1;
+}
+
+/* --- Couleurs de rareté (slots) --- */
+
+.rarity-commun {
+  --rarity: var(--rarity-commun);
+}
+
+.rarity-peu-commun {
+  --rarity: var(--rarity-peu-commun);
+}
+
+.rarity-rare {
+  --rarity: var(--rarity-rare);
+}
+
+.rarity-epique {
+  --rarity: var(--rarity-epique);
+}
+
+.rarity-legendaire {
+  --rarity: var(--rarity-legendaire);
+}
+
+.rarity-heroique {
+  --rarity: var(--rarity-heroique);
+}
+
+/* --- Paperdoll --- */
+
+.paperdoll {
+  display: grid;
+  grid-template-columns: 70px 1fr 70px;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.slotColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.slotWrap {
+  position: relative;
+}
+
+.slot {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: var(--radius-nav);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: border-color 0.15s ease;
+}
+
+.slotFilled {
+  cursor: pointer;
+  background: var(--parchment);
+  border: 2px solid var(--rarity);
+
+  &:hover {
+    border-color: var(--gold);
+  }
+}
+
+.slotSelected {
+  border-color: var(--gold);
+  box-shadow: var(--halo-gold);
+}
+
+.slotEmpty {
+  background: var(--slot-empty-bg);
+  border: 2px solid var(--slot-ghost-border);
+}
+
+.slotIcon {
+  width: 68%;
+  height: 68%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+}
+
+.ghost {
+  color: var(--slot-ghost);
+}
+
+.slotLabel {
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 1px 7px;
+  border-radius: 7px;
+  background: var(--pastille-bg);
+  border: 1px solid var(--gold-soft);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+/* --- Portrait central --- */
+
+.portraitBox {
+  position: relative;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--portrait-bg);
+  border: 1px solid var(--gold-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 22px 0 14px;
+}
+
+.portraitGlow {
+  position: absolute;
+  inset: 0;
+  background: var(--portrait-glow);
+}
+
+.portraitFade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 44%;
+  background: var(--portrait-fade);
+}
+
+.portraitRing {
+  position: relative;
+  width: 176px;
+  height: 176px;
+  border-radius: 50%;
+  padding: 4px;
+  background: var(--portrait-ring);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.portrait {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: 3px solid var(--portrait-ring-inner);
+}
+
+.portraitName {
+  position: relative;
+  margin-top: 14px;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--text);
+}
+
+.portraitClass {
+  position: relative;
+  margin-top: 2px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.levelBadge {
+  position: relative;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  background: var(--badge-dark-bg);
+  border: 1px solid var(--gold-mini-border);
+}
+
+.levelLabel {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.levelValue {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--level);
+}
+
+/* --- Bonus d'équipement --- */
+
+.stats {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--gold-nav-border);
+}
+
+.statTile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 4px;
+  border-radius: 11px;
+  background: var(--badge-neutral-bg);
+  border: 1px solid var(--gold-card-border);
+}
+
+.armure {
+  --stat-color: var(--text-mute);
+}
+
+.constitution {
+  --stat-color: var(--stat-constitution);
+}
+
+.force {
+  --stat-color: var(--stat-force);
+}
+
+.dexterite {
+  --stat-color: var(--stat-dexterite);
+}
+
+.intelligence {
+  --stat-color: var(--stat-intelligence);
+}
+
+.concentration {
+  --stat-color: var(--stat-concentration);
+}
+
+.chance {
+  --stat-color: var(--stat-chance);
+}
+
+.critique {
+  --stat-color: var(--danger);
+}
+
+.statGlyph {
+  color: var(--stat-color);
+}
+
+.statValue {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.statLabel {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* Mode compact : écrans de portable ≤ 900px de haut (14") */
+@media screen and (max-height: 899px) {
+  .paperdoll {
+    grid-template-columns: 62px 1fr 62px;
+    gap: 10px;
+  }
+
+  .slotColumn {
+    gap: 8px;
+  }
+
+  .slot {
+    width: 62px;
+    height: 62px;
+  }
+
+  .portraitBox {
+    padding: 14px 0 10px;
+  }
+
+  .portraitRing {
+    width: 138px;
+    height: 138px;
+  }
+
+  .portraitName {
+    margin-top: 10px;
+    font-size: 19px;
+  }
+
+  .levelBadge {
+    margin-top: 7px;
+  }
+
+  .stats {
+    gap: 6px;
+    padding-top: 10px;
+  }
+
+  .statTile {
+    padding: 5px 4px;
+    gap: 2px;
+  }
+}

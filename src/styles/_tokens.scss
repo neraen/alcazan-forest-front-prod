@@ -1,0 +1,142 @@
+// Design tokens — SOURCE UNIQUE des couleurs / rayons / ombres / typos / transitions.
+// Valeurs issues de design/page_principale/README.md (maquette « Cadre structuré »).
+// Aucun hex en dur ailleurs : toujours passer par var(--…).
+
+:root {
+  /* --- Or (accent principal) --- */
+  --gold: #e3b64f;
+  --gold-hover: #f2d488;
+  --gold-soft: rgba(227, 182, 79, 0.3);       /* bordures de panneaux */
+  --gold-softer: rgba(227, 182, 79, 0.12);    /* fonds de hover */
+  --gold-border: rgba(227, 182, 79, 0.45);    /* bordure de slot au repos */
+  --gold-border-strong: rgba(227, 182, 79, 0.55); /* bordure de bouton */
+  --gold-bg-hover: rgba(227, 182, 79, 0.2);   /* fond de bouton au hover */
+  --gold-divider: rgba(227, 182, 79, 0.25);   /* séparateurs verticaux */
+  --gold-nav-border: rgba(227, 182, 79, 0.2); /* bordure du conteneur de nav */
+  --gold-half: rgba(227, 182, 79, 0.5);       /* bordure du logo, séparateur dégradé */
+  --gold-chevron: rgba(227, 182, 79, 0.6);    /* chevron du rail de navigation */
+  --gold-mini-border: rgba(227, 182, 79, 0.4); /* bordure des mini-slots */
+
+  /* --- Fonds --- */
+  --bg-top: #06303b;
+  --bg-bottom: #041e26;
+  --bg-page: linear-gradient(160deg, var(--bg-top), var(--bg-bottom) 70%);
+  --panel: rgba(8, 40, 50, 0.85);
+  --panel-solid: #08222a;
+  --header-bg: rgba(4, 26, 33, 0.6);
+  --subnav-bg: rgba(4, 26, 33, 0.3);
+  --actionbar-bg: rgba(4, 26, 33, 0.95);
+  --badge-bg: #0a3540;
+  --ink: #05242c;                             /* texte sur fond or */
+
+  /* --- Textes --- */
+  --text: #eef6f6;
+  --text-dim: #b7d2d6;
+  --text-mute: #9fc3c9;
+  --text-faint: #7fa8ae;
+  --level: #cbe64f;                           /* badge « Niv. X » */
+
+  /* --- Barres (PV / PM / XP) --- */
+  --track: rgba(255, 255, 255, 0.08);
+  --hp-from: #a91f1c;
+  --hp-to: #e04a39;
+  --hp-label: #ef7b6d;
+  --mp-from: #1d5fa8;
+  --mp-to: #3f8fdd;
+  --mp-label: #6fb4f0;
+  --xp-from: #b8892e;
+  --xp-to: #e3b64f;
+  --pa-label: #f0a95c;
+
+  /* --- Slots --- */
+  --slot-dash: rgba(159, 195, 201, 0.3);
+  --slot-empty-bg: rgba(255, 255, 255, 0.03);
+
+  /* --- Surfaces de lignes / cartes internes (écran Profil & modales) --- */
+  --row-bg: rgba(255, 255, 255, 0.03);
+  --badge-neutral-bg: rgba(255, 255, 255, 0.04);
+  --gold-card-border: rgba(227, 182, 79, 0.16); /* bordure de carte interne, hover de stepper */
+  --gold-subnav-border: rgba(227, 182, 79, 0.18);
+  --panel-soft: rgba(8, 40, 50, 0.55);
+
+  /* --- Modales plein écran (Inventaire, Sorts, Guilde…) --- */
+  --modal-bg: linear-gradient(165deg, #0a2c36, #06232b 62%);
+  --modal-border: rgba(227, 182, 79, 0.45);
+  --modal-shadow: 0 40px 120px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --modal-header-bg: linear-gradient(180deg, rgba(4, 26, 33, 0.9), rgba(4, 26, 33, 0.4));
+  --modal-footer-bg: linear-gradient(0deg, rgba(4, 26, 33, 0.9), rgba(4, 26, 33, 0.35));
+  --modal-backdrop: radial-gradient(ellipse 90% 90% at 50% 45%, rgba(4, 20, 26, 0.72), rgba(4, 20, 26, 0.94));
+  --panel-inner: rgba(4, 26, 33, 0.55);       /* champs, barres d'onglets */
+  --panel-inner-strong: rgba(4, 26, 33, 0.6);
+  --panel-inner-light: rgba(4, 26, 33, 0.5);
+  --gold-field-border: rgba(227, 182, 79, 0.22);
+  --gold-modal-line: rgba(227, 182, 79, 0.35); /* bordures header/footer de modale */
+  --halo-gold: 0 0 0 3px rgba(227, 182, 79, 0.55);
+  --text-ice: #cfe3e5;                        /* icônes/labels neutres de modale */
+  --text-dim2: #6f959b;                       /* compteurs, placeholders */
+  --text-dim3: #557077;                       /* valeurs éteintes (slot non assigné) */
+  --spell-thumb-bg: #0a2027;                  /* fond des vignettes de sorts */
+
+  /* --- Fiche personnage (paperdoll) --- */
+  --pastille-bg: #0a2c36;                     /* pastilles de label de slot */
+  --portrait-bg: radial-gradient(ellipse 80% 70% at 50% 38%, #12414d, #061c22 78%);
+  --portrait-glow: radial-gradient(circle at 50% 30%, rgba(227, 182, 79, 0.14), transparent 55%);
+  --portrait-fade: linear-gradient(180deg, transparent, rgba(6, 28, 34, 0.9));
+  --portrait-ring: conic-gradient(from 210deg, #e3b64f, #8a6a22, #e3b64f);
+  --portrait-ring-inner: #061c22;
+  --badge-dark-bg: rgba(6, 28, 34, 0.8);
+  --qty-badge-bg: rgba(6, 26, 33, 0.92);      /* badge quantité sur les cases */
+
+  /* --- Objets / raretés --- */
+  --parchment: linear-gradient(160deg, #f3e8cc, #e6d3a8);
+  --rarity-commun: #8ba0a6;
+  --rarity-peu-commun: #5fbf6a;
+  --rarity-rare: #3f8fdd;
+  --rarity-epique: #b06be6;
+  --rarity-legendaire: #e3b64f;
+  --rarity-heroique: #e04a39;
+  --slot-ghost: rgba(159, 195, 201, 0.32);    /* glyphe d'un slot d'équipement vide */
+  --slot-ghost-border: rgba(159, 195, 201, 0.28);
+
+  /* --- Danger (fermer, jeter) --- */
+  --danger: #e04a39;
+  --danger-border: rgba(224, 74, 57, 0.5);
+  --danger-bg-hover: rgba(224, 74, 57, 0.18);
+  --danger-bg-strong: rgba(224, 74, 57, 0.25);
+  --danger-text: #e78a7d;
+  --danger-text-hover: #ffb3a8;
+  --danger-text-strong: #ffd9d2;
+
+  /* --- Caractéristiques (couleurs par stat) --- */
+  --stat-constitution: #e04a39;
+  --stat-force: #e3b64f;
+  --stat-dexterite: #5fbf6a;
+  --stat-intelligence: #3f8fdd;
+  --stat-concentration: #b06be6;
+  --stat-chance: #f0a95c;
+  --bonus: #8fd39a;                           /* bonus d'équipement (vert) */
+  --text-soft: #c4dbde;                       /* libellés de lignes équipement */
+  --level-soft-bg: rgba(203, 230, 79, 0.12);  /* badge points à répartir */
+  --level-border: rgba(203, 230, 79, 0.5);
+
+  /* --- Rayons --- */
+  --radius-bar: 6px;      /* barres, mini-slots */
+  --radius-tab: 8px;      /* onglet de nav */
+  --radius-slot: 10px;    /* slots, boutons */
+  --radius-nav: 12px;     /* logo, conteneur de nav, bouton Valider */
+  --radius-card: 14px;    /* cartes internes (stat, item) */
+  --radius-panel: 16px;   /* cartes / panneaux */
+  --radius-panel-lg: 18px; /* panneaux plein écran (Profil) */
+
+  /* --- Ombres --- */
+  --shadow-page: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --shadow-avatar: 0 6px 18px rgba(0, 0, 0, 0.5);
+  --shadow-icon: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.5));
+
+  /* --- Typo --- */
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Nunito Sans', sans-serif;
+
+  /* --- Transitions --- */
+  --transition: all 0.15s ease;
+}

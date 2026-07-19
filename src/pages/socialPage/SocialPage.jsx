@@ -1,9 +1,5 @@
 import React from "react";
-import {Link, Redirect} from "react-router-dom";
-import Switch from "react-bootstrap/Switch";
-import PrivateRoute from "../../components/PrivateRoute";
-import Equipements from "../../components/inventory/equipement/Equipements";
-import Objets from "../../components/inventory/objets/Objets";
+import {Link, Redirect, Switch} from "react-router-dom";
 
 class SocialPage extends React.Component{
     render(){
@@ -18,8 +14,6 @@ class SocialPage extends React.Component{
             </div>
 
             <Switch>
-                <PrivateRoute path="/inventaire/equipement" component={() => <Equipements equipements={this.state.equipements} shouldRefreshInventory={() => this.shouldRefreshInventory()} />}/>
-                <PrivateRoute path="/inventaire/objet" component={() => <Objets consommables={this.state.consommables}  objets={this.state.objets}/>}/>
                 {this.props.history.location.pathname === '/social' && <Redirect to="/social/joueurs"></Redirect>}
             </Switch>
         </>  )

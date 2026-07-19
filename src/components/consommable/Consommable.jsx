@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react'
 import {connect} from "react-redux";
 import {fetchTargetInfo, updateJoueurState, removePlayerTarget} from "../../store/actions";
 import UserActionApi from "../../services/UserActionApi";
+import Slot from "../ui/slot/Slot";
+import styles from "./Consommable.module.scss";
 
 const Consommable = (props) => {
 
@@ -74,10 +76,11 @@ const Consommable = (props) => {
 
     return <>
         <div title={props.consommable.nom} className={"spell-container"} onClick={handleUseConsommable}>
-            <div className={"consommable-filter consommable-filter-" + props.consommable.id}>{time > 0 && (time/1000).toLocaleString('fr-FR', {maximumFractionDigits: 1})}</div>
-            <div  className="spell">
-                <img src={"../../img/consommables/" + props.consommable.icone} alt="Consommable" className="img-spell"/>
-            </div>
+            <Slot src={"/img/consommables/" + props.consommable.icone} alt={props.consommable.nom}>
+                <div className={`${styles.cooldown} consommable-filter-${props.consommable.id}`}>
+                    {time > 0 && (time/1000).toLocaleString('fr-FR', {maximumFractionDigits: 1})}
+                </div>
+            </Slot>
         </div>
     </>
 }

@@ -1,0 +1,43 @@
+.panel {
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  border: 1px solid var(--gold-soft);
+}
+
+.solid {
+  background: var(--panel-solid);
+  overflow: hidden;
+}
+
+.soft {
+  background: var(--panel-soft);
+  border-color: var(--gold-divider);
+}
+
+.radiusLg {
+  border-radius: var(--radius-panel-lg);
+}
+
+.none {
+  padding: 0;
+}
+
+.sm {
+  padding: 10px;
+}
+
+.md {
+  padding: 20px;
+}
+
+.row {
+  padding: 14px 18px;
+}
+
+.lg {
+  padding: 24px;
+}
+
+.xl {
+  padding: 28px;
+}
