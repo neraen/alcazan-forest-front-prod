@@ -1,0 +1,416 @@
+.page {
+  min-height: calc(100vh - 72px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--bg-page);
+}
+
+.frame {
+  width: 1460px;
+  max-width: 96vw;
+  height: min(916px, calc(100vh - 112px));
+  min-height: 520px;
+  display: flex;
+}
+
+.loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Couleurs de grade --- */
+
+.gradeMaitre {
+  --accent: var(--gold);
+}
+
+.gradeSenechal {
+  --accent: var(--stat-concentration);
+}
+
+.gradeChevalier {
+  --accent: var(--stat-intelligence);
+}
+
+.gradeBaron {
+  --accent: var(--stat-dexterite);
+}
+
+.gradeEcuyer {
+  --accent: var(--text-faint);
+}
+
+.gradeRecrue {
+  --accent: var(--text-dim2);
+}
+
+/* --- Couleurs de classe --- */
+
+.classeArcher {
+  --classe: var(--stat-dexterite);
+}
+
+.classeGuerrier {
+  --classe: var(--danger);
+}
+
+.classeSorcier {
+  --classe: var(--stat-intelligence);
+}
+
+.classeMoine {
+  --classe: var(--pa-label);
+}
+
+.classeGueux {
+  --classe: var(--text-faint);
+}
+
+/* --- Corps --- */
+
+.body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.roster {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rosterHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rosterBar {
+  width: 6px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--gold);
+}
+
+.rosterTitle {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rosterCount {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-faint);
+}
+
+.search {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 13px;
+  border-radius: var(--radius-slot);
+  background: var(--row-bg);
+  border: 1px solid var(--gold-nav-border);
+}
+
+.searchIcon {
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  width: 150px;
+
+  &::placeholder {
+    color: var(--text-faint);
+  }
+}
+
+.tableHead {
+  display: grid;
+  grid-template-columns: 2.4fr 1.5fr 1.2fr 0.8fr;
+  gap: 12px;
+  padding: 0 16px;
+
+  span {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim2);
+  }
+}
+
+.memberList {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-right: 4px;
+}
+
+.memberRow {
+  display: grid;
+  grid-template-columns: 2.4fr 1.5fr 1.2fr 0.8fr;
+  gap: 12px;
+  align-items: center;
+  padding: 11px 16px;
+  border-radius: var(--radius-nav);
+  background: var(--row-bg);
+  border: 1px solid var(--gold-softer);
+  transition: var(--transition);
+
+  &:hover {
+    background: var(--gold-softer);
+  }
+}
+
+.memberRowYou {
+  background: var(--gold-softer);
+  border-color: var(--gold-half);
+}
+
+.memberIdentity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.memberInitial {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid var(--classe);
+}
+
+.memberName {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.youBadge {
+  padding: 1px 7px;
+  border-radius: var(--radius-bar);
+  background: var(--gold-bg-hover);
+  border: 1px solid var(--gold-half);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.gradeBadge {
+  justify-self: start;
+  padding: 4px 12px;
+  border-radius: var(--radius-tab);
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.memberClasse {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--classe);
+  text-transform: capitalize;
+}
+
+.memberLevel {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.noResult {
+  padding: 30px 0;
+  text-align: center;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-dim2);
+}
+
+/* --- Rail identité --- */
+
+.rail {
+  width: 434px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.identityHead {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.emblem {
+  position: relative;
+  flex-shrink: 0;
+  width: 74px;
+  height: 74px;
+  border-radius: var(--radius-panel);
+  background: radial-gradient(circle at 50% 35%, var(--gold-bg-hover), var(--panel-inner-strong));
+  border: 2px solid var(--gold-chevron);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+}
+
+.emblemIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-slot);
+  object-fit: contain;
+}
+
+.identityText {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.guildName {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 21px;
+  color: var(--gold-pale);
+  line-height: 1.1;
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.levelBadge {
+  padding: 3px 11px;
+  border-radius: 9px;
+  background: var(--badge-bg);
+  border: 1.5px solid var(--gold);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--level);
+}
+
+.placesBadge {
+  padding: 3px 11px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--stat-dexterite) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--stat-dexterite) 50%, transparent);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--bonus);
+}
+
+.motto {
+  font-family: var(--font-title);
+  font-style: italic;
+  font-size: 14.5px;
+  color: var(--text-mute);
+  line-height: 1.4;
+}
+
+/* --- Sans guilde --- */
+
+.emptyState {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.emptyPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-width: 480px;
+  text-align: center;
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  filter: var(--shadow-icon);
+}
+
+.emptyText {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.emptyHint {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-mute);
+}
+
+@media screen and (max-height: 899px) {
+  .body {
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .rail {
+    width: 380px;
+  }
+}

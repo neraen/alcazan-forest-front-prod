@@ -613,50 +613,6 @@ section #text span {
 // Guilde — phase 5
 // ---------------------------------------------------------------------------
 
-.table-guilde {
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(20px);
-  margin: auto;
-  padding: 20px;
-  border: solid aliceblue 1px;
-}
-
-.td-table-guilde {
-  padding: 20px;
-  color: aliceblue;
-  border-top: 1px solid #ccc;
-}
-
-// ---------------------------------------------------------------------------
-// Historique — phase 6
-// ---------------------------------------------------------------------------
-
-.history-rows {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  width: 50vw;
-  max-height: 82vh;
-  overflow: scroll;
-  background: rgba(0, 0, 0, 0.4);
-  border: aliceblue solid 1px;
-  padding: 10px;
-}
-
-.history-row {
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(20px);
-  color: aliceblue;
-  border: solid aliceblue 1px;
-  border-radius: 7px;
-  padding: 15px;
-  max-width: 50%;
-}
-
-.history-row-right {
-  margin-left: 50%;
-}
-
 // ---------------------------------------------------------------------------
 // Administration
 // ---------------------------------------------------------------------------

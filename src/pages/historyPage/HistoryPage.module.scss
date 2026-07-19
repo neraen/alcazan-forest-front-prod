@@ -1,0 +1,382 @@
+.page {
+  min-height: calc(100vh - 72px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--bg-page);
+}
+
+.frame {
+  width: 1460px;
+  max-width: 96vw;
+  height: min(916px, calc(100vh - 112px));
+  min-height: 520px;
+  display: flex;
+}
+
+.loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Catégories (couleur portée par --accent) --- */
+
+.catAction {
+  --accent: var(--pa-label);
+}
+
+.catSubi {
+  --accent: var(--danger);
+}
+
+.catGold {
+  --accent: var(--gold);
+}
+
+/* --- Corps --- */
+
+.body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.rail {
+  width: 372px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+}
+
+.card {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cardBar {
+  width: 6px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--gold);
+}
+
+.cardTitle {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+/* --- Résumé --- */
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.summaryTile {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 10px 12px;
+  border-radius: var(--radius-nav);
+  background: var(--row-bg);
+  border: 1px solid var(--gold-softer);
+}
+
+.summaryValue {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.summaryLabel {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+/* --- Filtres --- */
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 13px;
+  border-radius: 11px;
+  cursor: pointer;
+  text-align: left;
+  background: var(--row-bg);
+  border: 1px solid var(--gold-card-border);
+  transition: var(--transition);
+
+  &:hover:not(.filterActive) {
+    background: var(--gold-softer);
+  }
+}
+
+.filterActive {
+  background: var(--gold-card-border);
+  border-color: var(--gold-border-strong);
+
+  .filterLabel {
+    color: var(--gold-pale);
+  }
+
+  .filterCount {
+    color: var(--gold);
+    background: var(--gold-bg-hover);
+  }
+}
+
+.filterDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  background: var(--accent);
+}
+
+.filterLabel {
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.filterCount {
+  margin-left: auto;
+  padding: 2px 10px;
+  border-radius: var(--radius-tab);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-faint);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* --- Chronologie --- */
+
+.feed {
+  flex: 1;
+  min-width: 0;
+  border-radius: var(--radius-panel);
+  background: var(--panel-inner-light);
+  border: 1px solid var(--gold-divider);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.feedHead {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px 12px;
+}
+
+.feedBar {
+  width: 7px;
+  height: 24px;
+  border-radius: 3px;
+  background: var(--gold);
+}
+
+.feedTitle {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.feedCount {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-faint);
+}
+
+.search {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 13px;
+  border-radius: var(--radius-slot);
+  background: var(--row-bg);
+  border: 1px solid var(--gold-nav-border);
+}
+
+.searchIcon {
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  width: 150px;
+
+  &::placeholder {
+    color: var(--text-faint);
+  }
+}
+
+.feedScroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.daySeparator {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 2px 6px;
+}
+
+.dayLabel {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dayLine {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-modal-line), transparent);
+}
+
+.dayCount {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-dim2);
+}
+
+.eventRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;
+  border-radius: var(--radius-nav);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(227, 182, 79, 0.08);
+  transition: var(--transition);
+
+  &:hover {
+    background: var(--gold-softer);
+    border-color: var(--gold-field-border);
+  }
+}
+
+.eventIcon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+}
+
+.eventBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.eventText {
+  font-size: 15px;
+  color: var(--text-soft);
+  line-height: 1.3;
+}
+
+.eventMeta {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.eventTag {
+  padding: 2px 9px;
+  border-radius: 7px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.eventTime {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-dim2);
+}
+
+.noResult {
+  padding: 40px 0;
+  text-align: center;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-dim2);
+}
+
+@media screen and (max-height: 899px) {
+  .body {
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .rail {
+    width: 330px;
+  }
+
+  .eventRow {
+    padding: 9px 14px;
+  }
+}
