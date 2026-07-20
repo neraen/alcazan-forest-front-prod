@@ -50,7 +50,7 @@ class Map extends React.Component {
     }
 
     componentWillUnmount() {
-        document.removeEventListener("keypress", this.keyboardHandler);
+        document.removeEventListener("keydown", this.keyboardHandler);
     }
 
     async fetchMapData(){
@@ -65,8 +65,15 @@ class Map extends React.Component {
     listenKeyboard() {
         // Handler mémorisé pour pouvoir le retirer au démontage
         // (l'ancien listener anonyme s'accumulait à chaque montage de Map).
+        // keydown (et non keypress, déprécié) : plus fiable selon navigateur/focus.
+        // Retrait défensif de l'ancien handler avant d'en recréer un : évite un
+        // doublon si listenKeyboard est rappelé (HMR, remontage) sans passer par
+        // componentWillUnmount.
+        if (this.keyboardHandler) {
+            document.removeEventListener("keydown", this.keyboardHandler);
+        }
         this.keyboardHandler = (event) => this.handleKeybord(event);
-        document.addEventListener("keypress", this.keyboardHandler)
+        document.addEventListener("keydown", this.keyboardHandler)
     }
 
     handleKeybord(event){
@@ -75,7 +82,17 @@ class Map extends React.Component {
         if (document.querySelector('[data-game-modal]')) {
             return;
         }
-        switch (event.key){
+        // Raccourcis (Cmd/Ctrl/Alt + touche) : laisser passer, ne pas déplacer.
+        if (event.ctrlKey || event.metaKey || event.altKey) {
+            return;
+        }
+        // Saisie clavier dans un champ (recherche, formulaire…) : ne pas déplacer.
+        const target = event.target;
+        if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA"
+            || target.tagName === "SELECT" || target.isContentEditable)) {
+            return;
+        }
+        switch (event.key.toLowerCase()){
             case "z":
                 if(this.verifiyMove(this.state.abscisseJoueur, this.state.ordonneeJoueur - 1)){
                     this.updatePosition( this.state.abscisseJoueur, this.state.ordonneeJoueur - 1);
