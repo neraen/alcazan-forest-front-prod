@@ -60,6 +60,10 @@ const QuestDialogue = (props) => {
 
     const renderDialogue = () => {
         if(status === "available"){
+            const intro = props.quest.introduction || [];
+            if(intro.length > 0){
+                return intro.map((paragraph, index) => <p key={index}><i>{paragraph}</i></p>);
+            }
             return <p><i>{props.pnj.description}</i></p>;
         }
         if(status === "locked"){

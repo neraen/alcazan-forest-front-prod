@@ -16,7 +16,7 @@ const Boss = (props) => {
 
     return <>
         <div className="joueur" style={{backgroundImage: "url(../img/boss/"+props.boss.bossSkin+".png)"}} onClick={handleTarget}>
-            <div className="joueur-hover d-none flex-column">
+            <div className="joueur-hover">
                 <div className="joueur-name">{props.boss.bossName}</div>
             </div>
         </div>

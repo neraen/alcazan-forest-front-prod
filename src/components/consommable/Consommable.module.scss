@@ -1,3 +1,9 @@
+// Conteneur cliquable du slot (la classe globale .spell-container reste en hook intro.js)
+.container {
+  position: relative;
+  cursor: pointer;
+}
+
 // Filtre de cooldown superposé au slot (fond piloté en JS via .consommable-filter-<id>).
 .cooldown {
   position: absolute;

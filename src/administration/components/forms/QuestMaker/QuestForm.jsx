@@ -8,6 +8,7 @@ import SequenceForm from "./SequenceForm";
 const emptyQuest = {
     id: 0,
     name: "",
+    introduction: "",
     minimalLevel: 0,
     alignementId: 0,
     objetId: 0,
@@ -74,6 +75,11 @@ export default function QuestForm({questId, onSaved}){
                 <div className="field-group gold-border">
                     <label> Nom de la quête </label>
                     <input {...register("name", {required: true})}/>
+                </div>
+                <div className="field-group gold-border">
+                    <label> Texte d'introduction (accroche affichée avant d'accepter) </label>
+                    <textarea rows={4} {...register("introduction")}
+                              placeholder="Ce que le PNJ dit pour proposer la quête. Laisser vide = description du PNJ."/>
                 </div>
                 <div className="field-group gold-border">
                     <label> Niveau requis (0 = aucun) </label>

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import Field from "../../components/forms/field/Field";
 import {Link} from "react-router-dom";
 import UsersApi from "../../services/UsersApi";
+import styles from "./RegisterPage.module.scss";
 
 const RegisterPage = ({history}) => {
 
@@ -49,30 +49,49 @@ const RegisterPage = ({history}) => {
         }
     }
 
-    return <div className="main-register-page">
+    const renderField = (name, label, type = "text", placeholder = "") => (
+        <div className={styles.field}>
+            <label className={styles.label} htmlFor={name}>{label}</label>
+            <input type={type} name={name} id={name} placeholder={placeholder || label}
+                   className={`${styles.input} ${errors[name] ? styles.inputError : ""}`}
+                   value={user[name]} onChange={handleChange}/>
+            {errors[name] && <p className={styles.error}>{errors[name]}</p>}
+        </div>
+    );
 
-        <div className="register-form">
-            <h1>Inscription</h1>
-            <form onSubmit={handleSubmit}>
-                <Field name="pseudo" label="Pseudo" placeholder="Votre pseudo" onChange={handleChange} value={user.pseudo} error={errors.pseudo}/>
-                <div className="form-register-radio-sexe">
-                    <label>Sexe du personnage</label><br />
-                    <div className="form-register-input-sexe">
-                        <input type="radio" name="sexe" value="feminin" checked={user.sexe === "feminin"} onChange={handleChange}/>Femme
-                        <input type="radio" name="sexe" value="masculin" checked={user.sexe === "masculin"} onChange={handleChange}/>Homme
+    return (
+        <div className={styles.page}>
+            <form className={styles.card} onSubmit={handleSubmit}>
+                <h1 className={styles.title}>Inscription</h1>
+                {renderField("pseudo", "Pseudo", "text", "Votre pseudo")}
+
+                <div className={styles.field}>
+                    <span className={styles.label}>Sexe du personnage</span>
+                    <div className={styles.radioRow}>
+                        <label className={styles.radio}>
+                            <input type="radio" name="sexe" value="feminin"
+                                   checked={user.sexe === "feminin"} onChange={handleChange}/>
+                            Femme
+                        </label>
+                        <label className={styles.radio}>
+                            <input type="radio" name="sexe" value="masculin"
+                                   checked={user.sexe === "masculin"} onChange={handleChange}/>
+                            Homme
+                        </label>
                     </div>
                 </div>
-                <Field name="email" label="Email" placeholder="Votre email" onChange={handleChange} value={user.email} error={errors.email} type="email"/>
-                <Field name="password" label="Mot de passe" placeholder="Votre mot de passe" onChange={handleChange} value={user.password} error={errors.password} type="password"/>
-                <Field name="passwordConfirm" label="Confirmation du mot de passe" placeholder="Repetez le mot de passe" onChange={handleChange} value={user.passwordConfirm} error={errors.passwordConfirm} type="password"/>
 
-                <div className="form-group">
-                    <button type="submit" className="btn-valider-inscription">Je m'inscrit</button>
-                    <Link to='/connexion' className="btn-link-have-account">J'ai déjà un compte</Link>
+                {renderField("email", "Email", "email", "Votre email")}
+                {renderField("password", "Mot de passe", "password", "Votre mot de passe")}
+                {renderField("passwordConfirm", "Confirmation du mot de passe", "password", "Repetez le mot de passe")}
+
+                <div className={styles.actions}>
+                    <button type="submit" className={styles.submit}>Je m'inscrit</button>
+                    <Link to='/connexion' className={styles.haveAccount}>J'ai déjà un compte</Link>
                 </div>
             </form>
         </div>
-    </div>
+    );
 }
 
 export default RegisterPage

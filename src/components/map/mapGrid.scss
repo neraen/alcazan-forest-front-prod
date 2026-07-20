@@ -1,0 +1,141 @@
+/* ==========================================================================
+   Grille de jeu (Map / Case / Player / Pnj / Boss) — classes GLOBALES voulues :
+   dimensionnement lié au gameplay (cases en vh) et hooks fonctionnels
+   (`.pnj` est ciblé par intro.js, `.joueur`/`.case` par la logique de rendu).
+   Importée une seule fois par Map.jsx.
+   ========================================================================== */
+
+.cases {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100.8vh;
+  height: 67.2vh;
+  position: relative;
+  z-index: 2;
+  border: solid 1px var(--gold-soft);
+}
+
+.case {
+  content: "";
+  width: 4.189vh; /* 48px sur une grille 24×16 */
+  height: 4.2vh;
+  border: rgba(0, 0, 0, 0.25) 1px solid;
+}
+
+.joueur {
+  background-size: contain;
+  content: "";
+  width: 4.1vh;
+  height: 4.1vh;
+  position: relative;
+}
+
+.joueur-hover {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  background: var(--panel);
+  backdrop-filter: blur(20px);
+  color: var(--text);
+  min-width: 184px;
+  border: solid 1px var(--gold-soft);
+  border-radius: var(--radius-bar);
+  overflow: hidden;
+  z-index: 2;
+}
+
+.joueur-hoverable:hover .joueur-hover {
+  display: flex;
+}
+
+.joueur-name {
+  text-align: center;
+  background: var(--pastille-bg);
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.joueur-level {
+  padding-left: 10px;
+}
+
+.icone-alignement {
+  position: absolute;
+  right: 20px;
+  top: 26px;
+}
+
+.pnj {
+  content: "";
+  width: 4.1vh;
+  height: 4.1vh;
+  position: relative;
+  background-size: cover;
+  cursor: pointer;
+}
+
+.pnj:hover .pnj-hover {
+  display: flex;
+  z-index: 2;
+}
+
+.pnj-hover {
+  display: none;
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  flex-direction: column;
+  background: var(--panel);
+  backdrop-filter: blur(20px);
+  color: var(--text);
+  min-width: 284px;
+  border: solid 1px var(--gold-soft);
+  border-radius: var(--radius-bar);
+  font-size: 14px;
+  padding: 6px 8px;
+}
+
+.pnj-name {
+  font-weight: bold;
+  color: var(--gold);
+  text-align: center;
+}
+
+.pnj-description {
+  font-style: italic;
+  color: var(--text-soft);
+}
+
+.unabled-move {
+  background-color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+}
+
+.unabled-move:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Tutoriel intro.js (rendu au niveau du body, déclenché depuis la page carte) */
+.intro-js-tooltip {
+  background-color: var(--panel);
+  backdrop-filter: blur(20px);
+  border: solid 1px var(--gold-soft);
+  border-radius: var(--radius-slot);
+  color: var(--text);
+  font-family: var(--font-body);
+  width: max-content;
+}
+
+.intro-js-highlight {
+  border: 1px solid var(--gold);
+}
+
+@media screen and (max-width: 1000px) {
+  .pnj {
+    width: 27px;
+    height: 27px;
+    background-size: cover;
+  }
+}

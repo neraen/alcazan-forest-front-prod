@@ -1,0 +1,261 @@
+/* ==========================================================================
+   Administration — classes globales de la zone admin (outillage interne),
+   importée une seule fois par AdministrationPage.jsx. Restylée avec les
+   tokens ; conversion en vrais CSS Modules à faire si la zone est refondue.
+   ========================================================================== */
+
+@import "./components/forms/CreateEquipement/CreateEquipementForm.module";
+@import "./components/forms/QuestMaker/QuestMaker.module";
+
+.main-administration-page {
+  min-height: calc(100vh - 72px);
+  background: var(--bg-page);
+  display: flex;
+}
+
+.layout-administration {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.layout-administration h1 {
+  color: var(--gold);
+  position: relative;
+  left: 20px;
+}
+
+.administration-side-menu {
+  min-height: calc(100vh - 72px);
+  width: 290px;
+  flex-shrink: 0;
+  background: var(--panel-inner-light);
+  border-right: 1px solid var(--gold-soft);
+}
+
+.administration-nav-links {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+}
+
+.administration-nav-link {
+  list-style: none;
+}
+
+.administration-nav-link a {
+  display: block;
+  padding: 12px 16px;
+  border-radius: var(--radius-slot);
+  text-decoration: none;
+  color: var(--text-dim);
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+.administration-nav-link a:hover {
+  background: var(--gold-softer);
+  color: var(--gold-hover);
+}
+
+.title-map-font {
+  font-family: var(--font-title);
+  color: var(--gold);
+  margin: 15px auto;
+  font-size: 1.6em;
+  text-align: center;
+  max-width: max-content;
+}
+
+/* Formulaires admin : styles de base (l'app ne charge plus Bootstrap) */
+.main-administration-page input,
+.main-administration-page select,
+.main-administration-page textarea {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  padding: 8px 12px;
+  margin: 4px 0 10px;
+  border-radius: var(--radius-tab);
+  border: 1px solid var(--gold-field-border);
+  background: var(--panel-inner);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.main-administration-page input[type="radio"],
+.main-administration-page input[type="checkbox"] {
+  display: inline-block;
+  width: auto;
+  margin-right: 6px;
+}
+
+.main-administration-page label {
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.main-administration-page button {
+  padding: 8px 16px;
+  border-radius: var(--radius-tab);
+  border: 1px solid var(--gold-border-strong);
+  background: transparent;
+  color: var(--gold);
+  font-weight: 800;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.main-administration-page button:hover {
+  background: var(--gold-bg-hover);
+}
+
+.main-administration-page .form-group {
+  margin-bottom: 10px;
+}
+
+.main-administration-page .invalid-feedback {
+  color: var(--danger-text);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+/* --- Monde --- */
+
+.world-maps {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.world-map {
+  width: 15vw;
+  max-width: 15vw;
+  height: 10vw;
+  margin: 2px;
+  display: inline-block;
+  justify-content: center;
+  border: solid 1px var(--gold-soft);
+}
+
+/* --- Map maker --- */
+
+.form-add-map {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-maker-container {
+  display: flex;
+  align-items: self-start;
+}
+
+.map-maker-block-map {
+  margin-left: 20px;
+}
+
+.map-maker-title {
+  color: var(--text);
+  text-align: center;
+}
+
+.map-maker-block-outils {
+  background: var(--panel-inner-light);
+  border: 1px solid var(--gold-soft);
+  border-radius: var(--radius-tab);
+  padding: 50px;
+  margin: 25px;
+}
+
+.map-maker-btn-outils-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.map-maker-btn-outils {
+  padding: 15px;
+  border-radius: 7px;
+  border: none;
+  margin: 20px;
+  width: 200px;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.btn-collison {
+  background: #e5989b;
+}
+
+.btn-wrap {
+  background: #b5e48c;
+}
+
+.btn-pnj {
+  background: #bbadff;
+}
+
+.btn-monstre {
+  background: #ade8f4;
+}
+
+.map-maker-btn-validation {
+  background: var(--gold);
+  color: var(--ink);
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  border-radius: 7px;
+  margin-top: 15px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.map-maker-hover-collision:hover, .map-maker-collision {
+  background: rgba(255, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+.map-maker-hover-wrap:hover, .map-maker-wrap {
+  background: rgba(0, 255, 0, 0.4);
+  cursor: pointer;
+}
+
+.map-maker-hover-pnj:hover, .map-maker-pnj {
+  background: rgba(0, 0, 255, 0.4);
+  cursor: pointer;
+}
+
+.map-maker-hover-monstre:hover, .map-maker-monstre {
+  background: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+}
+
+.editable-case-hover {
+  position: absolute;
+  background: var(--panel);
+  backdrop-filter: blur(20px);
+  display: none;
+  top: 25px;
+  left: 25px;
+  width: 250px;
+  z-index: 150;
+  padding: 15px;
+  border-radius: 7px;
+  border: 1px solid var(--gold-soft);
+  color: var(--text);
+}
+
+.map-maker-pnj:hover .editable-case-hover, .map-maker-wrap:hover .editable-case-hover {
+  display: block;
+}
+
+.create-equipement-form {
+  display: flex;
+}

@@ -1,6 +1,7 @@
 import React, {useState, useContext} from "react";
 import authAPI from "../../services/authAPI";
 import AuthContext from "../../contexts/AuthContext";
+import styles from "./LoginPage.module.scss";
 
 const LoginPage = ({history }) =>{
 
@@ -38,25 +39,24 @@ const LoginPage = ({history }) =>{
     }
 
     return (
-        <>
-            <div className="login-page-main">
-                <form className="form-login" onSubmit={handleSubmit}>
-                    <h1 style={{color: 'aliceblue'}}>Connexion</h1>
-                    <div className="form-group">
-                        <label htmlFor="username">Adresse email</label>
-                        <input type="email" name="username" id="username" className={"form-control" + (error ? " is-invalid": "")} value={credentials.username} onChange={handleChange}/>
-                        {error && <p className="invalid-feedback">{error}</p>}
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Mot de passe</label>
-                        <input type="password" name="password" id="password" className="form-control" value={credentials.password} onChange={handleChange}/>
-                    </div>
-                    <div className="form-group">
-                        <button type="submit" className="btn-valider-login">Je me connecte</button>
-                    </div>
-                </form>
-            </div>
-        </>
+        <div className={styles.page}>
+            <form className={styles.card} onSubmit={handleSubmit}>
+                <h1 className={styles.title}>Connexion</h1>
+                <div className={styles.field}>
+                    <label className={styles.label} htmlFor="username">Adresse email</label>
+                    <input type="email" name="username" id="username"
+                           className={`${styles.input} ${error ? styles.inputError : ""}`}
+                           value={credentials.username} onChange={handleChange}/>
+                    {error && <p className={styles.error}>{error}</p>}
+                </div>
+                <div className={styles.field}>
+                    <label className={styles.label} htmlFor="password">Mot de passe</label>
+                    <input type="password" name="password" id="password" className={styles.input}
+                           value={credentials.password} onChange={handleChange}/>
+                </div>
+                <button type="submit" className={styles.submit}>Je me connecte</button>
+            </form>
+        </div>
     );
 }
 

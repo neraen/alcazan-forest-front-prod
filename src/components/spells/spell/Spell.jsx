@@ -147,7 +147,7 @@ const Spell = (props) => {
     }
 
     return <>
-        <div title={props.spell.nom} className="spell-container" onClick={handleAttack}>
+        <div title={props.spell.nom} className={`spell-container ${styles.container}`} onClick={handleAttack}>
             <Slot src={"/img/spell/" + props.spell.icone} alt={props.spell.nom}>
                 <div className={`${styles.cooldown} spell-filter-${props.spell.id}`}>
                     {time > 0 && (time/1000).toLocaleString('fr-FR', {maximumFractionDigits: 1})}

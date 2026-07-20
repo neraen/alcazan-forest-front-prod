@@ -1,0 +1,71 @@
+/* Styles partagés de la messagerie (Contacts + Messenger). */
+
+.contacts {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: var(--radius-panel);
+  background: var(--panel-inner-light);
+  border: 1px solid var(--gold-divider);
+  padding: 18px;
+  min-height: 0;
+}
+
+.messenger {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.panelBar {
+  width: 6px;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--gold);
+}
+
+.panelTitle {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.messageArea {
+  flex: 1;
+  min-height: 200px;
+  border-radius: var(--radius-panel);
+  background: var(--panel-inner-light);
+  border: 1px solid var(--gold-divider);
+  padding: 18px;
+  overflow-y: auto;
+}
+
+.placeholder {
+  padding: 20px 0;
+  text-align: center;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-dim2);
+}
+
+/* L'éditeur CKEditor reste sur son thème clair par défaut : on cadre juste la zone */
+.editor {
+  flex-shrink: 0;
+  border-radius: var(--radius-slot);
+  overflow: hidden;
+  border: 1px solid var(--gold-field-border);
+  color: var(--ink);
+}

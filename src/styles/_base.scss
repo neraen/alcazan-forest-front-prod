@@ -62,3 +62,19 @@ a {
   background-color: var(--gold);
   border-radius: var(--radius-slot);
 }
+
+/* Chrome applicatif (index.js) : fond du jeu une fois connecté, pied public */
+.main-auth-bg {
+  background: url(../img/background/game_background.png) center / cover no-repeat;
+}
+
+.footer {
+  height: 70px;
+  padding-left: 50px;
+  background-color: var(--bg-bottom);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+}

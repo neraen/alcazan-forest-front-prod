@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import bird1 from '../../img/bird1.png'
+import '../homePage/home.scss';
 const HomePage = (props) => {
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const HomePage = (props) => {
     }
 
     return (
-        <>
+        <div className="homepage">
             <section>
                 <h2 id="text">
                     <span> Alcazan Forest - mmorpg medieval </span>
@@ -84,7 +84,7 @@ const HomePage = (props) => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

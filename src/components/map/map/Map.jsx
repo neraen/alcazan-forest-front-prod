@@ -6,6 +6,7 @@ import MapContext from "../../../contexts/MapContext";
 import {connect} from "react-redux";
 import {updatePositionJoueur, removePlayerTarget, updateJoueurState} from "../../../store/actions";
 import distanceCalculator from "../../../services/distanceCalculator";
+import "../mapGrid.scss";
 
 
 

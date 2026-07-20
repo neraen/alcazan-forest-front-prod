@@ -31,7 +31,7 @@ const Pnj = (props) => {
 
     return (
         <div className="pnj" style={{backgroundImage: "url(../../../img/pnj/" + props.pnj.pnjSkin + ".png)"}} onClick={handleClick}>
-            <div className="pnj-hover d-none flex-column">
+            <div className="pnj-hover">
                 <div className="pnj-name">{props.pnj.pnjName}</div>
                 <div className="pnj-description">{props.pnj.pnjDescription}</div>
             </div>

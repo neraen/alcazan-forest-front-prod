@@ -1,19 +1,12 @@
 import React from "react"
+import styles from "./Loader.module.scss";
 
 const Loader = (props) => {
     return(
-        <>
-        {props.maxWidth && (
-            <section className="loader-section" style={{maxWidth: props.maxWidth, maxHeight: props.maxHeight}}>
-                <span className="loader-73"></span>
-            </section>
-        ) || (
-            <section className="loader-section">
-                <span className="loader-73"></span>
-            </section>
-        )}
-        </>
-
+        <div className={styles.section}
+             style={props.maxWidth ? {maxWidth: props.maxWidth, maxHeight: props.maxHeight} : undefined}>
+            <span className={styles.bar}></span>
+        </div>
     )
 }
 

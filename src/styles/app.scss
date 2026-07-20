@@ -1,7 +1,10 @@
 // Point d'entrée unique des styles globaux (importé par src/index.js).
 // Les styles de composants vivent dans des CSS Modules colocalisés
 // (import styles from './X.module.scss') — rien d'autre ne s'ajoute ici.
+// Feuilles globales assumées, chargées par leur consommateur :
+//   - components/map/mapGrid.scss (grille de jeu + hooks intro.js)
+//   - administration/admin.scss (outillage interne)
+//   - pages/homePage/home.scss (parallax publique, scopée .homepage)
 
 @import "tokens";
 @import "base";
-@import "legacy"; // transitoire — vidé au fil de la refonte, supprimé en phase 7

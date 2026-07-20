@@ -1,6 +1,7 @@
 import {NavLink, Switch} from "react-router-dom";
 import React from "react";
 import PrivateRoute from "../../components/PrivateRoute";
+import "../admin.scss";
 import MapMakerPage from "./MapMakerPage";
 import PnjMakerPage from "./PnjMakerPage";
 import MonsterMakerPage from "./MonsterMakerPage";
