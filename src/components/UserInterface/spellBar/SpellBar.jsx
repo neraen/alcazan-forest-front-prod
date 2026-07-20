@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {connect} from "react-redux";
 import Spell from "../../spells/spell/Spell";
 import UsersApi from "../../../services/UsersApi";
@@ -22,6 +22,7 @@ const SpellBar = (props) => {
     const [spells, setSpells] = useState();
     const [allDisabled, setAllDisabled] = useState(false);
     const [consommables, setConsommables] = useState();
+    const previousLevel = useRef(props.level);
 
     useEffect(() => {
         if(experienceData.experienceMax === 0){
@@ -30,6 +31,16 @@ const SpellBar = (props) => {
 
         getPlayerSpells()
     }, [])
+
+    // À chaque montée de niveau (quête ou monstre), on re-fetch l'XP courante ET
+    // le palier max : sans ça, le dénominateur de la barre restait figé sur
+    // l'ancien niveau (barre affichant le surplus, ex. 184000/12000).
+    useEffect(() => {
+        if(previousLevel.current !== props.level && props.level > 0){
+            getExpJoueur()
+        }
+        previousLevel.current = props.level;
+    }, [props.level])
 
     // Rafraîchit les consommables de la barre quand l'inventaire en équipe un
     // sur un emplacement (bump de consommableBarVersion). Ignore le montage initial.
@@ -135,5 +146,6 @@ const SpellBar = (props) => {
 }
 export default connect((state) => ({
     consommableBarVersion: state.data.joueurState.consommableBarVersion,
-    spellBarVersion: state.data.joueurState.spellBarVersion
+    spellBarVersion: state.data.joueurState.spellBarVersion,
+    level: state.data.joueurState.level
 }))(SpellBar)

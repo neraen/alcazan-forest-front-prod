@@ -28,6 +28,15 @@ const QuestDialogue = (props) => {
         );
         response.feedback?.messages?.forEach(message => toast.info(message.text));
 
+        // Gain d'XP de quête : met à jour la barre d'XP et le niveau sans rechargement.
+        // (le changement de level fait re-fetcher le palier max dans SpellBar).
+        if(response.playerXp){
+            props.updateJoueurState({
+                newExperience: response.playerXp.experience,
+                level: response.playerXp.level
+            });
+        }
+
         if(response.needRefresh){
             props.updateJoueurState({needRefresh: true});
         }
