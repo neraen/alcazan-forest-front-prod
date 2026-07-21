@@ -66,8 +66,12 @@ class Target extends Component{
             <Panel className={styles.card}>
                 <div className={styles.cardHeader}>
                     <span className={styles.tag}>Cible</span>
-                    <button type="button" title="Décibler" className={styles.close}
-                            onClick={this.props.removePlayerTarget}>✕</button>
+                    {/* Un monstre ne se décible pas à la main : il n'est visible/ciblé
+                        que tant qu'on est sur sa case, et se décible en la quittant. */}
+                    {this.props.target.type !== "monstre" && (
+                        <button type="button" title="Décibler" className={styles.close}
+                                onClick={this.props.removePlayerTarget}>✕</button>
+                    )}
                 </div>
                 <div className={styles.separator}/>
 
