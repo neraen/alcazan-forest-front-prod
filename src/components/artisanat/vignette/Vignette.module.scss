@@ -1,0 +1,64 @@
+.vignette {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--slot-empty-bg);
+  border: 1px solid var(--gold-mini-border);
+  border-radius: var(--radius-slot);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: var(--shadow-icon);
+}
+
+.initiale {
+  font-family: var(--font-title);
+  color: var(--gold);
+  line-height: 1;
+}
+
+.sm {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-bar);
+
+  .image {
+    padding: 3px;
+  }
+
+  .initiale {
+    font-size: 15px;
+  }
+}
+
+.md {
+  width: 56px;
+  height: 56px;
+
+  .image {
+    padding: 5px;
+  }
+
+  .initiale {
+    font-size: 22px;
+  }
+}
+
+.lg {
+  width: 84px;
+  height: 84px;
+  border-radius: var(--radius-card);
+
+  .image {
+    padding: 8px;
+  }
+
+  .initiale {
+    font-size: 32px;
+  }
+}

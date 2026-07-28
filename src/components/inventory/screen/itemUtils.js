@@ -37,13 +37,36 @@ export const EQUIP_SLOTS = {
 
 export const rarityClass = (rarity) => "rarity-" + (rarity || "commun");
 
+/**
+ * Chemin de l'image d'un item à partir de sa famille et du nom de fichier stocké en base.
+ * SEUL endroit du front où vivent les conventions de dossier — le serveur renvoie
+ * toujours le nom brut (+ la position pour un équipement, dont le dossier dépend), jamais
+ * un chemin construit.
+ * Renvoie null quand l'item n'a pas d'image : l'appelant décide de son repli.
+ */
+export function itemImage({type, image, position} = {}) {
+    if (!image) {
+        return null;
+    }
+    switch (type) {
+        case "equipement":
+            return position ? `/img/equipement/${position}/${image}` : null;
+        case "consommable":
+            return `/img/consommables/${image}`;
+        case "objet":
+            return `/img/objet/${image}`;
+        default:
+            return null;
+    }
+}
+
 export function normalizeEquipement(e, equipped = false) {
     return {
         key: (equipped ? "worn-" : "eq-") + e.idEquipement,
         cat: "equipement",
         id: e.idEquipement,
         name: e.nomEquipement,
-        img: `/img/equipement/${e.position}/${e.imageEquipement}`,
+        img: itemImage({type: "equipement", image: e.imageEquipement, position: e.position}),
         qty: e.quantity || 1,
         desc: e.descriptionEquipement,
         value: e.prixReventeEquipement,
@@ -62,7 +85,7 @@ export function normalizeConsommable(c) {
         cat: "consommable",
         id: c.idConsommable,
         name: c.nomConsommable,
-        img: `/img/consommables/${c.imageConsommable}`,
+        img: itemImage({type: "consommable", image: c.imageConsommable}),
         qty: c.quantity || 1,
         desc: c.descriptionConsommable,
         value: c.prixReventeConsommable,
@@ -79,7 +102,7 @@ export function normalizeObjet(o) {
         cat: "objet",
         id: o.idObjet,
         name: o.nomObjet,
-        img: `/img/objet/${o.imageObjet}`,
+        img: itemImage({type: "objet", image: o.imageObjet}),
         qty: o.quantity || 1,
         desc: o.descriptionObjet,
         value: o.prixReventeObjet,

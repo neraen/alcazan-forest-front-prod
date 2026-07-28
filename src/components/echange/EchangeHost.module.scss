@@ -1,0 +1,51 @@
+/* Bannières d'invitation / d'attente : superposées en haut de la zone de carte
+   (le parent .main de MapPage est le conteneur positionné). */
+.bandeaux {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(480px, calc(100% - 40px));
+}
+
+.bandeau {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-card);
+  background: var(--panel-solid);
+  border: 1px solid var(--gold-soft);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  animation: bandeauIn 0.18s ease;
+}
+
+@keyframes bandeauIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.bandeauTexte {
+  font-size: 13px;
+  color: var(--text-dim);
+
+  strong {
+    color: var(--gold);
+    font-weight: 700;
+  }
+}
+
+.bandeauBoutons {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.boutonDiscret {
+  opacity: 0.75;
+}

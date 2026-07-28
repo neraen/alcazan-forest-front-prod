@@ -8,6 +8,7 @@ import QuestDialogue from "../questDialogue/QuestDialogue";
 import PnjActionDialogue from "../pnjActionDialogue/PnjActionDialogue";
 import ShopView from "../shopView/ShopView";
 import GuildeView from "../guildeView/GuildeView";
+import MetierView from "../metierView/MetierView";
 import questApi from "../../../services/questApi";
 import distanceCalculator from "../../../services/distanceCalculator";
 import {closePnjInteraction} from "../../../store/actions";
@@ -91,6 +92,8 @@ const PnjInteractionHost = (props) => {
                 return `Échoppe · ${interaction.pnj.name}`;
             case "guilde":
                 return `Guildes · ${interaction.pnj.name}`;
+            case "metier":
+                return `Métiers · ${interaction.pnj.name}`;
             default:
                 return interaction.pnj.name;
         }
@@ -101,9 +104,11 @@ const PnjInteractionHost = (props) => {
             case "quest":
                 return <QuestDialogue pnj={interaction.pnj} quest={interaction.quest} onClose={props.closePnjInteraction}/>;
             case "shop":
-                return <ShopView typeShop={interaction.shop.typeShop} items={interaction.shop.items}/>;
+                return <ShopView typeShop={interaction.shop.typeShop} items={interaction.shop.items} pnjId={interaction.pnj.id}/>;
             case "guilde":
                 return <GuildeView guildeData={interaction.guilde}/>;
+            case "metier":
+                return <MetierView pnjId={interaction.pnj.id} metierData={interaction.metier}/>;
             case "dialogue":
             default:
                 return <PnjActionDialogue pnj={interaction.pnj} dialogue={interaction.dialogue} onClose={props.closePnjInteraction}/>;

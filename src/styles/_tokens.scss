@@ -49,6 +49,14 @@
   --xp-to: #e3b64f;
   --pa-label: #f0a95c;
 
+  /* Karma : jauge BIPOLAIRE, du pillard (rouge sourd) au gardien (vert d'eau).
+     Volontairement hors de la gamme or des autres jauges — le karma n'est pas une
+     ressource qu'on remplit, c'est un curseur qu'on déplace dans les deux sens. */
+  --karma-from: #8c3b2f;
+  --karma-mid: #b7d2d6;
+  --karma-to: #3f9c7a;
+  --karma-label: #8fd0b4;
+
   /* --- Slots --- */
   --slot-dash: rgba(159, 195, 201, 0.3);
   --slot-empty-bg: rgba(255, 255, 255, 0.03);

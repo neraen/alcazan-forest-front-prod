@@ -1,10 +1,11 @@
 import React from 'react'
+import {toast} from "react-toastify";
 import MapApi from "../../../services/MapApi";
 import Case from "../case/Case";
 import UsersApi from "../../../services/UsersApi";
 import MapContext from "../../../contexts/MapContext";
 import {connect} from "react-redux";
-import {updatePositionJoueur, removePlayerTarget, updateJoueurState} from "../../../store/actions";
+import {updatePositionJoueur, removePlayerTarget, updateJoueurState, openDonjonPorte, updatePlayerTarget} from "../../../store/actions";
 import distanceCalculator from "../../../services/distanceCalculator";
 import "../mapGrid.scss";
 
@@ -24,7 +25,10 @@ class Map extends React.Component {
             users: [],
             unabledCases: [],
             mapId: this.props.user.mapId,
-            isInstance: false
+            isInstance: false,
+            portesDonjon: {},
+            interactions: {},
+            modesRecolte: []
         };
         this.props.updatePositionJoueur({abscisse: this.props.user.caseAbscisse, ordonnee: this.props.user.caseOrdonnee})
     }
@@ -56,10 +60,47 @@ class Map extends React.Component {
     async fetchMapData(){
         const mapId = this.props.joueurState.mapId ? this.props.joueurState.mapId : this.state.mapId
         const data = await MapApi.find(mapId);
-        this.setState({cases: data.cases, name: data.mapInfo.nom, isInstance: data.mapInfo.isInstance, mapId: mapId}, () => {
+        // La carte peut avoir été rechargée après une téléportation décidée par le SERVEUR
+        // (entrée en groupe dans un donjon, éjection d'une instance expirée, mort) : la
+        // position du joueur est donc réadoptée depuis la réponse, jamais devinée ici.
+        this.setState({
+            cases: data.cases,
+            name: data.mapInfo.nom,
+            isInstance: data.mapInfo.isInstance,
+            mapId: data.mapId !== undefined ? data.mapId : mapId,
+            portesDonjon: data.portesDonjon || {},
+            interactions: data.interactions || {},
+            modesRecolte: data.modesRecolte || [],
+            abscisseJoueur: data.abscisseJoueur !== undefined ? data.abscisseJoueur : this.state.abscisseJoueur,
+            ordonneeJoueur: data.ordonneeJoueur !== undefined ? data.ordonneeJoueur : this.state.ordonneeJoueur,
+        }, () => {
             this.props.setMapLoaded(this.state.name);
+            this.props.updatePositionJoueur({abscisse: this.state.abscisseJoueur, ordonnee: this.state.ordonneeJoueur});
+            this.majCibleMonstreInstance(this.state.cases, this.state.abscisseJoueur, this.state.ordonneeJoueur);
         });
         this.setState({unabledCases: this.getUnabledMove()});
+    }
+
+    /**
+     * Un monstre d'instance (population d'une salle, renfort d'un boss) se cible comme
+     * tous les monstres du jeu : AUTOMATIQUEMENT, parce qu'on est sur sa case, et jamais
+     * autrement. Il n'est pas dessiné sur la carte, exactement comme les monstres du monde
+     * ouvert (peints dans l'image de fond).
+     *
+     * Le monde ouvert fait ce ciblage au montage du composant Player (prop `hasMonstre`) ;
+     * ici c'est Map qui s'en charge, parce que c'est le seul endroit qui sache quelle case
+     * est LA MIENNE — Player est aussi rendu pour les autres membres du groupe, et cibler
+     * le monstre sur lequel un coéquipier se tient n'aurait aucun sens.
+     */
+    majCibleMonstreInstance(cases, abscisse, ordonnee){
+        const maCase = (cases || []).find(uneCase => uneCase.abscisse === abscisse && uneCase.ordonnee === ordonnee);
+        const renfortId = maCase && maCase.renfortId ? maCase.renfortId : null;
+
+        if(renfortId){
+            this.props.updatePlayerTarget({targetId: renfortId, type: "renfort"});
+        }else if(this.props.target.type === "renfort"){
+            this.props.removePlayerTarget();
+        }
     }
 
     listenKeyboard() {
@@ -126,7 +167,9 @@ class Map extends React.Component {
 
     async updatePosition(abscisse, ordonnee){
         const data = await UsersApi.updatePosition(this.state.mapId, abscisse, ordonnee)
-        if(this.props.target.type === "monstre"){
+        // Un monstre ne reste ciblé que tant qu'on est sur sa case : quitter la case
+        // décible, qu'il s'agisse d'un monstre du monde ouvert ou d'un monstre d'instance.
+        if(this.props.target.type === "monstre" || this.props.target.type === "renfort"){
             this.props.removePlayerTarget();
         }
 
@@ -135,6 +178,7 @@ class Map extends React.Component {
                 this.setState({ unabledCases: this.getUnabledMove() })
                 this.props.updatePositionJoueur({abscisse: data.abscisseJoueur, ordonnee: data.ordonneeJoueur})
                 this.props.updateJoueurState({lifeJoueur: data.life, manaJoueur: data.mana, pm: data.pm})
+                this.majCibleMonstreInstance(data.cases, data.abscisseJoueur, data.ordonneeJoueur)
             });
 
         if(data.ordonneeJoueur !== ordonnee || data.abscisseJoueur !== abscisse){
@@ -146,7 +190,10 @@ class Map extends React.Component {
     async changeMap(targetMapId, targetWrap, clickedWrap){
         const mapPosition = await UsersApi.changeMap(targetMapId, targetWrap, clickedWrap);
         if(mapPosition.message !== undefined && mapPosition.mapId === undefined){
-            //toast(mapPosition.message);
+            // Passage refusé par le serveur (condition de salle de donjon, condition de
+            // wrap, verrou quotidien…). Sans ce toast, le clic sur la porte ne faisait
+            // RIEN de visible : le joueur croyait à un bug de la carte.
+            toast.error(mapPosition.message);
         }else{
             const mapData = await MapApi.find(mapPosition.mapId);
             this.setState({
@@ -155,7 +202,10 @@ class Map extends React.Component {
                 mapId: mapData.mapId,
                 ordonneeJoueur: mapPosition.ordonnee,
                 abscisseJoueur: mapPosition.abscisse,
-                isInstance: mapData.mapInfo.isInstance
+                isInstance: mapData.mapInfo.isInstance,
+                portesDonjon: mapData.portesDonjon || {},
+                interactions: mapData.interactions || {},
+                modesRecolte: mapData.modesRecolte || []
             });
             // Remonte le nouveau nom de zone à la fiche joueur (présentation uniquement)
             this.props.setMapLoaded(mapData.mapInfo.nom);
@@ -163,6 +213,13 @@ class Map extends React.Component {
             this.props.updatePositionJoueur({abscisse: mapPosition.abscisse, ordonnee:  mapPosition.ordonnee })
             this.setState({unabledCases: this.getUnabledMove()});
             this.props.removePlayerTarget();
+            // Population d'une salle de donjon apparue à l'arrivée du groupe : les monstres
+            // n'étant pas dessinés (comme partout ailleurs dans le jeu), cette annonce est
+            // le seul signal qu'il y a quelque chose à nettoyer ici.
+            if(mapPosition.annonce){
+                toast.warning(mapPosition.annonce);
+            }
+            this.majCibleMonstreInstance(mapData.cases, mapPosition.abscisse, mapPosition.ordonnee);
         }
     }
 
@@ -193,6 +250,18 @@ class Map extends React.Component {
         if(clickedCase.isWrap){
             const distance = distanceCalculator.computeDistance(clickedCase.abscisse, clickedCase.ordonnee, this.state.abscisseJoueur, this.state.ordonneeJoueur)
             if(distance <= 1){
+                // Une porte de donjon ouvre la modale de groupe au lieu de franchir
+                // directement : c'est là qu'on choisit d'y aller seul ou accompagné.
+                // Le serveur revérifie tout de toute façon.
+                const portes = this.state.portesDonjon || {};
+                if(portes[clickedCase.carteCarreauId]){
+                    this.props.openDonjonPorte({
+                        carteCarreauId: clickedCase.carteCarreauId,
+                        targetMapId: clickedCase.targetMapId,
+                        targetWrap: clickedCase.targetWrap
+                    });
+                    return;
+                }
                 this.changeMap(clickedCase.targetMapId, clickedCase.targetWrap, clickedCase.carteCarreauId)
             }
         }
@@ -214,8 +283,35 @@ class Map extends React.Component {
         return false
     }
 
+    /**
+     * Index des cases couvertes par une zone annoncée du boss, pour la carte courante.
+     * `imminente` (< 3 s) accélère le battement : c'est le dernier avertissement.
+     * Le délai vient de `resoudreAt` (horloge SERVEUR) — jamais d'un compteur local.
+     */
+    getZonesParCase(){
+        const combat = this.props.donjon && this.props.donjon.combat;
+        if(!combat || !combat.zones){
+            return {};
+        }
+
+        const index = {};
+        combat.zones.forEach(zone => {
+            if(zone.carteId !== this.state.mapId){
+                return;
+            }
+            const restant = (new Date(zone.resoudreAt).getTime() - Date.now()) / 1000;
+            zone.cases.forEach(caseZone => {
+                index[caseZone.abscisse + ":" + caseZone.ordonnee] = {imminente: restant <= 3};
+            });
+        });
+
+        return index;
+    }
+
     render()
     {
+        const zones = this.getZonesParCase();
+
         return (<>
 
             <div className="cases" style={{backgroundImage: "url("+require("../../../img/map/"+this.state.mapId+".png").default+")", backgroundSize: 'cover'}}>
@@ -230,7 +326,16 @@ class Map extends React.Component {
                               hasPnj={uniqueCase.pnjName ? {pnjId: uniqueCase.pnjId, pnjName: uniqueCase.pnjName, pnjSkin: uniqueCase.pnjSkin, pnjAvatar: uniqueCase.pnjAvatar, pnjDescription: uniqueCase.pnjDescription} : false}
                               hasBoss={uniqueCase.bossName ? {bossId: uniqueCase.bossId, bossName: uniqueCase.bossName, bossSkin: uniqueCase.bossSkin} : false}
                               hasAction={uniqueCase.actionName ? {actionName: uniqueCase.actionName, actionId: uniqueCase.actionId} : false}
+                              hasInteraction={uniqueCase.interactionId ? {
+                                  carteCarreauId: uniqueCase.carteCarreauId,
+                                  nom: uniqueCase.interactionNom,
+                                  skin: uniqueCase.interactionSkin,
+                                  verbe: uniqueCase.interactionType
+                              } : false}
+                              etatInteraction={(this.state.interactions || {})[uniqueCase.carteCarreauId]}
+                              modesRecolte={this.state.modesRecolte}
                               isUnabled={this.state.unabledCases.includes(uniqueCase.carteCarreauId)}
+                              zone={zones[uniqueCase.abscisse + ":" + uniqueCase.ordonnee]}
                         />
                     </div>
                 ))}
@@ -240,5 +345,5 @@ class Map extends React.Component {
 }
 
 export default connect((state, ownProps) => {
-    return {target: state.data.target, joueurState: state.data.joueurState, ownProps};
-}, {updatePositionJoueur, removePlayerTarget, updateJoueurState})(Map);
+    return {target: state.data.target, joueurState: state.data.joueurState, donjon: state.data.donjon, ownProps};
+}, {updatePositionJoueur, removePlayerTarget, updateJoueurState, openDonjonPorte, updatePlayerTarget})(Map);

@@ -39,7 +39,9 @@ class Target extends Component{
                 profilePseudo: target.pseudo,
             };
         }
-        if (target.type === "monstre") {
+        // Un monstre d'instance (donjon) se présente EXACTEMENT comme un monstre du monde
+        // ouvert : /api/target/renfort renvoie les mêmes clés, la carte est mutualisée.
+        if (target.type === "monstre" || target.type === "renfort") {
             return {
                 name: target.nomMonstre,
                 sub: `x ${target.quantiteMonstre}`,
@@ -68,7 +70,7 @@ class Target extends Component{
                     <span className={styles.tag}>Cible</span>
                     {/* Un monstre ne se décible pas à la main : il n'est visible/ciblé
                         que tant qu'on est sur sa case, et se décible en la quittant. */}
-                    {this.props.target.type !== "monstre" && (
+                    {this.props.target.type !== "monstre" && this.props.target.type !== "renfort" && (
                         <button type="button" title="Décibler" className={styles.close}
                                 onClick={this.props.removePlayerTarget}>✕</button>
                     )}

@@ -3,6 +3,9 @@ import UsernameBlock from "../../components/UserInterface/usernameBlock/Username
 import SideMenu from "../../components/UserInterface/sideMenu/SideMenu";
 import Map from "../../components/map/map/Map";
 import PnjInteractionHost from "../../components/pnj/pnjInteractionHost/PnjInteractionHost";
+import EchangeHost from "../../components/echange/EchangeHost";
+import DonjonHost from "../../components/donjon/DonjonHost";
+import DonjonCombatHost from "../../components/donjon/DonjonCombatHost";
 import SpellBar from "../../components/UserInterface/spellBar/SpellBar";
 import UsersApi from "../../services/UsersApi";
 import Loader from "../../components/loader/Loader";
@@ -133,6 +136,9 @@ class MapPage extends React.Component{
 
                 <div className={styles.main}>
                     <PnjInteractionHost />
+                    <EchangeHost />
+                    <DonjonHost />
+                    <DonjonCombatHost />
                     <div className={styles.mapViewport}>
                         {this.state.display && <Map setMapLoaded={(zoneName) => this.setMapLoaded(zoneName)} user={this.state.user} needRefresh={this.props.joueurState.needRefresh}/> || <Loader />}
                     </div>

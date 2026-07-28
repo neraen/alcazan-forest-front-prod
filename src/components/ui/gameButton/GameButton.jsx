@@ -6,8 +6,9 @@ import styles from './GameButton.module.scss'
  * as="link" rend un <a>-like via un <button> reste le défaut ; pour un vrai lien,
  * appliquer la même classe exportée `buttonClass` sur un <Link>/<NavLink>.
  */
-const GameButton = ({children, onClick, type = "button", className = ""}) => (
-    <button type={type} onClick={onClick} className={`${styles.button} ${className}`}>
+const GameButton = ({children, onClick, type = "button", className = "", disabled = false, title}) => (
+    <button type={type} onClick={onClick} className={`${styles.button} ${className}`}
+            disabled={disabled} title={title}>
         {children}
     </button>
 )

@@ -19,4 +19,15 @@
     color: var(--gold);
     background: var(--gold-bg-hover);
   }
+
+  // Un bouton refusé doit rester LISIBLE : il porte souvent la seule explication du
+  // refus dans son infobulle, le faire disparaître priverait le joueur de la raison.
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+
+    &:hover {
+      background: transparent;
+    }
+  }
 }

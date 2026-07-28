@@ -1,0 +1,189 @@
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: var(--transition);
+}
+
+.card:hover {
+  border-color: var(--gold-border);
+}
+
+.cardBloquee {
+  opacity: 0.72;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.thumb {
+  position: relative;
+  flex: none;
+}
+
+.quantite {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  padding: 1px 7px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  background: var(--qty-badge-bg);
+  border: 1px solid var(--gold-mini-border);
+  border-radius: var(--radius-bar);
+}
+
+.identity {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nom {
+  font-family: var(--font-title);
+  font-size: 17px;
+  line-height: 1.2;
+  color: var(--gold-pale);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.metier {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  color: var(--level);
+  background: var(--level-soft-bg);
+  border: 1px solid var(--level-border);
+  border-radius: var(--radius-bar);
+}
+
+.metierBloque {
+  color: var(--danger-text);
+  background: var(--danger-bg-hover);
+  border-color: var(--danger-border);
+}
+
+.produit {
+  font-size: 11px;
+  padding: 2px 8px;
+  color: var(--text-dim);
+  background: var(--badge-neutral-bg);
+  border-radius: var(--radius-bar);
+}
+
+.description {
+  flex: 1;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-mute);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 8px 0;
+  border-top: 1px solid var(--gold-card-border);
+  border-bottom: 1px solid var(--gold-card-border);
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ingredient {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  background: var(--row-bg);
+  border: 1px solid var(--gold-card-border);
+  border-radius: var(--radius-slot);
+}
+
+.manquant {
+  border-color: var(--danger-border);
+  background: var(--danger-bg-hover);
+
+  .ingredientCompte {
+    color: var(--danger-text);
+  }
+}
+
+.ingredientTexte {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.ingredientNom {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.ingredientCompte {
+  font-size: 11px;
+  color: var(--text-dim2);
+}
+
+.sansIngredient {
+  font-size: 12px;
+  color: var(--danger-text);
+}
+
+.pied {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.select {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text);
+  background: var(--panel-inner);
+  border: 1px solid var(--gold-field-border);
+  border-radius: var(--radius-slot);
+  cursor: pointer;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--gold-border);
+}
+
+.select option {
+  color: var(--text);
+  background: var(--panel-solid);
+}
+
+.empechement {
+  margin: -4px 0 0;
+  font-size: 12px;
+  color: var(--danger-text);
+}

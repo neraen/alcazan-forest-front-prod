@@ -8,6 +8,12 @@ function create(pnj){
     return axios.post(API_URL + "pnj/create", {pnj: pnj}).then(response => response.data)
 }
 
+/** Liste complète des PNJ (données brutes : name, avatar, skin, type, description). */
+function list(){
+    return axios.post(API_URL + "pnj/infos", {}).then(response => response.data)
+}
+
 export default {
-    create
+    create,
+    list
 }

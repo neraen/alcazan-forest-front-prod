@@ -1,121 +1,374 @@
-.quest-page-maker-container{
+/* ==========================================================================
+   QuestMaker — éditeur de quêtes (maître-détail). Restylé avec les tokens du
+   jeu (or / vert sombre, Cinzel/Nunito). Tout est scopé sous
+   .quest-page-maker-container pour ne pas déteindre sur les autres makers ;
+   l'@import est fait en FIN de admin.scss pour gagner sur les styles de base.
+   ========================================================================== */
+
+.quest-page-maker-container {
   display: flex;
-  background: #394648;
-  color: aliceblue;
+  flex-direction: column;
+  gap: 18px;
   padding: 20px;
-  flex-direction: column;
-}
+  color: var(--text);
+  font-family: var(--font-body);
 
-.quest-info-form{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-  border: solid 1px #FBCE58;
-  padding: 10px
-}
-
-.sequence-container{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  border: solid 1px #FBCE58;
-}
-
-.sequence-info-form{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.sequence-form-left, .sequence-form-right{
-  padding: 20px;
-}
-
-.sequence-dialogue-container{
-  display: flex;
-}
-
-.quest-maker-actions{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.action-container{
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  max-width: max-content;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-}
-
-.recompense-form-container{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: 70vw;
-}
-
-
-.field-group{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-}
-
-.gold-border{
-  border: solid 1px #FBCE58;
-}
-
-.form-btn{
-  border-radius: 20px;
-  background: aliceblue;
-  padding: 10px;
-  color: #052527;
-}
-
-.select-form-field{
-  &:focus {
-    border: solid 1px #FBCE58
+  /* --- Barre d'outils (sélection / création / suppression) --- */
+  .quest-maker-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--panel);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-panel);
   }
 
-  padding: 5px;
-  border-radius: 10px;
-}
+  /* --- Panneau « Informations de la quête » --- */
+  .quest-info-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px;
+    background: var(--panel);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-panel);
 
-.input-form-field{
-  padding: 5px;
-  border-radius: 10px;
-}
+    h2 {
+      margin: 0;
+      text-align: center;
+      font-family: var(--font-title);
+      color: var(--gold);
+      font-size: 1.4em;
+      letter-spacing: .02em;
+    }
+  }
 
-.textarea-form-field{
-  min-width:  350px;
-  min-height: 200px;
-}
+  .qm-quest-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+    align-items: start;
 
-.quest-form-separator{
-  border: solid 1px #FBCE58;
-  width: 100%;
-  height: 2px;
-  background: #FBCE58;
-}
+    .field-group { align-items: stretch; }
 
-.add-form-btn{
-  border-radius: 10px;
-  background: aliceblue;
-  color: #052527;
-  display: flex;
-  justify-content: center;
-  margin: 10px;
-  padding: 5px;
+    input, select, textarea {
+      width: 100%;
+      max-width: none;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+  }
+
+  .qm-intro-field {
+    grid-column: 1 / -1;
+    textarea { resize: vertical; min-height: 100px; }
+  }
+
+  .qm-save-quest { align-self: center; }
+
+  /* --- Champs & labels --- */
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    label {
+      color: var(--text-dim);
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+  }
+
+  .gold-border { border: none; } /* la lisibilité vient du champ, pas d'un cadre brut */
+
+  .input-form-field,
+  .select-form-field,
+  .textarea-form-field {
+    border-radius: var(--radius-tab);
+    max-width: none;
+  }
+
+  .textarea-form-field {
+    min-width: 0;
+    min-height: 140px;
+    resize: vertical;
+  }
+
+  /* --- Boutons --- */
+  .form-btn {
+    border: none;
+    border-radius: var(--radius-slot);
+    padding: 9px 20px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--gold);
+    color: var(--ink);
+
+    &:hover { background: var(--gold-hover); }
+  }
+
+  .add-form-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    border-radius: var(--radius-slot);
+    padding: 9px 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--gold-softer);
+    color: var(--gold);
+    border: 1px dashed var(--gold-border);
+
+    &:hover { background: var(--gold-bg-hover); color: var(--gold-hover); }
+  }
+
+  .quest-form-separator {
+    border: none;
+    height: 1px;
+    width: 100%;
+    background: var(--gold-divider);
+    margin: 4px 0;
+  }
+
+  /* --- Espace de travail : rail (carte + liste) | détail --- */
+  .quest-maker-central-part { width: 100%; }
+
+  .qm-workspace {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .qm-rail {
+    flex: 0 0 340px;
+    min-width: 290px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .qm-detail {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .qm-detail-empty {
+    padding: 60px 24px;
+    text-align: center;
+    color: var(--text-mute);
+    background: var(--panel);
+    border: 1px dashed var(--gold-soft);
+    border-radius: var(--radius-panel);
+    line-height: 1.9;
+  }
+
+  /* --- Carte de flux (SVG piloté par classes tokenisées) --- */
+  .qm-flowmap {
+    background: var(--panel-inner);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-card);
+    padding: 10px;
+    overflow: auto;
+    max-height: 380px;
+
+    svg { display: block; }
+    text { user-select: none; font-family: var(--font-body); }
+
+    #qmArrow path { fill: var(--gold); }
+
+    .qm-edge {
+      fill: none;
+      stroke: var(--gold);
+      stroke-width: 1.5;
+
+      &.back { stroke-dasharray: 5 4; opacity: .6; }
+    }
+
+    .qm-edge-label-bg { fill: var(--panel-solid); stroke: var(--gold-soft); }
+    .qm-edge-label { fill: var(--gold); font-size: 9px; }
+
+    .qm-flownode {
+      cursor: pointer;
+
+      rect { fill: var(--panel-solid); stroke: var(--gold-border); transition: var(--transition); }
+      &:hover rect { stroke: var(--gold); }
+      &.selected rect { fill: var(--gold); stroke: var(--gold); }
+
+      .qm-node-key { fill: var(--gold); font-size: 10px; font-weight: 700; }
+      .qm-node-name { fill: var(--text); font-size: 12px; }
+      &.selected .qm-node-key,
+      &.selected .qm-node-name { fill: var(--ink); }
+    }
+
+    .qm-end-box { fill: var(--level-soft-bg); stroke: var(--rarity-peu-commun); }
+    .qm-end-label { fill: var(--rarity-peu-commun); font-size: 12px; }
+  }
+
+  .qm-flowmap-empty {
+    background: var(--panel-inner);
+    border: 1px dashed var(--gold-soft);
+    border-radius: var(--radius-card);
+    padding: 26px 16px;
+    text-align: center;
+    color: var(--text-mute);
+    font-style: italic;
+  }
+
+  /* --- Rail : liste des séquences --- */
+  .qm-seq-list { display: flex; flex-direction: column; gap: 8px; }
+  .qm-add-seq { margin: 0 0 2px; }
+
+  .qm-seq-item {
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    background: var(--panel);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-card);
+    color: var(--text);
+    font: inherit;
+    transition: var(--transition);
+
+    &:hover { border-color: var(--gold-border); background: var(--panel-inner-strong); }
+    &.selected { border-color: var(--gold); background: var(--gold-softer); }
+  }
+
+  .qm-seq-item-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .qm-seq-item-num {
+    flex: 0 0 auto;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 11px;
+    background: var(--gold);
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qm-seq-item-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 12px;
+    color: var(--text-dim);
+    padding-left: 30px;
+  }
+
+  .qm-seq-item-choice .qm-arrow { color: var(--gold); font-weight: 700; }
+  .qm-muted { color: var(--text-faint); font-style: italic; }
+
+  /* --- Détail : carte d'une séquence --- */
+  .sequence-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    width: 100%;
+    padding: 20px;
+    background: var(--panel);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-panel);
+
+    h2 {
+      margin: 0;
+      font-family: var(--font-title);
+      color: var(--gold);
+      font-size: 1.3em;
+    }
+  }
+
+  .sequence-toolbar { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .sequence-form-container { width: 100%; }
+  .sequence-info-form { display: flex; justify-content: flex-start; }
+  .sequence-form-left {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .sequence-dialogue-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* --- Actions d'une séquence --- */
+  .quest-maker-actions-container { display: flex; flex-direction: column; gap: 14px; }
+  .quest-maker-actions-form { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  .quest-maker-actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  .action-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 320px;
+    max-width: 100%;
+    padding: 14px;
+    background: var(--panel-inner);
+    border: 1px solid var(--gold-card-border);
+    border-radius: var(--radius-card);
+
+    h6 {
+      margin: 0;
+      color: var(--gold);
+      font-family: var(--font-title);
+      font-size: 1em;
+    }
+  }
+
+  /* --- Récompense (par action / branche) --- */
+  .recompense-section {
+    margin-top: 4px;
+    border-top: 1px solid var(--gold-divider);
+    padding-top: 10px;
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+  }
+
+  .recompense-form-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+    max-width: none;
+  }
 }

@@ -1,8 +1,9 @@
-import React from "react"
+import React, {useState} from "react"
 import {connect} from "react-redux";
+import {toast} from "react-toastify";
 import {updateJoueurState} from "../../../../store/actions";
 import UserActionApi from "../../../../services/UserActionApi";
-import {rarityClass} from "../../../inventory/screen/itemUtils";
+import ItemCard from "../itemCard/ItemCard";
 import styles from "./ShopBuy.module.scss";
 
 /**
@@ -11,46 +12,54 @@ import styles from "./ShopBuy.module.scss";
  */
 const ShopBuy = (props) => {
 
+    // Id de l'objet dont l'achat est en cours : neutralise les boutons le temps de
+    // l'aller-retour serveur (sinon un double clic débite deux fois).
+    const [achatEnCours, setAchatEnCours] = useState(null);
+
     const handleAchat = async (item) => {
-        const playerMoneyAfterBuy = +props.joueurState.money - +item.prixAchat;
-        if(playerMoneyAfterBuy >= 0){
-            const playerMoney = await UserActionApi.buyItem(item.idEquipement)
-            props.updateJoueurState({money: playerMoney.money})
+        if(achatEnCours !== null){
+            return;
+        }
+        setAchatEnCours(item.idEquipement);
+        try {
+            const achat = await UserActionApi.buyItem(item.idEquipement, props.pnjId);
+            // Le serveur fait foi sur l'or restant : on rafraîchit la bourse avec sa réponse.
+            props.updateJoueurState({money: achat.money});
+            toast.success(achat.message || `${item.nomEquipement} acheté.`);
+        } catch (error) {
+            const reponse = error.response?.data;
+            if(reponse?.money !== undefined){
+                props.updateJoueurState({money: reponse.money});
+            }
+            toast.error(reponse?.error || "L'achat n'a pas pu aboutir.");
+        } finally {
+            setAchatEnCours(null);
         }
     }
 
     const canAfford = (item) => +props.joueurState.money >= +item.prixAchat;
 
+    const items = props.items || [];
+    if(items.length === 0){
+        return <div className={styles.grid}><p>Cet étal est vide pour le moment.</p></div>;
+    }
+
     return(
         <div className={styles.grid}>
-            { props.items.map((item) =>
-                <div key={item.idEquipement} className={`${styles.card} ${styles[rarityClass(item.rarityName)]}`}>
-                    <div className={styles.cardHeader}>{item.nomEquipement}</div>
-                    <div className={styles.cardBody}>
-                        <div className={styles.thumb}>
-                            <img className={styles.thumbIcon}
-                                 src={'../img/equipement/'+item.position+'/'+item.icone} alt={item.nomEquipement}/>
-                        </div>
-                        <div className={styles.caracs}>
-                            {item.caracteristiques.map((caracteristique) =>
-                                <span key={'caracteristique'+caracteristique.id} className={styles.carac}>
-                                    +{caracteristique.valeur} {caracteristique.nom}
-                                </span>
-                            )}
-                        </div>
-                    </div>
-                    <div className={styles.cardMeta}>
-                        <span className={styles.price}>
-                            <img className={styles.coin} src="/img/gui/Money03.png" alt="Or"/>
-                            {item.prixAchat} Pièces d'or
-                        </span>
-                        <span className={styles.levelMin}>Niveau requis : {item.levelMinEquipement}</span>
-                    </div>
-                    <button type="button" className={styles.buy} disabled={!canAfford(item)}
-                            onClick={() => handleAchat(item)}>
-                        Acheter
-                    </button>
-                </div>
+            { items.map((item) =>
+                <ItemCard key={item.idEquipement}
+                          name={item.nomEquipement}
+                          img={'../img/equipement/' + item.position + '/' + item.icone}
+                          rarity={item.rarityName}
+                          caracteristiques={item.caracteristiques}
+                          price={item.prixAchat}
+                          meta={`Niveau requis : ${item.levelMinEquipement}`}
+                          actionLabel="Acheter"
+                          pendingLabel="Achat…"
+                          pending={achatEnCours === item.idEquipement}
+                          disabled={!canAfford(item) || achatEnCours !== null}
+                          disabledLabel={canAfford(item) ? undefined : "Or insuffisant"}
+                          onAction={() => handleAchat(item)}/>
             )}
         </div>
     )

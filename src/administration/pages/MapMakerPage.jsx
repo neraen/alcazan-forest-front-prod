@@ -8,6 +8,7 @@ import MapMakerApi from "../services/MapMakerApi";
 import WrapForm from "../components/forms/WrapForm";
 import PnjAddForm from "../components/forms/PnjAddForm";
 import MonsterAddForm from "../components/forms/MonsterAddForm";
+import InteractionAddForm from "../components/forms/InteractionAddForm";
 import Field from "../../components/forms/field/Field";
 
 class MapMakerPage extends React.Component{
@@ -19,6 +20,7 @@ class MapMakerPage extends React.Component{
             displayWrapFrom: false,
             displayMonsterFrom: false,
             displayPnjFrom: false,
+            displayInteractionForm: false,
             name: ""
         }
     }
@@ -62,6 +64,9 @@ class MapMakerPage extends React.Component{
             case "pnj":
                 this.setState({displayPnjFrom: !this.state.displayPnjFrom})
                 break;
+            case "interaction":
+                this.setState({displayInteractionForm: !this.state.displayInteractionForm})
+                break;
             default:
                 break;
         }
@@ -102,6 +107,8 @@ class MapMakerPage extends React.Component{
                         {this.state.displayPnjFrom && <PnjAddForm  />}
                         <button className="map-maker-btn-outils btn-monstre" onClick={() => this.toggleForms("monster")}> Ajouter un monstre </button>
                         {this.state.displayMonsterFrom && <MonsterAddForm />}
+                        <button className="map-maker-btn-outils btn-interaction" onClick={() => this.toggleForms("interaction")}> Poser une interaction </button>
+                        {this.state.displayInteractionForm && <InteractionAddForm />}
                         <button className="map-maker-btn-outils btn-desactive" onClick={() => this.unsetTool()} > Enlever l'outil </button>
                         <button className="map-maker-btn-outils btn-desactive" onClick={() => this.handleSubmit()} > Sauvegarder les changements </button>
                     </div>

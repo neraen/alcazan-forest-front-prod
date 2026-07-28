@@ -28,6 +28,13 @@ const QuestDialogue = (props) => {
         );
         response.feedback?.messages?.forEach(message => toast.info(message.text));
 
+        // Karma bougé par le choix : le serveur ne renvoie `karma` que si la valeur a
+        // RÉELLEMENT changé (elle est bornée), la phrase est déjà dans feedback.messages.
+        // Reste à faire relire la fiche de personnage, où vit la jauge.
+        if(response.karma){
+            props.updateJoueurState({needRefresh: true});
+        }
+
         // Gain d'XP de quête : met à jour la barre d'XP et le niveau sans rechargement.
         // (le changement de level fait re-fetcher le palier max dans SpellBar).
         if(response.playerXp){
@@ -98,10 +105,19 @@ const QuestDialogue = (props) => {
                     </>
                 );
             case "inProgress":
+                // `progress` n'est présent que sur les objectifs comptés (chasse,
+                // fabrication, récolte) : le joueur doit voir où il en est sans avoir
+                // à cliquer pour se faire répondre « pas encore ». L'unité vient du
+                // serveur — le front ne connaît aucun type de compteur en dur.
                 return step && step.actions.map(action =>
                     <button key={action.actionId} type="button" onClick={() => handleAction(action.actionId)}
                             className={styles.primary}>
                         {action.label}
+                        {action.progress && (
+                            <span className={styles.progress}>
+                                {" "}({action.progress.current} / {action.progress.target} {action.progress.unit})
+                            </span>
+                        )}
                     </button>
                 );
             case "locked":

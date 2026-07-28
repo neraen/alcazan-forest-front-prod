@@ -1,13 +1,12 @@
 import React, {useState} from 'react'
-import {useFieldArray} from "react-hook-form";
+import {useFieldArray, useWatch} from "react-hook-form";
 import {useQuestEditor} from "../../../contexts/QuestEditorContext";
 import ActionForm from "./ActionForm";
-import RecompenseForm from "./RecompenseForm";
 
 /**
- * Une séquence de la quête : dialogue + actions + récompense. L'ordre des
- * séquences EST leur position (boutons monter/descendre) — plus de champs
- * position / isLast / séquence précédente-suivante à remplir à la main.
+ * Une séquence de la quête : dialogue + actions (chaque action porte son
+ * branchement et sa récompense). L'ordre des séquences EST leur position
+ * (boutons monter/descendre) — plus de champs position / isLast à la main.
  */
 export default function SequenceForm({index, total, register, control, removeSequence, moveSequence}){
 
@@ -16,6 +15,16 @@ export default function SequenceForm({index, total, register, control, removeSeq
     const [newActionType, setNewActionType] = useState(typeNames[0]);
 
     const {fields, append, remove} = useFieldArray({control, name: `sequences.${index}.actions`, keyName: "fieldId"});
+
+    // Cibles de branchement : toutes les séquences de la quête (clé = clientKey),
+    // observées en direct pour refléter noms et réordonnancements.
+    const allSequences = useWatch({control, name: "sequences"}) || [];
+    const sequenceOptions = allSequences
+        .filter(sequence => sequence && sequence.clientKey)
+        .map((sequence, i) => ({
+            key: sequence.clientKey,
+            label: `Séquence ${i + 1}${sequence.nomSequence ? ` — ${sequence.nomSequence}` : ""}`,
+        }));
 
     const handleAddAction = () => {
         append({
@@ -28,10 +37,15 @@ export default function SequenceForm({index, total, register, control, removeSeq
             equipementId: 0,
             consommableId: 0,
             bossId: 0,
+            monstreId: 0,
+            recetteId: 0,
             pnjId: 0,
             carteId: 0,
+            karma: 0,
             effect: "",
-            effectParams: ""
+            effectParams: "",
+            nextSequenceKey: "",
+            recompense: {money: 0, experience: 0, quantity: 0, objetId: 0, equipementId: 0, consommableId: 0}
         });
     };
 
@@ -44,6 +58,7 @@ export default function SequenceForm({index, total, register, control, removeSeq
                 <button type="button" onClick={() => removeSequence(index)}>Supprimer la séquence</button>
             </div>
             <input type="hidden" {...register(`sequences.${index}.id`, {valueAsNumber: true})}/>
+            <input type="hidden" {...register(`sequences.${index}.clientKey`)}/>
 
             <div className="sequence-form-container">
                 <div className="sequence-info-form">
@@ -97,13 +112,9 @@ export default function SequenceForm({index, total, register, control, removeSeq
                             actionIndex={actionIndex}
                             register={register}
                             removeAction={remove}
+                            sequenceOptions={sequenceOptions}
                         />
                     )}
-                </div>
-
-                <hr className="quest-form-separator"/>
-                <div className="quest-maker-actions">
-                    <RecompenseForm sequenceIndex={index} register={register}/>
                 </div>
             </div>
         </div>

@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react'
+import {toast} from "react-toastify";
 import UsersApi from "../../../services/UsersApi";
+import DonjonApi from "../../../services/DonjonApi";
 import {connect} from "react-redux";
 import {fetchTargetInfo, updateJoueurState, removePlayerTarget} from "../../../store/actions";
 import distanceCalculator from "../../../services/distanceCalculator";
@@ -91,7 +93,10 @@ const Spell = (props) => {
                         await launchAttack();
                     }
                 }
-            }else if(props.target.type === "monstre" || props.target.type === "boss"){
+            }else if(props.target.type === "monstre" || props.target.type === "boss" || props.target.type === "renfort"){
+                // "renfort" = monstre d'instance (population de salle, add de boss). Sans
+                // lui dans cette liste, la cible tombait dans le « pas de cible » du else
+                // et le clic sur un sort ne faisait RIEN : monstre inattaquable.
                 await launchAttack();
             }else{
                 //toast("Vous n'avez pas de cible.")
@@ -123,6 +128,20 @@ const Spell = (props) => {
             }
         }else if(props.target.type === "boss"){
             attackStats = await UsersApi.applyAttaqueToBoss(props.target.targetId, props.spell.id)
+        }else if(props.target.type === "renfort"){
+            // Monstre d'instance : ce n'est pas un `monstre_carreau`, donc un endpoint
+            // dédié — mais sa réponse a la MÊME forme que celle d'un monstre ordinaire
+            // (XP, butin, riposte), il n'y a rien à normaliser ici.
+            if(props.spell.type === "soin"){
+                return;
+            }
+            try{
+                attackStats = await DonjonApi.attaquerRenfort(props.target.targetId, props.spell.id);
+            }catch(erreur){
+                // Garde-fous serveur (PA, portée, carte) : message FR destiné au joueur.
+                toast.error(erreur.response?.data?.error || "Impossible de frapper cette cible.");
+                return;
+            }
         }
 
         await props.fetchTargetInfo(props.target.targetId, props.target.type);
@@ -137,6 +156,10 @@ const Spell = (props) => {
             killMessage: attackStats.killMessage,
             message: attackStats.message,
             pa: attackStats.pa,
+            // Le serveur peut avoir DÉPLACÉ le joueur pendant l'échange (mort → cimetière).
+            // Sans reprendre sa carte, le rechargement redemandait l'ancienne : on restait
+            // affiché dans le donjon alors qu'on gisait au cimetière.
+            ...(attackStats.mapId !== undefined ? {mapId: attackStats.mapId} : {}),
             needRefresh: true
         })
 

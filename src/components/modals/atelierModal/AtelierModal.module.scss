@@ -1,0 +1,18 @@
+.body {
+  width: min(680px, calc(96vw - 40px));
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px 24px;
+
+  // Le cadre de modale est en `overflow: hidden` : sans défilement ici, une file bien
+  // remplie se ferait couper net par le bas du panneau.
+  min-height: 0;
+  max-height: min(72vh, 720px);
+  overflow-y: auto;
+}
+
+.lien {
+  align-self: flex-start;
+  text-decoration: none;
+}

@@ -24,6 +24,10 @@
   flex-direction: column;
   gap: 22px;
   min-height: 0;
+
+  // Le panneau Métiers ajoute une troisième carte à une colonne qui en tenait deux :
+  // sans défilement, elle déborde et vient se superposer au panneau Équipement.
+  overflow-y: auto;
 }
 
 /* --- Couleur par caractéristique (consommée par les cartes et les lignes) --- */
@@ -124,14 +128,81 @@
   color: var(--text);
 }
 
+/* Même cadre que les lignes d'information, mais en colonne : la jauge occupe toute
+   la largeur pour rester lisible dans la variante modale, plus étroite. */
+.karmaBlock {
+  padding: 10px 14px;
+  border-radius: 11px;
+  background: var(--row-bg);
+  border: 1px solid var(--gold-softer);
+}
+
 /* --- Carte équipement (base + bonus par stat) --- */
 
 .equipCard {
-  flex: 1;
+  // `flex: 1` tout court laissait la carte rétrécir SOUS la hauteur de ses lignes : le
+  // contenu débordait alors du cadre et venait se peindre par-dessus le panneau suivant.
+  // `1 0 auto` : elle occupe la place disponible, mais ne descend jamais sous son contenu.
+  flex: 1 0 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+.metierCard {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.metierEmpty {
+  font-size: 13px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--text-mute);
+}
+
+.metierRows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  // Cinq métiers au maximum (2 récolte + 3 fabrication) : la liste est bornée par les
+  // règles du jeu, ce plafond n'est qu'un filet si les plafonds évoluent.
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+.metierRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 14px;
+  border-radius: 11px;
+  background: var(--row-bg);
+  border: 1px solid var(--gold-card-border);
+}
+
+.metierHead {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.metierName {
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.metierLevel {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
 }
 
 .sectionNote {

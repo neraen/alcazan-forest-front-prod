@@ -2,17 +2,17 @@ import React from 'react'
 import {useQuestEditor} from "../../../contexts/QuestEditorContext";
 
 /**
- * Récompense d'une séquence (une seule par séquence). Tout à 0 = pas de
- * récompense (le back supprime la ligne).
+ * Récompense d'une action de quête (une par branche/choix). Tout à 0 = pas de
+ * récompense (le back supprime la ligne). Le chemin de formulaire est fourni
+ * par le parent (basePath), la récompense étant portée par l'action.
  */
-export default function RecompenseForm({sequenceIndex, register}){
+export default function RecompenseForm({basePath, register}){
 
     const {referentiels} = useQuestEditor();
-    const basePath = `sequences.${sequenceIndex}.recompense`;
 
     return (
         <div className="recompense-section">
-            <h3 className="d-flex justify-content-center">Récompense pour cette séquence</h3>
+            <h3 className="d-flex justify-content-center">Récompense de ce choix</h3>
             <div className="recompense-form-container">
                 <div className="field-group">
                     <label> Argent </label>

@@ -50,7 +50,9 @@ class EditableMap extends React.Component {
             <div className="cases" style={{backgroundImage: "url("+require("../../img/map/"+this.props.mapId+".png").default+")", backgroundSize: 'contain'}}>
                 {this.props.mapMaker.cases.map((uniquecase, index) => (
                     <div  onClick={() =>this.handleClick(uniquecase)}>
-                        <EditableCase index={index} targetMapId={uniquecase.targetMapId} targetWrap={uniquecase.targetWrap} pnjName={uniquecase.pnjName} isUsable={uniquecase.isUsable} isWrap={uniquecase.isWrap} hasMonstre={uniquecase.hasMonstre} pnjId={uniquecase.pnjId} key={uniquecase.carteCarreauId}/>
+                        <EditableCase index={index} targetMapId={uniquecase.targetMapId} targetWrap={uniquecase.targetWrap} pnjName={uniquecase.pnjName} isUsable={uniquecase.isUsable} isWrap={uniquecase.isWrap} hasMonstre={uniquecase.hasMonstre} pnjId={uniquecase.pnjId}
+                                      interactionId={uniquecase.interactionId} interactionNom={uniquecase.interactionNom}
+                                      key={uniquecase.carteCarreauId}/>
 
                     </div>
                 ))}

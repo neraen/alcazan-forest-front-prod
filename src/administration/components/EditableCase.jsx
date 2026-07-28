@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from "react-redux";
-import {toggleCollisionCase, updateDiffCases, addMonsterCase, addPnjCase, addWrapCase} from "../../store/actions";
+import {toggleCollisionCase, updateDiffCases, addMonsterCase, addPnjCase, addWrapCase, addInteractionCase} from "../../store/actions";
 
 class EditableCase extends React.Component{
 
@@ -22,6 +22,9 @@ class EditableCase extends React.Component{
             case "monstre":
                 this.props.addMonsterCase(this.props.index);
                 break;
+            case "interaction":
+                this.props.addInteractionCase(this.props.index);
+                break;
             default:
                 return "";
 
@@ -41,6 +44,8 @@ class EditableCase extends React.Component{
                 return "map-maker-hover-pnj ";
             case "monstre":
                 return "map-maker-hover-monstre ";
+            case "interaction":
+                return "map-maker-hover-interaction ";
             default:
                 return "";
 
@@ -48,7 +53,10 @@ class EditableCase extends React.Component{
     }
 
     getCaseColor(){
-        console.log(this.props)
+        if(this.props.interactionId){
+            return "map-maker-interaction ";
+        }
+
         if(this.props.isWrap){
             return "map-maker-wrap ";
         }
@@ -89,6 +97,10 @@ class EditableCase extends React.Component{
                         </>
                     )
                     }
+                    {this.props.interactionId && (
+                        <div>{this.props.interactionNom || "Interaction"}</div>
+                    )
+                    }
                 </div>
             </div>
         </>
@@ -99,4 +111,4 @@ class EditableCase extends React.Component{
 
 export default connect((state, ownProps) => {
     return {mapMaker: state.data.mapMaker, ownProps};
-}, {toggleCollisionCase, updateDiffCases, addMonsterCase, addPnjCase, addWrapCase})(EditableCase);
+}, {toggleCollisionCase, updateDiffCases, addMonsterCase, addPnjCase, addWrapCase, addInteractionCase})(EditableCase);

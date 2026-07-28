@@ -5,12 +5,12 @@
    ========================================================================== */
 
 @import "./components/forms/CreateEquipement/CreateEquipementForm.module";
-@import "./components/forms/QuestMaker/QuestMaker.module";
 
 .main-administration-page {
   min-height: calc(100vh - 72px);
   background: var(--bg-page);
   display: flex;
+  flex-direction: column;
 }
 
 .layout-administration {
@@ -22,24 +22,31 @@
 
 .layout-administration h1 {
   color: var(--gold);
-  position: relative;
-  left: 20px;
+  font-family: var(--font-title);
+  letter-spacing: .02em;
+  margin: 20px 0 0 24px;
 }
 
+/* Barre de navigation horizontale (onglets), collante en haut de la zone admin. */
 .administration-side-menu {
-  min-height: calc(100vh - 72px);
-  width: 290px;
+  width: 100%;
   flex-shrink: 0;
-  background: var(--panel-inner-light);
-  border-right: 1px solid var(--gold-soft);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--header-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gold-soft);
 }
 
 .administration-nav-links {
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
   list-style: none;
-  padding: 10px;
+  padding: 10px 18px;
   margin: 0;
 }
 
@@ -49,17 +56,25 @@
 
 .administration-nav-link a {
   display: block;
-  padding: 12px 16px;
-  border-radius: var(--radius-slot);
+  padding: 8px 14px;
+  border-radius: var(--radius-tab);
   text-decoration: none;
   color: var(--text-dim);
   font-weight: 700;
+  white-space: nowrap;
   transition: var(--transition);
 }
 
 .administration-nav-link a:hover {
   background: var(--gold-softer);
   color: var(--gold-hover);
+}
+
+/* Onglet actif (classe ajoutée par NavLink de react-router). */
+.administration-nav-link a.active {
+  background: var(--gold-softer);
+  color: var(--gold);
+  box-shadow: inset 0 -2px 0 var(--gold);
 }
 
 .title-map-font {
@@ -259,3 +274,830 @@
 .create-equipement-form {
   display: flex;
 }
+
+/* Classes autorisées d'un équipement (relation N-N) : pastilles à bascule.
+   Aucune pastille de classe active => « Toutes les classes », soit aucune restriction. */
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* 3 colonnes : les 6 pastilles (« Toutes les classes » + 5 classes) tiennent sur 2 lignes
+   au lieu de 5 + 1, ce qui rongeait la hauteur du formulaire. */
+.classe-picker {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.classe-chip {
+  padding: 6px 10px;
+  width: 100%;
+  max-width: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: var(--radius-tab);
+  border: 1px solid var(--gold-nav-border);
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover:not(.selected) {
+    color: var(--gold-hover);
+    border-color: var(--gold-border);
+  }
+
+  &.selected {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+    font-weight: 800;
+  }
+}
+
+.classe-chip-toutes {
+  font-style: italic;
+  /* Pas de capitalize ici : « Toutes les classes » est une phrase, pas un nom de classe. */
+  text-transform: none;
+}
+
+.classe-picker-hint {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+/* Icône d'équipement : aperçu + upload (le fichier est renommé côté back d'après le nom). */
+.form-icon-equipement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  font-family: var(--font-body);
+  color: var(--text);
+}
+
+.equipement-icone-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-border);
+  background: var(--panel);
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+}
+
+.equipement-icone-empty {
+  color: var(--text-faint);
+  font-size: 28px;
+}
+
+.equipement-icone-upload {
+  padding: 8px 14px;
+  border-radius: var(--radius-slot);
+  border: 1px dashed var(--gold-border);
+  background: var(--gold-softer);
+  color: var(--gold);
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover { background: var(--gold-bg-hover); color: var(--gold-hover); }
+
+  input { display: none; }
+}
+
+.equipement-icone-hint {
+  max-width: 200px;
+  margin: 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-faint);
+
+  code {
+    color: var(--gold);
+    word-break: break-all;
+  }
+}
+
+/* Champ image générique (ImageUploadField) : métiers, objets, PNJ, monstres, interactions.
+   L'aperçu est plus petit que celui d'un équipement — ces champs vivent au milieu d'un
+   formulaire, pas dans une colonne dédiée. */
+.image-upload {
+  min-width: 0;
+
+  .image-upload-corps {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .image-upload-apercu {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-slot);
+    border: 1px solid var(--gold-border);
+    background: var(--panel);
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .image-upload-vide {
+    color: var(--text-faint);
+    font-size: 22px;
+  }
+
+  .image-upload-actions {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+
+    small {
+      color: var(--text-faint);
+
+      code { color: var(--gold); }
+    }
+  }
+
+  /* L'input hérite d'une largeur par défaut (~180px) qui déborderait de la colonne. */
+  .image-upload-nom {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .image-upload-bouton {
+    align-self: flex-start;
+    padding: 6px 12px;
+    border-radius: var(--radius-slot);
+    border: 1px dashed var(--gold-border);
+    background: var(--gold-softer);
+    color: var(--gold);
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+
+    &:hover { background: var(--gold-bg-hover); color: var(--gold-hover); }
+
+    &.occupe { opacity: .6; cursor: progress; }
+
+    input { display: none; }
+  }
+}
+
+/* ==========================================================================
+   AdminCatalog — liste visuelle + aperçu + formulaire (makers de contenu).
+   ========================================================================== */
+
+.admin-catalog {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 8px 20px 24px;
+  font-family: var(--font-body);
+  color: var(--text);
+}
+
+.admin-catalog-rail {
+  flex: 0 0 320px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-catalog-new {
+  width: 100%;
+  max-width: none;
+  padding: 10px 14px;
+  border-radius: var(--radius-slot);
+  border: 1px dashed var(--gold-border);
+  background: var(--gold-softer);
+  color: var(--gold);
+  font-weight: 800;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover { background: var(--gold-bg-hover); color: var(--gold-hover); }
+  &.selected { border-style: solid; border-color: var(--gold); color: var(--gold-hover); }
+}
+
+.admin-catalog-search {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.admin-catalog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 68vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.admin-catalog-empty {
+  color: var(--text-faint);
+  font-style: italic;
+  padding: 12px;
+  text-align: center;
+}
+
+.admin-catalog-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  cursor: pointer;
+  padding: 8px 10px;
+  background: var(--panel);
+  border: 1px solid var(--gold-soft);
+  border-radius: var(--radius-card);
+  color: var(--text);
+  font: inherit;
+  transition: var(--transition);
+
+  &:hover { border-color: var(--gold-border); background: var(--panel-inner-strong); }
+  &.selected { border-color: var(--gold); background: var(--gold-softer); }
+}
+
+.admin-catalog-thumb {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-bar);
+  object-fit: cover;
+  background: var(--panel-solid);
+  border: 1px solid var(--gold-soft);
+}
+
+.admin-catalog-thumb-empty {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-soft);
+  font-size: 20px;
+}
+
+.admin-catalog-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.admin-catalog-item-name {
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-catalog-item-meta {
+  font-size: 12px;
+  color: var(--text-mute);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-catalog-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Carte d'aperçu (image + méta), rendue par renderPreview du parent. */
+.admin-catalog-preview {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--gold-soft);
+  border-radius: var(--radius-panel);
+}
+
+.admin-preview-img {
+  flex: 0 0 auto;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  border-radius: var(--radius-card);
+  background: var(--panel-solid);
+  border: 1px solid var(--gold-soft);
+}
+
+.admin-preview-img-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-soft);
+  font-size: 40px;
+}
+
+.admin-preview-body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.admin-preview-title {
+  margin: 0;
+  font-family: var(--font-title);
+  color: var(--gold);
+  font-size: 1.3em;
+}
+
+.admin-preview-desc { color: var(--text-dim); line-height: 1.5; }
+
+.admin-preview-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.admin-preview-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 12px;
+  background: var(--panel-inner);
+  border: 1px solid var(--gold-card-border);
+  border-radius: var(--radius-bar);
+  min-width: 74px;
+}
+
+.admin-preview-stat span:first-child {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text-mute);
+}
+
+.admin-preview-stat span:last-child {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.admin-preview-tag {
+  align-self: flex-start;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--gold-softer);
+  color: var(--gold);
+  border: 1px solid var(--gold-soft);
+}
+
+/* Zone de formulaire sous l'aperçu (panneau). */
+.admin-catalog-form {
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--gold-soft);
+  border-radius: var(--radius-panel);
+}
+
+.admin-catalog-form h2,
+.admin-catalog-form h3 {
+  margin: 0 0 14px;
+  font-family: var(--font-title);
+  color: var(--gold);
+}
+
+/* ==========================================================================
+   ShopMaker — éditeur de boutiques (nom + PNJ + sections équipement/conso/objet).
+   ========================================================================== */
+
+.shop-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  input, select { max-width: none; }
+}
+
+.shop-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  h3 { margin: 0; font-family: var(--font-title); color: var(--gold); }
+}
+
+.shop-editor-actions { display: flex; gap: 8px; }
+
+.shop-btn-primary {
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  border-radius: var(--radius-slot);
+  padding: 9px 18px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: var(--transition);
+  &:hover { background: var(--gold-hover); }
+}
+
+.shop-btn-danger {
+  background: transparent;
+  color: var(--danger-text);
+  border: 1px solid var(--danger-border);
+  border-radius: var(--radius-slot);
+  padding: 9px 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: var(--transition);
+  &:hover { background: var(--danger-bg-hover); color: var(--danger-text-hover); }
+}
+
+.shop-pnj-block > label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.shop-pnj-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.shop-pnj-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--panel-inner);
+  border: 1px solid var(--gold-soft);
+  border-radius: 20px;
+  cursor: pointer;
+  color: var(--text);
+
+  input { width: auto; margin: 0; }
+}
+
+.shop-pnj-warn { font-size: 11px; color: var(--danger-text); font-style: italic; }
+
+.shop-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.shop-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: var(--panel-inner);
+  border: 1px solid var(--gold-card-border);
+  border-radius: var(--radius-card);
+}
+
+.shop-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.shop-section-title { font-family: var(--font-title); color: var(--gold); font-size: 1.05em; }
+
+.shop-section-count {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 11px;
+  background: var(--gold-softer);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shop-section-lines { display: flex; flex-direction: column; gap: 8px; }
+
+.shop-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  background: var(--panel);
+  border: 1px solid var(--gold-soft);
+  border-radius: var(--radius-bar);
+}
+
+.shop-thumb {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  border-radius: var(--radius-bar);
+  background: var(--panel-solid);
+  border: 1px solid var(--gold-soft);
+}
+
+.shop-thumb-empty {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-soft);
+  font-size: 18px;
+}
+
+.shop-line-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shop-line-price {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+
+  input {
+    width: 80px;
+    margin: 0;
+    padding: 5px 8px;
+    text-align: right;
+  }
+}
+
+.shop-coin { color: var(--gold); font-size: 12px; }
+
+.shop-line-remove {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--danger-border);
+  background: transparent;
+  color: var(--danger-text);
+  cursor: pointer;
+  transition: var(--transition);
+  &:hover { background: var(--danger-bg-hover); }
+}
+
+.shop-add-select { width: 100%; margin: 0; }
+
+.shop-muted { color: var(--text-faint); font-style: italic; font-size: 13px; }
+
+/* QuestMaker importé en dernier : ses règles scopées gagnent les égalités de
+   spécificité contre les styles de base admin (champs/boutons génériques). */
+@import "./components/forms/QuestMaker/QuestMaker.module";
+
+/* ------------------------------------------------------------------ */
+/* DonjonMaker                                                         */
+/* ------------------------------------------------------------------ */
+
+.donjon-maker-bloc {
+  border: 1px solid rgba(227, 182, 79, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px 16px;
+  margin-bottom: 18px;
+}
+
+.donjon-maker-bloc legend {
+  padding: 0 8px;
+  font-family: 'Cinzel', serif;
+  color: #e3b64f;
+}
+
+.donjon-maker-ligne {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-end;
+}
+
+.donjon-maker-ligne .form-group {
+  flex: 1 1 160px;
+  min-width: 140px;
+}
+
+/* Un champ image (aperçu + bouton + nom) demande plus qu'un input nu, sinon il déborde
+   de la colonne que lui donne la ligne. Spécificité volontairement plus forte. */
+.donjon-maker-ligne .form-group.image-upload {
+  flex: 1 1 280px;
+  min-width: 240px;
+}
+
+.donjon-maker-ligne small {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: #7fa8ae;
+}
+
+.donjon-maker-salle {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(227, 182, 79, 0.15);
+}
+
+.donjon-maker-rang {
+  flex: 0 0 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  border-radius: 999px;
+  background: #e3b64f;
+  color: #05242c;
+  font-weight: 700;
+}
+
+.donjon-maker-mecanique {
+  padding: 10px 0 14px;
+  border-bottom: 1px solid rgba(227, 182, 79, 0.15);
+}
+
+.donjon-maker-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.donjon-maker-actions button {
+  padding: 4px 10px;
+}
+
+.donjon-maker-aide {
+  margin: 6px 0 10px;
+  font-size: 12px;
+  color: #9fc3c9;
+  font-style: italic;
+}
+
+.donjon-maker-avertissement {
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(227, 182, 79, 0.45);
+  border-radius: 8px;
+  background: rgba(227, 182, 79, 0.12);
+  color: #eef6f6;
+  font-size: 13px;
+}
+
+.donjon-maker-salle-detail {
+  margin: 4px 0 10px 38px;
+  padding-left: 12px;
+  border-left: 2px solid rgba(227, 182, 79, 0.2);
+}
+
+/* Outil « Interaction » du MapMaker (ressources, coffres, leviers). */
+.btn-interaction {
+  border-color: #6fd08c;
+  color: #6fd08c;
+}
+
+.map-maker-hover-interaction:hover, .map-maker-interaction {
+  background-color: rgba(111, 208, 140, 0.55);
+}
+
+/* ==========================================================================
+   Import CSV d'équipements (création en masse, images ajoutées ensuite).
+   ========================================================================== */
+
+.import-csv-bloc {
+  margin: 0 20px 8px;
+  font-family: var(--font-body);
+}
+
+.import-csv-toggle {
+  font-family: var(--font-body);
+  font-weight: 700;
+}
+
+.import-csv {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 16px 18px;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+}
+
+.import-csv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.import-csv-file {
+  padding: 8px 14px;
+  border-radius: var(--radius-slot);
+  border: 1px dashed var(--gold-border);
+  background: var(--gold-softer);
+  color: var(--gold);
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover { background: var(--gold-bg-hover); color: var(--gold-hover); }
+
+  input { display: none; }
+}
+
+.import-csv-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.import-csv-aide {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-faint);
+
+  code {
+    color: var(--gold);
+  }
+}
+
+.import-csv-resume {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.import-csv-rapport {
+  max-height: 320px;
+  overflow: auto;
+}
+
+.import-csv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  color: var(--text-soft);
+
+  th, td {
+    padding: 5px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--gold-border);
+    vertical-align: top;
+  }
+
+  th {
+    // Opaque et non `--panel` : l'en-tête reste collé au-dessus des lignes qui défilent.
+    position: sticky;
+    top: 0;
+    background: var(--panel-solid);
+    color: var(--gold);
+    font-family: var(--font-title);
+  }
+
+  code { color: var(--gold); }
+}
+
+.import-csv-statut-cree td:nth-child(3) { color: #6fd08c; }
+.import-csv-statut-maj td:nth-child(3) { color: var(--gold); }
+.import-csv-statut-ignore td:nth-child(3) { color: var(--text-faint); }
+.import-csv-statut-erreur td:nth-child(3) { color: #e04a39; }

@@ -9,6 +9,9 @@ import EquipementPage from "./EquipementPage";
 import ShopMakerPage from "./ShopMakerPage";
 import QuestMakerPage from "./QuestMakerPage";
 import WorldMakerPage from "./WorldMakerPage";
+import DonjonMakerPage from "./DonjonMakerPage";
+import InteractionMakerPage from "./InteractionMakerPage";
+import ArtisanatMakerPage from "./ArtisanatMakerPage";
 
 
 
@@ -32,7 +35,16 @@ const AdministrationPage = (props) => {
                         <NavLink className="" to="/administration/questmaker">Quest Maker</NavLink>
                     </li>
                     <li className="administration-nav-link">
+                        <NavLink className="" to="/administration/donjonmaker">Donjon Maker</NavLink>
+                    </li>
+                    <li className="administration-nav-link">
                         <NavLink className="" to="/administration/pnj">Pnj</NavLink>
+                    </li>
+                    <li className="administration-nav-link">
+                        <NavLink className="" to="/administration/interactions">Interactions</NavLink>
+                    </li>
+                    <li className="administration-nav-link">
+                        <NavLink className="" to="/administration/artisanat">Artisanat</NavLink>
                     </li>
                     <li className="administration-nav-link">
                         <NavLink className="" to="/administration/monstres">Monstres</NavLink>
@@ -50,7 +62,10 @@ const AdministrationPage = (props) => {
                     <PrivateRoute path="/administration/world"  isAdmin={true} component={WorldMakerPage}/>
                     <PrivateRoute path="/administration/mapmaker"  isAdmin={true} component={MapMakerPage}/>
                     <PrivateRoute path="/administration/questmaker"  isAdmin={true} component={QuestMakerPage}/>
+                    <PrivateRoute path="/administration/donjonmaker"  isAdmin={true} component={DonjonMakerPage}/>
                     <PrivateRoute path="/administration/pnj"  isAdmin={true} component={PnjMakerPage}/>
+                    <PrivateRoute path="/administration/interactions"  isAdmin={true} component={InteractionMakerPage}/>
+                    <PrivateRoute path="/administration/artisanat"  isAdmin={true} component={ArtisanatMakerPage}/>
                     <PrivateRoute path="/administration/monstres"  isAdmin={true} component={MonsterMakerPage}/>
                     <PrivateRoute path="/administration/equipements"  isAdmin={true} component={EquipementPage}/>
                     <PrivateRoute path="/administration/shopmaker"  isAdmin={true} component={ShopMakerPage}/>

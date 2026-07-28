@@ -97,6 +97,15 @@
   }
 }
 
+/* Compteur d'un objectif de quête, dans le bouton : en retrait typographique du
+   libellé, qui reste l'action à faire. */
+.progress {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 13px;
+  opacity: 0.75;
+}
+
 @media screen and (max-height: 899px) {
   .body {
     padding: 16px 20px;

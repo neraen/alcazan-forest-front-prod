@@ -29,6 +29,10 @@
   color: var(--gold);
 }
 
+.karmaLabel {
+  color: var(--karma-label);
+}
+
 .values {
   color: var(--text-dim);
 }
@@ -57,4 +61,22 @@
 
 .xp {
   background: linear-gradient(90deg, var(--xp-from), var(--xp-to));
+}
+
+/* Le dégradé du karma couvre la piste ENTIÈRE (l'élément garde `inset: 0`, c'est
+   `clip-path` qui masque la portion non atteinte — cf. GaugeBar.jsx) : la teinte
+   dit alors où se trouve le curseur sur l'échelle. Avec un dégradé relatif à la
+   partie remplie, un pillard afficherait la même couleur de bout qu'un gardien. */
+.karma {
+  background: linear-gradient(90deg, var(--karma-from), var(--karma-mid) 50%, var(--karma-to));
+}
+
+/* Repère du zéro : sans lui, on ne voit pas de quel côté de la neutralité on est. */
+.zeroMark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--text-dim);
+  opacity: 0.6;
 }

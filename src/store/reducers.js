@@ -15,6 +15,14 @@ export const playerStatsReducer = (state = {
             abscisse: null,
             ordonnee: null
         },
+        echange: {
+            etat: null,
+            invitations: []
+        },
+        donjon: {
+            porte: null,
+            combat: null
+        },
         joueurState: {
             idJoueur: 0,
             experience: 0,
@@ -110,6 +118,48 @@ export const playerStatsReducer = (state = {
                 data: {...state.data, pnjInteraction: {pnjId: null, abscisse: null, ordonnee: null}}
             }
         }
+        case actions.UPDATE_ECHANGE: {
+            // Les événements Mercure peuvent arriver dans le désordre : une version
+            // plus ancienne que l'état affiché est ignorée (même session uniquement).
+            const etatActuel = state.data.echange.etat;
+            if(etatActuel && etatActuel.id === action.etat.id && action.etat.version < etatActuel.version){
+                return state;
+            }
+            return {
+                ...state,
+                data: {...state.data, echange: {...state.data.echange, etat: action.etat}}
+            }
+        }
+        case actions.CLOSE_ECHANGE: {
+            return {
+                ...state,
+                data: {...state.data, echange: {...state.data.echange, etat: null}}
+            }
+        }
+        case actions.OPEN_DONJON_PORTE: {
+            return {
+                ...state,
+                data: {...state.data, donjon: {...state.data.donjon, porte: action.porte}}
+            }
+        }
+        case actions.CLOSE_DONJON_PORTE: {
+            return {
+                ...state,
+                data: {...state.data, donjon: {...state.data.donjon, porte: null}}
+            }
+        }
+        case actions.UPDATE_DONJON_COMBAT: {
+            return {
+                ...state,
+                data: {...state.data, donjon: {...state.data.donjon, combat: action.combat}}
+            }
+        }
+        case actions.SET_ECHANGE_INVITATIONS: {
+            return {
+                ...state,
+                data: {...state.data, echange: {...state.data.echange, invitations: action.invitations}}
+            }
+        }
         case actions.SET_CASES: {
             return {
                 ...state,
@@ -169,6 +219,19 @@ export const playerStatsReducer = (state = {
                             if (i === action.index) {
                                 t.hasMonstre = state.data.mapMaker.mode.data.monstreId
                                 t.monstreQuantity = state.data.mapMaker.mode.data.quantity
+                            }
+                            return t;
+                        })]}}
+            }
+        }
+        case actions.ADD_INTERACTION_CASE: {
+            return {
+                ...state,
+                data: {...state.data, mapMaker: {...state.data.mapMaker, cases: [...state.data.mapMaker.cases.map((t, i) => {
+                            if (i === action.index) {
+                                // interactionId null = l'outil « Retirer » : la case est libérée.
+                                t.interactionId = state.data.mapMaker.mode.data.interactionId
+                                t.interactionNom = state.data.mapMaker.mode.data.interactionNom
                             }
                             return t;
                         })]}}

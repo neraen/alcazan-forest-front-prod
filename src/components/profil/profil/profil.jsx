@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import UsersApi from "../../../services/UsersApi";
 import InventaireApi from "../../../services/InventaireApi";
+import MetierApi from "../../../services/MetierApi";
 import carateristiqueService from "../../../services/carateristiqueService";
 import Panel from "../../ui/panel/Panel";
 import SectionTitle from "../../ui/sectionTitle/SectionTitle";
+import GaugeBar from "../../ui/gaugeBar/GaugeBar";
 import Glyph from "../../ui/glyphs/Glyph";
 import styles from "./Profil.module.scss";
 
@@ -53,9 +55,14 @@ const Profil = (props) => {
     // Message de confirmation affiché après validation (auto-masqué).
     const [feedback, setFeedback] = useState(null);
 
+    // Métiers appris : lecture seule ici. L'apprentissage et l'oubli se font chez un
+    // maître de métier — la fiche de personnage rend compte, elle ne décide pas.
+    const [metiers, setMetiers] = useState(null);
+
     useEffect(() => {
         fetchCaracteristiques(props.user.id)
         fetchEquipementEquipe();
+        MetierApi.progression().then(setMetiers).catch(() => setMetiers(null));
     }, []);
 
     // Masque automatiquement le message de confirmation après quelques secondes.
@@ -117,6 +124,19 @@ const Profil = (props) => {
         {label: "Alignement", value: props.user.nomAlignement || "Aucun"},
     ];
 
+    // Le karma est une TROISIÈME réputation, distincte de l'alignement (le camp choisi)
+    // et de l'honneur (la conduite en duel) : la manière dont le joueur prend au monde,
+    // en récoltant, en fabriquant et dans ses choix de quête.
+    //
+    // Jauge et non ligne de texte : l'échelle est SIGNÉE et bornée, et ce qui compte
+    // pour le joueur est de voir de quel côté de la neutralité il se trouve et combien
+    // de marge il lui reste — un « Mesuré (-40) » ne dit ni l'un ni l'autre. Les bornes
+    // et le libellé de palier viennent du serveur : les seuils n'existent qu'à un seul
+    // endroit (ArtisanatConfig), sinon ce que le joueur lit et ce qui conditionnera
+    // l'accès aux contenus finiraient par diverger.
+    const karma = props.user.karma;
+    const karmaEtendue = karma ? karma.max - karma.min : 0;
+
     const pendingFor = (key) => savedCaracteristiques
         ? Math.max(0, caracteristiques[key] - savedCaracteristiques[key])
         : 0;
@@ -124,6 +144,15 @@ const Profil = (props) => {
     // Total de points répartis mais pas encore validés.
     const pendingTotal = STATS_META.reduce((sum, s) => sum + pendingFor(s.key), 0);
     const hasPending = pendingTotal > 0;
+
+    const metiersAppris = metiers?.metiers || [];
+    // Les libellés de famille viennent du serveur : le front ne connaît aucune famille
+    // en dur, sinon en ajouter une afficherait sa valeur brute dans l'interface.
+    const metierPlaces = metiers
+        ? Object.entries(metiers.placesRestantes || {})
+            .map(([famille, places]) => `${places} ${metiers.famillesLabels?.[famille] || famille}`)
+            .join(" · ") + " libre(s)"
+        : "";
 
     // variant="modal" : paddings resserrés (maquette ProfileScreen variante modale)
     return (
@@ -148,6 +177,21 @@ const Profil = (props) => {
                             <span className={styles.infoValue}>{row.value}</span>
                         </div>
                     ))}
+                    {karma && (
+                        <div className={styles.karmaBlock}>
+                            {/* marker : position du zéro sur l'échelle signée. Il ne tombe
+                                au milieu que parce que les bornes sont symétriques — le
+                                calculer plutôt que d'écrire 50 % garde le repère juste si
+                                l'équilibrage les désymétrise un jour. */}
+                            <GaugeBar variant="karma"
+                                      value={karma.valeur - karma.min}
+                                      max={karmaEtendue}
+                                      marker={karmaEtendue > 0 ? ((0 - karma.min) / karmaEtendue) * 100 : 50}
+                                      label="Karma"
+                                      showValues={false}
+                                      right={`${karma.palier} (${karma.valeur > 0 ? "+" : ""}${karma.valeur})`}/>
+                        </div>
+                    )}
                 </Panel>
 
                 <Panel variant="soft" padding="lg" radius="lg" className={styles.equipCard}>
@@ -167,6 +211,38 @@ const Profil = (props) => {
                             </div>
                         ))}
                     </div>
+                </Panel>
+
+                <Panel variant="soft" padding="lg" radius="lg" className={styles.metierCard}>
+                    <SectionTitle right={
+                        <span className={styles.sectionNote}>
+                            {metierPlaces}
+                        </span>
+                    }>
+                        Métiers
+                    </SectionTitle>
+                    {metiersAppris.length === 0
+                        ? <p className={styles.metierEmpty}>
+                            Vous n'exercez aucun métier. Trouvez un maître pour en apprendre un.
+                        </p>
+                        : <div className={styles.metierRows}>
+                            {metiersAppris.map((metier) => (
+                                <div key={metier.metierId} className={styles.metierRow}>
+                                    <div className={styles.metierHead}>
+                                        <span className={styles.metierName}>{metier.nom}</span>
+                                        <span className={styles.metierLevel}>
+                                            niveau {metier.niveau} / {metier.niveauMax}
+                                        </span>
+                                    </div>
+                                    {/* Barre bornée entre le palier du niveau courant et le
+                                        suivant : sur 0 → prochain palier, elle reculerait à
+                                        chaque montée de niveau. */}
+                                    <GaugeBar variant="xp" showValues={false}
+                                              value={metier.experience - metier.experienceNiveauCourant}
+                                              max={Math.max(1, metier.experienceProchainNiveau - metier.experienceNiveauCourant)}/>
+                                </div>
+                            ))}
+                        </div>}
                 </Panel>
             </div>
 

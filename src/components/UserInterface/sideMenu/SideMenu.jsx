@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from "react-router-dom";
 import useModal from "../../../hooks/useModal";
+import AtelierModal from "../../modals/atelierModal/AtelierModal";
 import InventoryModal from "../../modals/inventoryModal/InventoryModal";
 import ProfilModal from "../../modals/profilModal/ProfilModal";
 import SpellsModal from "../../modals/spellsModal/SpellsModal";
@@ -16,8 +17,10 @@ const SideMenu = (props) => {
     const { isShowing: isDialogInventoryShowed, toggle: toggleDialogInventory } = useModal();
     const { isShowing: isProfilShowed, toggle: toggleProfil } = useModal();
     const { isShowing: isSpellsShowed, toggle: toggleSpells } = useModal();
+    const { isShowing: isAtelierShowed, toggle: toggleAtelier } = useModal();
 
     const linkItems = [
+        {label: "Artisanat", to: "/artisanat", icon: "/img/menu/buches.png"},
         {label: "Guilde", to: "/guilde", icon: "/img/icons/flag.png"},
         {label: "Journal", to: "/historique", icon: "/img/icons/book.png"},
         {label: "Classement", to: "#", icon: "/img/icons/shild.png"},
@@ -45,6 +48,10 @@ const SideMenu = (props) => {
                 {itemContent({label: "Sorts", icon: "/img/menu/livre.png"})}
             </button>
             <SpellsModal isShowing={isSpellsShowed} toggle={toggleSpells}/>
+            <button type="button" onClick={toggleAtelier} className={styles.item}>
+                {itemContent({label: "Établi", icon: "/img/icons/bag.png"})}
+            </button>
+            <AtelierModal isShowing={isAtelierShowed} toggle={toggleAtelier}/>
             {linkItems.map(item => (
                 <Link key={item.label} to={item.to} className={styles.item}>
                     {itemContent(item)}

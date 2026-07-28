@@ -11,6 +11,7 @@ import AuthContext from "./contexts/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import MapPage from "./pages/mapPage/MapPage";
 import GuildePage from "./pages/guildePage/GuildePage";
+import ArtisanatPage from "./pages/artisanatPage/ArtisanatPage";
 import InventoryPage from "./pages/inventoryPage/InventoryPage";
 import {Provider} from "react-redux";
 import store from "./store/index"
@@ -53,6 +54,7 @@ const Index =  () => {
                         <PrivateRoute path="/carte" component={MapPage}/>
                         <PrivateRoute path="/inventaire" redirectTo="/inventaire/equipement" component={InventoryPage}/>
                         <PrivateRoute path="/guilde" component={GuildePage}/>
+                        <PrivateRoute path="/artisanat" component={ArtisanatPage}/>
                         <PrivateRoute path="/historique"  component={HistoryPage}/>
                         <PrivateRoute path="/messagerie"  component={MessageriePage}/>
                         <PrivateRoute path="/administration"  isAdmin={true} component={AdministrationPage}/>

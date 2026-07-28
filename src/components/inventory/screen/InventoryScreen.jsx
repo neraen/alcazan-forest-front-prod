@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {connect} from "react-redux";
+import {toast} from "react-toastify";
 import {updateJoueurState} from "../../../store/actions";
 import InventaireApi from "../../../services/InventaireApi";
 import UsersApi from "../../../services/UsersApi";
@@ -97,14 +98,26 @@ const InventoryScreen = ({onClose, updateJoueurState}) => {
         return slots;
     }, [barConsommables]);
 
+    // Équiper / retirer : le back refuse (400) ce qui casserait l'inventaire — on montre son
+    // message plutôt que d'échouer en silence, et on resynchronise dans tous les cas.
     const handleEquip = async (item) => {
-        await InventaireApi.wearEquipement(item.id);
+        try {
+            await InventaireApi.wearEquipement(item.id);
+            toast.success(`${item.name} équipé.`);
+        } catch (error) {
+            toast.error(error.response?.data?.error || "Impossible d'équiper cet objet.");
+        }
         setSelected(null);
         await refreshItems();
     };
 
     const handleUnequip = async (item) => {
-        await InventaireApi.unwearEquipement(item.id);
+        try {
+            await InventaireApi.unwearEquipement(item.id);
+            toast.success(`${item.name} retiré.`);
+        } catch (error) {
+            toast.error(error.response?.data?.error || "Impossible de retirer cet objet.");
+        }
         setSelected(null);
         await refreshItems();
     };

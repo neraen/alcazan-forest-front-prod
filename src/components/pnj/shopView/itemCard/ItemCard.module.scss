@@ -1,0 +1,264 @@
+.rarity-commun {
+  --rarity: var(--rarity-commun);
+}
+
+.rarity-peu-commun {
+  --rarity: var(--rarity-peu-commun);
+}
+
+.rarity-rare {
+  --rarity: var(--rarity-rare);
+}
+
+.rarity-epique {
+  --rarity: var(--rarity-epique);
+}
+
+.rarity-legendaire {
+  --rarity: var(--rarity-legendaire);
+}
+
+.rarity-heroique {
+  --rarity: var(--rarity-heroique);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: var(--radius-card);
+  background: var(--panel-soft);
+  border: 1px solid var(--rarity);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+}
+
+.cardHeader {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--rarity);
+  text-align: center;
+}
+
+.cardBody {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.thumb {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: var(--radius-slot);
+  background: var(--parchment);
+  border: 2px solid var(--rarity);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumbIcon {
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+}
+
+/* Pastille de quantité possédée, sur le modèle des cases d'inventaire. */
+.qty {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  min-width: 20px;
+  padding: 1px 5px;
+  border-radius: 10px;
+  background: var(--ink);
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.caracs {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.carac {
+  padding: 2px 9px;
+  border-radius: var(--radius-tab);
+  background: var(--badge-neutral-bg);
+  border: 1px solid var(--gold-card-border);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--bonus);
+  text-transform: capitalize;
+}
+
+.desc {
+  flex: 1;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+
+/* `margin-top: auto` colle le bloc prix + quantité + bouton au bas de la carte : dans une
+   rangée, les boutons s'alignent quelles que soient les hauteurs de caracs/description. */
+.cardMeta {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+/* Objet sans prix de revente : le marchand n'en donne rien. */
+.priceZero {
+  color: var(--text-faint);
+}
+
+.coin {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.meta {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* Sélecteur de quantité : −, saisie libre, +, puis « Tout » pour vider la pile. */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stepperButton {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-border);
+  background: var(--gold-softer);
+  color: var(--gold);
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover:not(:disabled) {
+    background: var(--gold-bg-hover);
+    color: var(--gold-hover);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.stepperInput {
+  flex: 1;
+  min-width: 0;
+  height: 30px;
+  padding: 0 6px;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-border);
+  background: var(--panel);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 14px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+
+  /* Les flèches natives doublonnent avec −/+ et sont minuscules : on les masque. */
+  appearance: textfield;
+  -moz-appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.stepperAll {
+  height: 30px;
+  padding: 0 10px;
+  flex-shrink: 0;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-border);
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover:not(:disabled) {
+    background: var(--gold-softer);
+    color: var(--gold-hover);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.action {
+  padding: 10px;
+  border-radius: var(--radius-slot);
+  border: none;
+  cursor: pointer;
+  background: var(--gold);
+  color: var(--ink);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  transition: var(--transition);
+
+  &:hover:not(:disabled) {
+    background: var(--gold-hover);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}

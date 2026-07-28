@@ -1,0 +1,313 @@
+.corps {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+  overflow: auto;
+}
+
+/* --- Les deux offres côte à côte --- */
+
+.offres {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.offre {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-card);
+  background: var(--panel);
+  border: 1px solid var(--gold-soft);
+}
+
+.offreEntete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--gold-divider);
+}
+
+.offreTitre {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--gold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badgeConfirme,
+.badgeAttente {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: var(--radius-bar);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badgeConfirme {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.badgeAttente {
+  background: var(--gold-softer);
+  color: var(--text-faint);
+  border: 1px solid var(--gold-divider);
+}
+
+/* --- Lignes d'objets proposés --- */
+
+.lignes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 66px;
+}
+
+.vide {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-faint);
+  padding: 4px 2px;
+}
+
+.ligne {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: var(--radius-slot);
+  background: var(--gold-softer);
+  border: 1px solid var(--gold-divider);
+}
+
+.ligneIcone {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+}
+
+.ligneNom {
+  flex: 1;
+  min-width: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ligneQuantite {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+.ligneActions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 4px;
+}
+
+.ligneBouton {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-bar);
+  border: 1px solid var(--gold-border);
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 11px;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover:not(:disabled) {
+    background: var(--gold-bg-hover);
+    color: var(--text);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* --- Or --- */
+
+.orRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--gold-divider);
+}
+
+.orIcone {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.orInput {
+  width: 90px;
+  padding: 4px 8px;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-border);
+  background: var(--badge-bg);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+
+  &:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+}
+
+.orMontant {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+.orLabel {
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+
+/* --- Le sac --- */
+
+.sac {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-card);
+  background: var(--panel);
+  border: 1px solid var(--gold-soft);
+}
+
+.sacEntete {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--gold);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--gold-divider);
+}
+
+.sacGrille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+  gap: 6px;
+}
+
+.sacCellule {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-mini-border);
+  background: var(--badge-bg);
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover:not(:disabled) {
+    border-color: var(--gold);
+    background: var(--gold-softer);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.sacEpuise {
+  opacity: 0.4;
+}
+
+.sacIcone {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+}
+
+.sacQuantite {
+  position: absolute;
+  right: 2px;
+  bottom: 1px;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.sacPropose {
+  position: absolute;
+  left: 2px;
+  top: 1px;
+  padding: 0 4px;
+  border-radius: var(--radius-bar);
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 9.5px;
+  font-weight: 800;
+}
+
+/* --- Pied --- */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--gold-modal-line);
+}
+
+.noteInfo {
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+
+.noteReset {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--gold-hover);
+}
+
+.footerBoutons {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.boutonAnnuler {
+  opacity: 0.8;
+}
+
+.boutonFige {
+  opacity: 0.6;
+  pointer-events: none;
+}

@@ -1,0 +1,104 @@
+.liste {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ligne {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  background: var(--row-bg);
+  border: 1px solid var(--gold-card-border);
+  border-radius: var(--radius-card);
+  transition: var(--transition);
+}
+
+.lignePrete {
+  border-color: var(--gold-border);
+  background: var(--gold-softer);
+}
+
+.corps {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.entete {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nom {
+  font-family: var(--font-title);
+  font-size: 15px;
+  color: var(--text);
+}
+
+.mode {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim2);
+  padding: 2px 8px;
+  background: var(--badge-neutral-bg);
+  border-radius: var(--radius-bar);
+}
+
+.produit {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
+.restant,
+.prete {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.restant {
+  color: var(--text-dim);
+}
+
+.prete {
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.actions {
+  flex: none;
+  display: flex;
+  gap: 8px;
+}
+
+.vide,
+.plafond {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-dim2);
+}
+
+.plafond {
+  padding-top: 2px;
+}
+
+@media (max-width: 720px) {
+  .ligne {
+    flex-wrap: wrap;
+  }
+
+  .corps {
+    order: 3;
+    flex-basis: 100%;
+  }
+}
