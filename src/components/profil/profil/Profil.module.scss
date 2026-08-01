@@ -137,6 +137,17 @@
   border: 1px solid var(--gold-softer);
 }
 
+/* --- Carte « faits d'armes » (totaux de partie + états courants) --- */
+
+.faitsCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  // `flex: 0 0 auto` : la carte fait exactement la hauteur de ses lignes et ne se laisse
+  // pas comprimer par la carte d'équipement voisine, qui prend la place restante.
+  flex: 0 0 auto;
+}
+
 /* --- Carte équipement (base + bonus par stat) --- */
 
 .equipCard {

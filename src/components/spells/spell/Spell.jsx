@@ -118,7 +118,16 @@ const Spell = (props) => {
         let attackStats = {};
 
         if(props.target.type === "player"){
-            attackStats = await UsersApi.applyAttaqueToPlayer(props.target.targetId, props.spell.id)
+            try{
+                attackStats = await UsersApi.applyAttaqueToPlayer(props.target.targetId, props.spell.id)
+            }catch(erreur){
+                // Garde-fous serveur du duel (PA, portée, carte, feu ami, réapparition) :
+                // message FR destiné au joueur. Sans ce catch, un refus parfaitement
+                // légitime remontait en rejet non intercepté et laissait le ciblage mort
+                // jusqu'au rechargement de la page.
+                toast.error(erreur.response?.data?.message || "Impossible de viser ce joueur.");
+                return;
+            }
         }else if(props.target.type === "monstre"){
             if(props.spell.type !== "soin"){
                 attackStats = await UsersApi.applyAttaqueToMonster(props.target.targetId, props.spell.id)
@@ -151,7 +160,11 @@ const Spell = (props) => {
             newExperience: attackStats.newExperience,
             lifeJoueur: attackStats.lifeJoueur,
             damageReturns: attackStats.damageReturns,
-            droppedItems: (attackStats.droppedItems[0] !== undefined) ? attackStats.droppedItems[0] : "",
+            // Défensif : tous les endpoints d'attaque ne renvoient pas de butin (le duel
+            // n'en a pas). Un accès direct à `[0]` sur une clé absente levait un TypeError
+            // qui empêchait TOUT ce bloc de s'exécuter — donc plus de mise à jour d'état,
+            // plus de ciblage, plus de noms au survol, jusqu'au F5.
+            droppedItems: attackStats.droppedItems?.[0] ?? "",
             level: attackStats.level,
             killMessage: attackStats.killMessage,
             message: attackStats.message,

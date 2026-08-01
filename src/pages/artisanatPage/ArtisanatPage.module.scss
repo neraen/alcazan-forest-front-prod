@@ -68,6 +68,12 @@
   gap: 10px;
 }
 
+.grilleRessources {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
 .grilleRecettes {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -198,7 +204,8 @@
     padding: 16px 14px 22px;
   }
 
-  .grilleRecettes {
+  .grilleRecettes,
+  .grilleRessources {
     grid-template-columns: 1fr;
   }
 }

@@ -1,0 +1,93 @@
+/* Patron du tableau de GuildePage : en-tête en grid + lignes en cartes, mêmes colonnes
+   déclarées deux fois pour que l'en-tête reste aligné sur les lignes qui défilent. */
+
+$colonnes: 0.6fr 2.4fr 1.4fr 0.8fr 1.2fr;
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.head {
+  display: grid;
+  grid-template-columns: $colonnes;
+  gap: 12px;
+  padding: 0 16px;
+
+  span {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+}
+
+.valeurHead {
+  text-align: right;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-height: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: $colonnes;
+  gap: 12px;
+  align-items: center;
+  padding: 11px 16px;
+  border-radius: var(--radius-nav);
+  background: var(--row-bg);
+  border: 1px solid var(--gold-softer);
+}
+
+/* La ligne du joueur courant est surlignée : sur cinquante entrées, se retrouver soi-même
+   à l'œil est le premier geste. */
+.rowYou {
+  background: var(--gold-softer);
+  border-color: var(--gold-half);
+}
+
+.rang {
+  font-family: var(--font-title);
+  font-size: 15px;
+  color: var(--text-dim);
+}
+
+.podium {
+  color: var(--gold);
+}
+
+.pseudo {
+  font-weight: 700;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classe,
+.niveau {
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+.valeur {
+  text-align: right;
+  font-family: var(--font-title);
+  font-size: 15px;
+  color: var(--gold);
+}
+
+.vide {
+  margin: 0;
+  padding: 28px 0;
+  text-align: center;
+  color: var(--text-faint);
+}

@@ -49,9 +49,13 @@ const MetierCard = ({metier, actif = false, compact = false, onClick}) => {
         return contenu;
     }
 
+    // Une fiche de récolte mène aux ressources ramassables, une fiche de fabrication aux
+    // recettes : c'est la famille qui décide, pas l'appelant.
+    const quoi = metier.famille === "recolte" ? "les ressources" : "les recettes";
+
     return (
         <button type="button" className={styles.bouton} onClick={onClick}
-                aria-pressed={actif} title={`Voir les recettes de ${metier.nom}`}>
+                aria-pressed={actif} title={`Voir ${quoi} de ${metier.nom}`}>
             {contenu}
         </button>
     )

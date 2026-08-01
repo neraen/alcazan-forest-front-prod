@@ -1,0 +1,514 @@
+/* Hôtel des ventes. Aucun hex en dur : tout vient de _tokens.scss. */
+
+.container {
+  /* `width: 100%` + `max-width`, et SURTOUT pas de `vw` : l'overlay de GameModal est ancré sur
+     `.main` de MapPage (la zone de carte, ~880px), qui est en `overflow: hidden`. Une largeur
+     mesurée sur la FENÊTRE dépasse cette zone et se fait rogner aux deux bords — on perdait
+     161px à gauche, dont le titre de la modale. Ici la largeur ne peut jamais excéder ce que
+     l'hôte accorde, quelle que soit la taille de la fenêtre. */
+  width: 100%;
+  max-width: 1120px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 22px 22px;
+}
+
+/* --- Bourse dans le header du ModalShell --- */
+
+.purse {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: var(--radius-nav);
+  background: var(--gold-softer);
+  border: 1px solid var(--gold-border);
+}
+
+.purseCoin {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.purseAmount {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Onglets (mêmes règles que l'échoppe) --- */
+
+.tabs {
+  align-self: center;
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border-radius: var(--radius-nav);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--gold-nav-border);
+}
+
+.tab {
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 8px 24px;
+  border-radius: var(--radius-tab);
+  transition: var(--transition);
+
+  &:hover:not(.tabActive) {
+    color: var(--gold-hover);
+  }
+}
+
+.tabActive {
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.onglet {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* --- Barre de recherche et filtres --- */
+
+.barre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--panel-inner);
+  border: 1px solid var(--gold-subnav-border);
+  border-radius: var(--radius-panel);
+}
+
+.recherche {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  background: var(--panel-inner-strong);
+  border: 1px solid var(--gold-field-border);
+  border-radius: var(--radius-slot);
+}
+
+.rechercheIcone {
+  flex: none;
+  color: var(--text-dim2);
+}
+
+.rechercheInput {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text);
+
+  &::placeholder {
+    color: var(--text-dim3);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.puce {
+  padding: 6px 12px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-dim);
+  background: var(--badge-neutral-bg);
+  border: 1px solid var(--gold-card-border);
+  border-radius: var(--radius-bar);
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover {
+    color: var(--text);
+    border-color: var(--gold-border);
+  }
+}
+
+.puceActive {
+  color: var(--ink);
+  background: var(--gold);
+  border-color: var(--gold);
+  font-weight: 700;
+}
+
+.rafraichir {
+  padding: 7px 12px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dim);
+  background: var(--gold-softer);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-slot);
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover:not(:disabled) {
+    color: var(--gold-hover);
+    background: var(--gold-bg-hover);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.tri {
+  padding: 7px 10px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text);
+  background: var(--panel-inner-strong);
+  border: 1px solid var(--gold-field-border);
+  border-radius: var(--radius-slot);
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+}
+
+/* --- Grille d'annonces --- */
+
+.grille {
+  display: grid;
+  /* minmax(0, …) : sans lui, une carte au nom très long élargit sa colonne et fait déborder
+     la grille de la modale. */
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  gap: 14px;
+}
+
+.vide {
+  margin: 0;
+  padding: 28px 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-dim2);
+}
+
+.compteur {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dim2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Pagination --- */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding-top: 4px;
+}
+
+.pageBouton {
+  padding: 7px 16px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dim);
+  background: var(--gold-softer);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-slot);
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover:not(:disabled) {
+    color: var(--gold-hover);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.pageEtat {
+  font-size: 12px;
+  color: var(--text-dim2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Onglet Vendre : sac à gauche, formulaire à droite --- */
+
+.vendre {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 20px;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.colonneSac {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.colonneForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--panel-inner);
+  border: 1px solid var(--gold-subnav-border);
+  border-radius: var(--radius-panel);
+}
+
+.sac {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+}
+
+.slotActif {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold-softer);
+}
+
+.slotQty {
+  position: absolute;
+  right: 2px;
+  bottom: 1px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--gold);
+  text-shadow: 0 1px 2px var(--ink);
+}
+
+.formTitre {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--gold);
+}
+
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.champLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.champInput {
+  height: 34px;
+  padding: 0 10px;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--panel-inner-strong);
+  border: 1px solid var(--gold-field-border);
+  border-radius: var(--radius-slot);
+  font-variant-numeric: tabular-nums;
+
+  &:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.recap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: var(--panel-inner-strong);
+  border-radius: var(--radius-slot);
+}
+
+.recapLigne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.recapFrais {
+  color: var(--danger-text);
+}
+
+.recapGain {
+  color: var(--gold);
+}
+
+.recapNote {
+  margin: 4px 0 0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--text-dim3);
+}
+
+.alerte {
+  margin: 0;
+  padding: 9px 11px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--danger-text);
+  background: var(--danger-bg-hover);
+  border: 1px solid var(--danger-border);
+  border-radius: var(--radius-slot);
+}
+
+/* --- Onglet Mes ventes --- */
+
+.liste {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ligne {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ligneClose {
+  opacity: 0.65;
+}
+
+.ligneVignette {
+  width: 42px;
+  height: 42px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-slot);
+  background: var(--parchment);
+  border: 1px solid var(--gold-card-border);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--gold);
+
+  img {
+    width: 78%;
+    height: 78%;
+    object-fit: contain;
+  }
+}
+
+.ligneCorps {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ligneNom {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.ligneQty {
+  color: var(--text-dim2);
+  font-weight: 800;
+}
+
+.ligneMeta {
+  font-size: 12px;
+  color: var(--text-dim2);
+  font-variant-numeric: tabular-nums;
+}
+
+.retirer {
+  flex: none;
+  padding: 7px 14px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-slot);
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover:not(:disabled) {
+    color: var(--gold-hover);
+    background: var(--gold-softer);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.badge {
+  flex: none;
+  padding: 4px 10px;
+  border-radius: var(--radius-bar);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  background: var(--badge-neutral-bg);
+  border: 1px solid var(--gold-card-border);
+  color: var(--text-dim2);
+}
+
+.badge_vendue {
+  color: var(--gold);
+  border-color: var(--gold-border);
+}

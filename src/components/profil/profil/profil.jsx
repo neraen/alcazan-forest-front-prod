@@ -59,10 +59,16 @@ const Profil = (props) => {
     // maître de métier — la fiche de personnage rend compte, elle ne décide pas.
     const [metiers, setMetiers] = useState(null);
 
+    // Faits d'armes : totaux de partie (XP totale, monstres, boss…) et états courants
+    // (richesse, honneur). Endpoint DÉDIÉ et non `data/minimal`, qui est le chemin chaud
+    // rappelé à chaque déplacement sur la carte.
+    const [stats, setStats] = useState(null);
+
     useEffect(() => {
         fetchCaracteristiques(props.user.id)
         fetchEquipementEquipe();
         MetierApi.progression().then(setMetiers).catch(() => setMetiers(null));
+        UsersApi.getStats().then(setStats).catch(() => setStats(null));
     }, []);
 
     // Masque automatiquement le message de confirmation après quelques secondes.
@@ -123,6 +129,19 @@ const Profil = (props) => {
         {label: "Guilde", value: props.user.nomGuilde || "Aucune"},
         {label: "Alignement", value: props.user.nomAlignement || "Aucun"},
     ];
+
+    // Totaux et états sont deux natures différentes côté serveur (les uns ne redescendent
+    // jamais, les autres sont la photo de l'instant), mais ils se lisent de la même façon :
+    // une ligne libellé / valeur. On les concatène donc pour l'affichage, dans l'ordre où le
+    // serveur les donne — c'est lui qui décide de ce qui mérite d'être montré.
+    const statsLignes = stats ? [...stats.faitsDArmes, ...stats.etats] : [];
+
+    // Le `format` vient du serveur : le front ne décide pas que « richesse » s'affiche en or,
+    // il l'apprend. Même discipline que les libellés — ajouter un cumul reste back-only.
+    const formaterValeur = (ligne) => {
+        const valeur = ligne.valeur.toLocaleString("fr-FR");
+        return ligne.format === "or" ? `${valeur} po` : valeur;
+    };
 
     // Le karma est une TROISIÈME réputation, distincte de l'alignement (le camp choisi)
     // et de l'honneur (la conduite en duel) : la manière dont le joueur prend au monde,
@@ -193,6 +212,20 @@ const Profil = (props) => {
                         </div>
                     )}
                 </Panel>
+
+                {statsLignes.length > 0 && (
+                    <Panel variant="soft" padding="lg" radius="lg" className={styles.faitsCard}>
+                        <SectionTitle>Faits d'armes</SectionTitle>
+                        {statsLignes.map((ligne) => (
+                            <div key={ligne.cle} className={styles.infoRow}>
+                                <span className={styles.infoLabel}>{ligne.label}</span>
+                                <span className={styles.infoValue}>
+                                    {formaterValeur(ligne)}
+                                </span>
+                            </div>
+                        ))}
+                    </Panel>
+                )}
 
                 <Panel variant="soft" padding="lg" radius="lg" className={styles.equipCard}>
                     <SectionTitle right={<span className={styles.sectionNote}>base + bonus</span>}>

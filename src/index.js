@@ -17,6 +17,7 @@ import {Provider} from "react-redux";
 import store from "./store/index"
 import AdministrationPage from "./administration/pages/AdministrationPage";
 import HistoryPage from "./pages/historyPage/HistoryPage";
+import ClassementPage from "./pages/classementPage/ClassementPage";
 import MessageriePage from "./pages/messageriePage/MessageriePage";
 import './styles/app.scss'
 import ProfilJoueur from "./components/profilJoueur/ProfilJoueur";
@@ -55,6 +56,7 @@ const Index =  () => {
                         <PrivateRoute path="/inventaire" redirectTo="/inventaire/equipement" component={InventoryPage}/>
                         <PrivateRoute path="/guilde" component={GuildePage}/>
                         <PrivateRoute path="/artisanat" component={ArtisanatPage}/>
+                        <PrivateRoute path="/classement" component={ClassementPage}/>
                         <PrivateRoute path="/historique"  component={HistoryPage}/>
                         <PrivateRoute path="/messagerie"  component={MessageriePage}/>
                         <PrivateRoute path="/administration"  isAdmin={true} component={AdministrationPage}/>

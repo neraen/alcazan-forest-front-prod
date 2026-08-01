@@ -1,0 +1,66 @@
+.sparkline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.entete {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-soft);
+}
+
+.max {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.svg {
+  width: 100%;
+  display: block;
+  // La courbe est étirée horizontalement (preserveAspectRatio="none") : sans cette
+  // compensation, l'épaisseur du trait le serait aussi et varierait avec la largeur.
+  vector-effect: non-scaling-stroke;
+}
+
+.trait {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.aire {
+  fill: var(--gold-softer);
+  stroke: none;
+}
+
+/* Variantes : la couleur porte le RAYON de la série, alignée sur les badges du journal. */
+.combat .trait { stroke: var(--hp-to); }
+.combat .aire { fill: rgba(224, 74, 57, 0.12); }
+
+.economie .trait { stroke: var(--gold); }
+
+.progression .trait { stroke: var(--mp-to); }
+.progression .aire { fill: rgba(63, 143, 221, 0.12); }
+
+.social .trait { stroke: var(--pa-label); }
+.social .aire { fill: rgba(240, 169, 92, 0.12); }
+
+.systeme .trait { stroke: var(--text-faint); }
+.systeme .aire { fill: rgba(127, 168, 174, 0.10); }
+
+.vide {
+  padding: 14px 0;
+  font-size: 12px;
+  color: var(--text-faint);
+}

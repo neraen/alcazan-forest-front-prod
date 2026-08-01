@@ -49,6 +49,19 @@ function updateCaracteristiques(data){
     return axios.post(API_URL + "joueur/caracteristiques/update", data).then(response => response.data)
 }
 
+/**
+ * Faits d'armes (totaux de partie) et états de progression (richesse, honneur).
+ *
+ * Endpoint dédié plutôt qu'un ajout à `find()` (`joueur/data/minimal`) : celui-ci est
+ * rappelé à chaque rafraîchissement de carte, la fiche de personnage s'ouvre ponctuellement.
+ *
+ * @returns {Promise<{faitsDArmes: Array, etats: Array}>} chaque entrée porte
+ *          `{cle, label, unite, format, valeur}` — aucun libellé n'est en dur côté client.
+ */
+function getStats(){
+    return axios.post(API_URL + "joueur/stats").then(response => response.data)
+}
+
 function applyAttaqueToPlayer(targetId, spellId){
     return axios.post(API_URL + "joueur/attack/joueur", {targetId: targetId, spellId: spellId}).then(response => response.data)
 }
@@ -93,6 +106,7 @@ export default {
     changeMap,
     getCaracteristiques,
     updateCaracteristiques,
+    getStats,
     getLevelAndExperience,
     getPlayerSpells,
     getSpellBook,

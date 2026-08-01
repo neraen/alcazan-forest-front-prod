@@ -3,18 +3,23 @@ import {rarityClass} from "../../../inventory/screen/itemUtils";
 import styles from "./ItemCard.module.scss";
 
 /**
- * Carte d'article d'échoppe, partagée par les onglets Acheter et Vendre : bordure de rareté,
- * vignette (+ pastille de quantité), caractéristiques ou description, prix, sélecteur de
- * quantité optionnel, et un bouton d'action unique. Toute la présentation d'un article de
- * boutique vit ici — les onglets ne portent que leur logique métier.
+ * Carte d'article, partagée par les onglets Acheter et Vendre de l'échoppe ET par l'hôtel des
+ * ventes : bordure de rareté, vignette (+ pastille de quantité), caractéristiques ou
+ * description, prix, sélecteur de quantité optionnel, et un bouton d'action unique. Toute la
+ * présentation d'un article vit ici — les onglets ne portent que leur logique métier.
  *
  * Le bloc prix/quantité/bouton est collé en bas (cf. `.cardMeta`) : les boutons d'une même
  * rangée s'alignent même quand les cartes n'ont pas le même nombre de caractéristiques.
+ *
+ * `subline` est volontairement une chaîne libre et non un couple vendeur/expiration : la carte
+ * reste ignorante du domaine, et c'est l'hôtel des ventes qui décide comment formuler « Vendu
+ * par X · 11 h restantes ». Elle n'a ainsi rien à savoir des horloges.
  */
 const ItemCard = ({
     name,
     img,
     rarity,
+    subline,
     caracteristiques = [],
     description,
     quantity,
@@ -48,10 +53,16 @@ const ItemCard = ({
     return (
         <div className={`${styles.card} ${styles[rarityClass(rarity)]}`}>
             <div className={styles.cardHeader}>{name}</div>
+            {subline && <div className={styles.subline}>{subline}</div>}
 
             <div className={styles.cardBody}>
                 <div className={styles.thumb}>
-                    <img className={styles.thumbIcon} src={img} alt={name}/>
+                    {/* Repli sur l'initiale quand l'image manque : à l'hôtel des ventes, les
+                        lots viennent de tout le contenu du jeu, dont des objets sans icône —
+                        une image cassée y est bien plus visible qu'à l'échoppe. */}
+                    {img
+                        ? <img className={styles.thumbIcon} src={img} alt={name}/>
+                        : <span className={styles.thumbInitiale}>{(name || "?").charAt(0).toUpperCase()}</span>}
                     {quantity > 1 && <span className={styles.qty}>{quantity}</span>}
                 </div>
 

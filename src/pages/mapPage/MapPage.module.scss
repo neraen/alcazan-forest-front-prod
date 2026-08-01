@@ -27,7 +27,13 @@
   flex-direction: column;
   border-radius: var(--radius-panel);
   border: 1px solid var(--gold-soft);
-  overflow: hidden;
+  /* `clip` et NON `hidden` : `hidden` crée un conteneur de défilement, et la SpellBar est plus
+     large que cette zone sur une fenêtre étroite (scrollWidth 1058 pour 878). Le navigateur
+     scrollait alors `main` de ~180px pour « amener dans la vue » le bouton cliqué à l'intérieur
+     d'une modale de jeu — entraînant TOUT le contenu, dont #game-modal-root, et rognant la
+     modale sur son bord gauche (titre compris). `clip` rogne pareil mais interdit le
+     défilement, donc ce décalage devient impossible. Ne pas revenir à `hidden`. */
+  overflow: clip;
   background: var(--panel-solid);
 }
 

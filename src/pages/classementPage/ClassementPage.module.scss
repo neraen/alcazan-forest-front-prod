@@ -1,0 +1,124 @@
+/* Patron d'ArtisanatPage : cadre centré, rail 320 px + zone principale, corps défilant
+   DANS le cadre pour que l'en-tête du ModalShell reste visible. */
+
+.page {
+  min-height: calc(100vh - 72px);
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background: var(--bg-page);
+}
+
+.frame {
+  width: 1460px;
+  max-width: 96vw;
+  height: min(916px, calc(100vh - 112px));
+  min-height: 520px;
+  display: flex;
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+  padding: 22px 24px 28px;
+}
+
+.rail,
+.principal {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* --- Sélecteur de catégorie --- */
+
+.onglets {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.onglet {
+  padding: 10px 14px;
+  border-radius: var(--radius-nav);
+  border: 1px solid var(--gold-softer);
+  background: var(--row-bg);
+  color: var(--text-soft);
+  font-family: var(--font-title);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+
+  &:hover {
+    color: var(--gold-hover);
+    border-color: var(--gold-half);
+  }
+}
+
+.ongletActif {
+  background: var(--gold-softer);
+  border-color: var(--gold-half);
+  color: var(--gold);
+}
+
+/* --- Rang personnel --- */
+
+.rangRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 14px;
+  border-radius: var(--radius-nav);
+  background: var(--row-bg);
+  border: 1px solid var(--gold-softer);
+}
+
+.rangLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-soft);
+}
+
+.rangValeur {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-title);
+  font-size: 15px;
+  color: var(--gold);
+}
+
+.rangDetail {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.compteur {
+  margin-left: auto;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.vide {
+  margin: 0;
+  padding: 20px 0;
+  text-align: center;
+  color: var(--text-faint);
+}

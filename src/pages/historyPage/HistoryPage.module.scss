@@ -380,3 +380,33 @@
     padding: 9px 14px;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Catégories réelles (lot journal du joueur)                          */
+/* ------------------------------------------------------------------ */
+
+/* Mêmes teintes que les badges du journal d'administration : un joueur qui passe de
+   l'un à l'autre retrouve le même code couleur par rayon. */
+.cat_combat { background: var(--hp-to); }
+.cat_economie { background: var(--gold); }
+.cat_progression { background: var(--mp-to); }
+.cat_social { background: var(--pa-label); }
+.cat_systeme { background: var(--text-faint); }
+.cat_archives { background: var(--gold-half); }
+
+.eventCategorie {
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-border);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+
+.eventType {
+  font-size: 11px;
+  color: var(--text-faint);
+  white-space: nowrap;
+}

@@ -12,6 +12,9 @@ import WorldMakerPage from "./WorldMakerPage";
 import DonjonMakerPage from "./DonjonMakerPage";
 import InteractionMakerPage from "./InteractionMakerPage";
 import ArtisanatMakerPage from "./ArtisanatMakerPage";
+import JournalPage from "./JournalPage";
+import StatistiquesPage from "./StatistiquesPage";
+import JoueursPage from "./JoueursPage";
 
 
 
@@ -24,6 +27,12 @@ const AdministrationPage = (props) => {
                 <ul className="administration-nav-links">
                     <li className="administration-nav-link">
                         <NavLink className="" to="/administration/joueurs">Joueurs</NavLink>
+                    </li>
+                    <li className="administration-nav-link">
+                        <NavLink className="" to="/administration/statistiques">Statistiques</NavLink>
+                    </li>
+                    <li className="administration-nav-link">
+                        <NavLink className="" to="/administration/journal">Journal</NavLink>
                     </li>
                     <li className="administration-nav-link">
                         <NavLink className="" to="/administration/world">Monde</NavLink>
@@ -59,6 +68,9 @@ const AdministrationPage = (props) => {
             </div>
             <div className="layout-administration">
                 <Switch>
+                    <PrivateRoute path="/administration/joueurs"  isAdmin={true} component={JoueursPage}/>
+                    <PrivateRoute path="/administration/statistiques"  isAdmin={true} component={StatistiquesPage}/>
+                    <PrivateRoute path="/administration/journal"  isAdmin={true} component={JournalPage}/>
                     <PrivateRoute path="/administration/world"  isAdmin={true} component={WorldMakerPage}/>
                     <PrivateRoute path="/administration/mapmaker"  isAdmin={true} component={MapMakerPage}/>
                     <PrivateRoute path="/administration/questmaker"  isAdmin={true} component={QuestMakerPage}/>

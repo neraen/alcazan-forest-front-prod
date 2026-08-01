@@ -6,6 +6,10 @@ import React, {useEffect, useMemo, useState} from 'react';
  * l'élément sélectionné puis le formulaire (children).
  *
  * Sélection pilotée par le parent : un id d'élément existant, ou 0 = création.
+ *
+ * `allowNew={false}` retire le bouton de création : les écrans d'OBSERVATION (les joueurs,
+ * par exemple) réutilisent le rail et l'aperçu, mais on n'y crée rien. Le défaut reste `true`
+ * pour que tous les makers existants soient inchangés.
  */
 export default function AdminCatalog({
     items = [],
@@ -17,6 +21,7 @@ export default function AdminCatalog({
     getMeta,
     renderPreview,
     newLabel = '+ Nouveau',
+    allowNew = true,
     children,
 }) {
     const [query, setQuery] = useState('');
@@ -35,13 +40,15 @@ export default function AdminCatalog({
     return (
         <div className="admin-catalog">
             <aside className="admin-catalog-rail">
-                <button
-                    type="button"
-                    className={`admin-catalog-new${isNew ? ' selected' : ''}`}
-                    onClick={() => onSelect(0)}
-                >
-                    {newLabel}
-                </button>
+                {allowNew && (
+                    <button
+                        type="button"
+                        className={`admin-catalog-new${isNew ? ' selected' : ''}`}
+                        onClick={() => onSelect(0)}
+                    >
+                        {newLabel}
+                    </button>
+                )}
                 <input
                     className="admin-catalog-search"
                     type="search"

@@ -1101,3 +1101,272 @@
 .import-csv-statut-maj td:nth-child(3) { color: var(--gold); }
 .import-csv-statut-ignore td:nth-child(3) { color: var(--text-faint); }
 .import-csv-statut-erreur td:nth-child(3) { color: #e04a39; }
+
+/* ------------------------------------------------------------------ */
+/* Journal d'événements (écran d'observation, /administration/journal)  */
+/* ------------------------------------------------------------------ */
+
+.journal-page {
+  padding: 12px 16px;
+  color: var(--text-soft);
+}
+
+.journal-filtres {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.journal-filtre {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  span {
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+}
+
+.journal-bouton {
+  padding: 6px 12px;
+  border: 1px solid var(--gold-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--gold);
+  font-family: var(--font-title);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+
+  &:hover:not(:disabled) {
+    background: var(--gold-bg-hover);
+    color: var(--gold-hover);
+  }
+
+  &:disabled {
+    color: var(--text-faint);
+    border-color: var(--gold-half);
+    cursor: default;
+  }
+}
+
+.journal-resume {
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.journal-vide {
+  padding: 24px;
+  text-align: center;
+  color: var(--text-faint);
+}
+
+.journal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  color: var(--text-soft);
+
+  th, td {
+    padding: 6px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--gold-border);
+    vertical-align: top;
+  }
+
+  th {
+    // Opaque et non `--panel` : l'en-tête reste lisible au-dessus des lignes qui défilent.
+    position: sticky;
+    top: 0;
+    background: var(--panel-solid);
+    color: var(--gold);
+    font-family: var(--font-title);
+  }
+}
+
+.journal-date {
+  white-space: nowrap;
+  color: var(--text-faint);
+}
+
+.journal-phrase { color: var(--text); }
+
+.journal-meta {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.journal-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid var(--gold-border);
+  border-radius: 999px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* La couleur porte le RAYON de l'événement, pas son type : c'est ce qui permet de balayer
+   une page et de voir d'un coup si l'activité est du combat ou de l'économie. */
+.journal-categorie-combat .journal-badge { color: var(--hp-to); border-color: var(--hp-to); }
+.journal-categorie-economie .journal-badge { color: var(--gold); }
+.journal-categorie-progression .journal-badge { color: var(--mp-to); border-color: var(--mp-to); }
+.journal-categorie-social .journal-badge { color: var(--pa-label); border-color: var(--pa-label); }
+.journal-categorie-systeme .journal-badge { color: var(--text-faint); }
+
+.journal-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+/* ------------------------------------------------------------------ */
+/* Tableau de bord et fiche joueur (écrans d'observation)              */
+/* ------------------------------------------------------------------ */
+
+.stats-page {
+  padding: 12px 16px;
+  color: var(--text-soft);
+}
+
+.stats-tuiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.stats-tuile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--panel);
+  border: 1px solid var(--gold-border);
+}
+
+.stats-tuile-label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.stats-tuile-valeur {
+  font-family: var(--font-title);
+  font-size: 20px;
+  color: var(--gold);
+}
+
+/* Un solde monétaire durablement POSITIF veut dire que l'or s'accumule et que les prix
+   vont dériver : c'est l'alerte, pas la bonne nouvelle. D'où l'inversion apparente. */
+.stats-tuile-alerte .stats-tuile-valeur { color: #e04a39; }
+.stats-tuile-bon .stats-tuile-valeur { color: #6fd08c; }
+
+.stats-colonnes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.stats-bloc {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--panel);
+  border: 1px solid var(--gold-border);
+}
+
+.stats-titre {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: 15px;
+  color: var(--gold);
+}
+
+.stats-sousTitre {
+  margin: 6px 0 2px;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.stats-compteur {
+  margin-left: auto;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.stats-flux + .stats-flux {
+  margin-top: 8px;
+}
+
+.stats-ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--gold-border);
+  font-size: 13px;
+
+  &:last-child { border-bottom: none; }
+
+  em {
+    font-style: normal;
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+}
+
+.stats-valeur {
+  font-family: var(--font-title);
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.stats-vide {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+/* --- Fiche joueur --- */
+
+.fiche-joueur {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fiche-cumuls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0 20px;
+}
+
+.fiche-note {
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--gold-border);
+  font-size: 12px;
+  color: var(--text-faint);
+}
