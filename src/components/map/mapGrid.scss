@@ -59,13 +59,38 @@
 }
 
 .joueur-level {
-  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px 4px;
 }
 
+/* L'icône d'alignement est DANS LE FLUX, et c'est le correctif.
+   Elle était posée en `position: absolute; top: 26px` : avec une étiquette haute de 45 px et
+   `overflow: hidden` (nécessaire au rayon de bordure), son bas retombait à 47 px et se
+   faisait rogner. L'image était bien chargée, simplement invisible — d'où le diagnostic
+   trompeur d'une donnée manquante côté serveur. Des coordonnées en dur ne survivent pas à
+   un changement de contenu ; une ligne flex, si. */
 .icone-alignement {
-  position: absolute;
-  right: 20px;
-  top: 26px;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
+/* Pastille de présence, poussée au bord droit par `margin-left: auto` — donc SANS sortir du
+   flux, ce qui est exactement ce qui avait perdu l'icône d'alignement juste au-dessus. */
+.joueur-presence {
+  margin-left: auto;
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--presence-hors-ligne);
+}
+
+.joueur-presence.en-ligne {
+  background: var(--presence-en-ligne);
+  box-shadow: 0 0 6px var(--presence-en-ligne-halo);
 }
 
 .pnj {

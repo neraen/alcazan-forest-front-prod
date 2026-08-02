@@ -128,6 +128,14 @@
   --level-soft-bg: rgba(203, 230, 79, 0.12);  /* badge points à répartir */
   --level-border: rgba(203, 230, 79, 0.5);
 
+  /* --- Présence (pastille de l'étiquette de survol d'un joueur) ---
+     Un vert distinct de `--bonus` et de `--stat-dexterite` : la pastille doit se lire
+     comme un ÉTAT et non comme une valeur de personnage. Le hors-ligne est éteint plutôt
+     que rouge — être déconnecté n'est pas une alerte. */
+  --presence-en-ligne: #6ed69a;
+  --presence-en-ligne-halo: rgba(110, 214, 154, 0.65);
+  --presence-hors-ligne: #557077;
+
   /* --- Rayons --- */
   --radius-bar: 6px;      /* barres, mini-slots */
   --radius-tab: 8px;      /* onglet de nav */

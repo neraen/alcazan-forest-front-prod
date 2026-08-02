@@ -272,11 +272,29 @@ class Map extends React.Component {
 
     getJoueur(uniqueCase){
         if(this.state.abscisseJoueur === uniqueCase.abscisse && this.state.ordonneeJoueur === uniqueCase.ordonnee){
-         return this.props.user
+         // Soi-même : forcément présent, puisque c'est ce navigateur qui affiche la page.
+         // Une tautologie, pas une règle dupliquée — inutile d'alourdir `/joueur/data/minimal`,
+         // chemin chaud rappelé à chaque déplacement, pour la réapprendre au serveur.
+         return {...this.props.user, enLigne: 1}
         }else{
             if(!this.state.isInstance){
                 if(uniqueCase.userId){
-                    return {pseudo: uniqueCase.pseudo, nomClasse: uniqueCase.nomClasse, idJoueur: uniqueCase.userId, niveau: uniqueCase.niveau, alignement: uniqueCase.nomAlignement, sexe: uniqueCase.sexe}
+                    // ⚠️ Cette projection est le CONTRAT de `Player` pour les AUTRES joueurs :
+                    // le joueur courant, lui, reçoit `this.props.user` en entier juste au-dessus.
+                    // Tout champ oublié ici n'existe donc que pour soi-même, ce qui se lit
+                    // comme « la donnée manque côté serveur » alors qu'elle descend bien —
+                    // c'est ce qui avait fait disparaître l'icône d'alignement d'autrui
+                    // (renommée en `alignement`, que `Player` ne lit pas).
+                    return {
+                        pseudo: uniqueCase.pseudo,
+                        nomClasse: uniqueCase.nomClasse,
+                        idJoueur: uniqueCase.userId,
+                        niveau: uniqueCase.niveau,
+                        nomAlignement: uniqueCase.nomAlignement,
+                        iconeAlignement: uniqueCase.iconeAlignement,
+                        enLigne: uniqueCase.enLigne,
+                        sexe: uniqueCase.sexe
+                    }
                 }
             }
         }

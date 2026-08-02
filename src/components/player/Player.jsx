@@ -23,6 +23,11 @@ const Player = (props) => {
 
     const estMoi = props.player.idJoueur === props.joueurState.idJoueur;
 
+    // `enLigne` vient d'un `CASE WHEN` DQL : selon l'hydratation, il arrive en 1/0 ou en
+    // "1"/"0". Un simple test de vérité déclarerait tout le monde en ligne, `"0"` étant
+    // truthy en JS. On normalise le type de transport — la RÈGLE, elle, reste au serveur.
+    const enLigne = Number(props.player.enLigne) === 1;
+
     const handleContextMenu = (event) => {
         if(estMoi){
             return;
@@ -54,7 +59,18 @@ const Player = (props) => {
         <div className={"joueur " + (props.player.idJoueur !== props.joueurState.joueurId && "joueur-hoverable") } style={{backgroundImage: "url(../img/classes/"+props.player.nomClasse+"_"+ props.player.sexe +".png)"}} onClick={handleTarget} onContextMenu={handleContextMenu}>
             <div className="joueur-hover">
                 <div className="joueur-name">{props.player.pseudo}</div>
-                <div className="joueur-level">Niveau : {props.player.niveau}  {props.player.nomAlignement && <img className="icone-alignement" src={"../img/alignement/"+props.player.iconeAlignement} />}</div>
+                <div className="joueur-level">
+                    <span>Niveau : {props.player.niveau}</span>
+                    {props.player.nomAlignement &&
+                        <img className="icone-alignement"
+                             src={"../img/alignement/" + props.player.iconeAlignement}
+                             alt={props.player.nomAlignement}
+                             title={props.player.nomAlignement}/>}
+                    {/* Présence tranchée par le serveur (`enLigne`), jamais recalculée ici :
+                        le client ne connaît ni la fenêtre de présence ni l'horloge serveur. */}
+                    <span className={"joueur-presence" + (enLigne ? " en-ligne" : "")}
+                          title={enLigne ? "En ligne" : "Hors ligne"}/>
+                </div>
                 {/*<div className="joueur-level">{props.player.nomGuilde && <span>{props.player.nomGuilde}</span>}</div>*/}
 
             </div>
