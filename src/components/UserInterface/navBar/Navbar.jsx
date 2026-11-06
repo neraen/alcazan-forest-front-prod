@@ -4,7 +4,7 @@ import {NavLink} from "react-router-dom";
 import AuthContext from "../../../contexts/AuthContext";
 import GameButton from "../../ui/gameButton/GameButton";
 import {buttonClass} from "../../ui/gameButton/GameButton";
-import styles from "./Navbar.module.scss";
+import styles from "./NavBar.module.scss";
 
 const Navbar = ({history}) => {
 
