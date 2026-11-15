@@ -1,0 +1,829 @@
+/* Journal de quêtes. Aucun hex en dur : tout vient de _tokens.scss. */
+
+.container {
+  /* `width: 100%` + `max-width`, jamais de `vw` : l'overlay est ancré sur la zone de carte
+     de MapPage, pas sur la fenêtre (cf. HotelVenteModal). */
+  width: 100%;
+  max-width: 1120px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 18px;
+  padding: 18px 22px 22px;
+}
+
+.etat {
+  margin: auto;
+  font-size: 14px;
+  color: var(--text-faint);
+}
+
+/* ============================================================
+   Colonne de gauche : onglets + liste
+   ============================================================ */
+
+.colonneListe {
+  flex: 0 0 300px;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tabs {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-nav);
+  background: var(--panel-inner);
+  border: 1px solid var(--gold-nav-border);
+}
+
+.tab {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 6px 4px;
+  border: none;
+  border-radius: var(--radius-tab);
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover:not(.tabActive) {
+    color: var(--gold-hover);
+    background: var(--gold-softer);
+  }
+}
+
+.tabLabel {
+  max-width: 100%;
+  font-weight: 700;
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tabCompte {
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabActive {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.liste {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0 4px 0 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ligne {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 10px 0;
+  overflow: hidden;
+  text-align: left;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-card-border);
+  background: var(--row-bg);
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover {
+    border-color: var(--gold-border);
+    background: var(--gold-softer);
+  }
+}
+
+.ligneActive {
+  border-color: var(--gold);
+  background: var(--gold-softer);
+  box-shadow: inset 0 0 0 1px var(--gold-soft);
+}
+
+/* Liseré de couleur à gauche : l'état se lit avant le texte. */
+.ligneMarque {
+  align-self: stretch;
+  flex: 0 0 4px;
+  margin: -10px 0;
+  background: var(--gold-soft);
+}
+
+.marque_pret {
+  background: var(--gold);
+}
+
+.marque_cours {
+  background: var(--mp-to);
+}
+
+.marque_dispo {
+  background: var(--level);
+}
+
+.marque_fini {
+  background: var(--success);
+}
+
+.ligneCorps {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Deux lignes avant de couper : un nom de quête tronqué au milieu d'un mot ne se lit plus. */
+.ligneNom {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.25;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.ligneMeta {
+  font-size: 12px;
+  color: var(--text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pastille {
+  flex-shrink: 0;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.pastille_pret {
+  color: var(--ink);
+  background: var(--gold);
+}
+
+.pastille_cours {
+  color: var(--mp-label);
+  border-color: var(--mp-from);
+  background: var(--badge-neutral-bg);
+}
+
+.pastille_dispo {
+  color: var(--level);
+  border-color: var(--level-border);
+  background: var(--level-soft-bg);
+}
+
+.pastille_fini {
+  color: var(--success);
+  border-color: var(--success-border);
+  background: var(--success-bg);
+}
+
+.listeVide {
+  padding: 18px 16px;
+  border-radius: var(--radius-card);
+  border: 1px dashed var(--slot-dash);
+  text-align: center;
+}
+
+.listeVideTitre {
+  margin: 0 0 6px;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--text-dim);
+}
+
+.listeVideTexte {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-faint);
+}
+
+/* ============================================================
+   Colonne de droite : fiche
+   ============================================================ */
+
+.colonneDetail {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 22px;
+  border-radius: var(--radius-panel);
+  background: var(--panel-inner);
+  border: 1px solid var(--gold-subnav-border);
+}
+
+.detailVide {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--text-faint);
+}
+
+.detailVideIcone {
+  width: 48px;
+  height: 48px;
+  opacity: 0.45;
+  image-rendering: pixelated;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.entete {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.enteteBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.badge,
+.badgeNeutre {
+  padding: 3px 10px;
+  border-radius: var(--radius-bar);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badge {
+  color: var(--ink);
+  background: var(--gold);
+}
+
+.badgeDispo {
+  color: var(--level);
+  background: var(--level-soft-bg);
+  border: 1px solid var(--level-border);
+}
+
+.badgeFini {
+  color: var(--success);
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+}
+
+.badgeNeutre {
+  color: var(--text-dim);
+  background: var(--badge-neutral-bg);
+  border: 1px solid var(--gold-card-border);
+}
+
+.titre {
+  margin: 0;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.2;
+  color: var(--gold);
+  letter-spacing: 0.03em;
+  overflow-wrap: anywhere;
+}
+
+.sousTitreEtape {
+  margin: 0;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-mute);
+}
+
+/* --- Sections --- */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sectionTitre {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sectionTitreTexte {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.sectionTitreTrait {
+  flex: 1;
+  height: 1px;
+  background: var(--gold-divider);
+}
+
+.sectionNote {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: var(--radius-bar);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--pa-label);
+  border: 1px solid var(--gold-card-border);
+  background: var(--badge-neutral-bg);
+}
+
+.note {
+  margin: 0;
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--text-mute);
+}
+
+/* --- Destination (où aller) --- */
+
+.destination {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--gold-card-border);
+  background: var(--row-bg);
+}
+
+.destinationEnAvant {
+  border-color: var(--gold-border);
+  background: linear-gradient(100deg, var(--gold-softer), transparent 75%);
+}
+
+.portrait {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-mini-border);
+  background: var(--portrait-bg);
+}
+
+.portraitImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Les avatars sont de petits sprites : un lissage les rendrait flous. */
+  image-rendering: pixelated;
+}
+
+.portraitInitiale {
+  font-family: var(--font-title);
+  font-size: 28px;
+  color: var(--gold);
+}
+
+.destinationCorps {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.destinationEtiquette {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.destinationConsigne {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+/* Sans retour à la ligne au niveau du flex : seul le TEXTE se replie, l'icône reste
+   accrochée à lui (sinon, en zone étroite, elle finissait seule sur sa ligne). */
+.destinationLieu {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.destinationLieuIcone {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.destinationLieuTexte {
+  min-width: 0;
+}
+
+.destinationLieuInconnu {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-dim3);
+}
+
+.ici {
+  flex-shrink: 0;
+  padding: 1px 8px;
+  border-radius: var(--radius-bar);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--success);
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+}
+
+/* --- Objectifs --- */
+
+.objectifs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.objectif {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-card-border);
+  background: var(--row-bg);
+}
+
+.objectifFait {
+  border-color: var(--success-border);
+  background: var(--success-bg);
+}
+
+.coche {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid var(--slot-dash);
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.cocheFaite {
+  border-color: var(--success);
+  background: var(--success);
+}
+
+.cocheContact {
+  border: 1px solid var(--gold-border);
+  background: var(--gold-softer);
+  color: var(--gold);
+}
+
+.objectifCorps {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.objectifLibelle {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.objectifFait .objectifLibelle {
+  color: var(--success);
+}
+
+.objectifSous {
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+
+.progression {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progressionPiste {
+  flex: 1;
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-bar);
+  background: var(--track);
+}
+
+.progressionRemplissage {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-bar);
+  background: linear-gradient(90deg, var(--xp-from), var(--xp-to));
+  transition: width 0.3s ease;
+}
+
+.progressionFaite {
+  background: var(--success);
+}
+
+.progressionCompte {
+  flex-shrink: 0;
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.progressionUnite {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.objectifRecompenses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* --- Récompenses --- */
+
+.recompenses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.recompense {
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 5px;
+  border-radius: var(--radius-slot);
+  border: 1px solid var(--gold-card-border);
+  background: var(--badge-neutral-bg);
+}
+
+.recompenseCompacte {
+  padding: 2px 8px 2px 2px;
+  gap: 6px;
+
+  .recompenseIcone,
+  .recompenseVignette,
+  .recompenseXp {
+    width: 22px;
+    height: 22px;
+  }
+
+  .recompenseXp {
+    font-size: 8.5px;
+  }
+
+  .recompenseTexte {
+    font-size: 12px;
+  }
+}
+
+.recompenseIcone {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.recompenseVignette {
+  width: 30px;
+  height: 30px;
+}
+
+.recompenseXp {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--xp-to), var(--xp-from));
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.recompenseTexte {
+  min-width: 0;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--gold-pale);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Paroles et résumé --- */
+
+.paroles {
+  margin: 0;
+  padding: 12px 16px;
+  border-left: 3px solid var(--gold-half);
+  border-radius: 0 var(--radius-slot) var(--radius-slot) 0;
+  background: var(--row-bg);
+
+  p {
+    margin: 0 0 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    font-style: italic;
+    color: var(--text-dim);
+  }
+}
+
+.parolesAuteur {
+  display: block;
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 700;
+  color: var(--text-faint);
+  text-align: right;
+}
+
+.resume {
+  p {
+    margin: 0 0 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.resumeVide {
+  margin: 0;
+  font-size: 13.5px;
+  font-style: italic;
+  color: var(--text-faint);
+}
+
+/* --- Quête accomplie --- */
+
+.accomplie {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--success-border);
+  background: var(--success-bg);
+}
+
+.accomplieSceau {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--success);
+  color: var(--ink);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.accomplieTitre {
+  margin: 0;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--success);
+}
+
+.accomplieTexte {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* Fenêtre étroite : la zone de carte rétrécit avec elle, la liste cède de la place à la fiche. */
+
+@media screen and (max-width: 1180px) {
+  .colonneListe {
+    flex-basis: 240px;
+  }
+
+  /* Le liseré coloré porte déjà l'état : la pastille ne ferait qu'écraser le nom. */
+  .pastille {
+    display: none;
+  }
+
+  .ligne {
+    padding-right: 12px;
+  }
+
+  /* « Disponibles » doit tenir entier dans un tiers de 240 px. */
+  .tabLabel {
+    font-size: 11px;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Écrans de portable ≤ 900 px de haut : mêmes proportions, resserrées (cf. ModalShell). */
+@media screen and (max-height: 899px) {
+  .container {
+    gap: 14px;
+    padding: 14px 16px 16px;
+  }
+
+  .colonneDetail {
+    padding: 16px 18px;
+  }
+
+  .detail {
+    gap: 16px;
+  }
+
+  .titre {
+    font-size: 22px;
+  }
+
+  .portrait {
+    flex-basis: 54px;
+    width: 54px;
+    height: 54px;
+  }
+
+  .destinationConsigne {
+    font-size: 15.5px;
+  }
+}

@@ -27,8 +27,18 @@ function postMapAction(actionId){
     return axios.post(API_URL + "map/action", {actionId: actionId}).then(response => response.data)
 }
 
+/**
+ * Journal de quêtes : {enCours, disponibles, terminees}. Lecture pure — l'étape, le PNJ à
+ * aller voir, la progression des objectifs et l'aperçu des récompenses viennent tous du
+ * serveur, qui fait foi (même calcul que le dialogue du PNJ).
+ */
+function getJournal(){
+    return axios.post(API_URL + "quest/journal", {}).then(response => response.data)
+}
+
 export default {
     getInteraction,
+    getJournal,
     startQuest,
     postAction,
     postMapAction

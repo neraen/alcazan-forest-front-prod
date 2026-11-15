@@ -5,18 +5,20 @@ import AtelierModal from "../../modals/atelierModal/AtelierModal";
 import HotelVenteModal from "../../modals/hotelVenteModal/HotelVenteModal";
 import InventoryModal from "../../modals/inventoryModal/InventoryModal";
 import ProfilModal from "../../modals/profilModal/ProfilModal";
+import QuetesModal from "../../modals/quetesModal/QuetesModal";
 import SpellsModal from "../../modals/spellsModal/SpellsModal";
 import Panel from "../../ui/panel/Panel";
 import styles from "./SideMenu.module.scss";
 
 /**
  * Rail de navigation de la colonne gauche : icône ronde + label + chevron.
- * Inventaire et Profil s'ouvrent en modale au-dessus de la carte ; les autres
+ * Inventaire, Profil, Quêtes (journal de quêtes) s'ouvrent en modale au-dessus de la carte ; les autres
  * items naviguent (les pages pleines existent toujours via le header).
  */
 const SideMenu = (props) => {
     const { isShowing: isDialogInventoryShowed, toggle: toggleDialogInventory } = useModal();
     const { isShowing: isProfilShowed, toggle: toggleProfil } = useModal();
+    const { isShowing: isQuetesShowed, toggle: toggleQuetes } = useModal();
     const { isShowing: isSpellsShowed, toggle: toggleSpells } = useModal();
     const { isShowing: isAtelierShowed, toggle: toggleAtelier } = useModal();
     const { isShowing: isHotelVenteShowed, toggle: toggleHotelVente } = useModal();
@@ -46,6 +48,10 @@ const SideMenu = (props) => {
                 {itemContent({label: "Profil", icon: "/img/icons/people.png"})}
             </button>
             <ProfilModal isShowing={isProfilShowed} toggle={toggleProfil}/>
+            <button type="button" onClick={toggleQuetes} className={styles.item}>
+                {itemContent({label: "Quêtes", icon: "/img/icons/parchemin.png"})}
+            </button>
+            <QuetesModal isShowing={isQuetesShowed} toggle={toggleQuetes}/>
             <button type="button" onClick={toggleSpells} className={styles.item}>
                 {itemContent({label: "Sorts", icon: "/img/menu/livre.png"})}
             </button>
