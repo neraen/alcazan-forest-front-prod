@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {connect} from "react-redux";
 import {toast} from "react-toastify";
 import EchangeApi from "../../services/EchangeApi";
@@ -10,6 +10,15 @@ import GameButton from "../ui/gameButton/GameButton";
 import styles from "./EchangeHost.module.scss";
 
 const STATUTS_TERMINAUX = ["complete", "annule", "expire"];
+
+/**
+ * Sondage REST de repli. Le temps réel peut manquer sans que rien ne le dise (hub injoignable,
+ * publication échouée côté serveur, proxy qui coupe les flux longs) : sans filet, une
+ * invitation n'apparaissait qu'au F5. Serré tant que le flux est coupé, lâche sinon.
+ */
+const SONDAGE_SESSION_MS = 4000;
+const SONDAGE_DECONNECTE_MS = 20000;
+const SONDAGE_CONNECTE_MS = 30000;
 
 /**
  * L'unique hôte du système d'échange, rendu une seule fois dans MapPage (même patron que
@@ -52,7 +61,7 @@ const EchangeHost = (props) => {
         topics.push(`echange/${etat.id}`);
     }
 
-    useMercure(topics, (payload) => {
+    const connecte = useMercure(topics, (payload) => {
         if(!payload.echange){
             return;
         }
@@ -69,6 +78,32 @@ const EchangeHost = (props) => {
             props.setEchangeInvitations(invitations.filter(invitation => invitation.id !== payload.echange.id));
         }
     }, resynchroniser);
+
+    const resyncRef = useRef(resynchroniser);
+    resyncRef.current = resynchroniser;
+    const sessionVivante = !!etat && !STATUTS_TERMINAUX.includes(etat.statut);
+
+    useEffect(() => {
+        if(!monId){
+            return undefined;
+        }
+        const periode = !connecte
+            ? (sessionVivante ? SONDAGE_SESSION_MS : SONDAGE_DECONNECTE_MS)
+            : SONDAGE_CONNECTE_MS;
+        const minuteur = setInterval(() => resyncRef.current(), periode);
+        return () => clearInterval(minuteur);
+    }, [monId, connecte, sessionVivante]);
+
+    // Onglet ramené au premier plan : le navigateur a pu geler le flux en arrière-plan.
+    useEffect(() => {
+        const auRetour = () => {
+            if(document.visibilityState === "visible" && monId){
+                resyncRef.current();
+            }
+        };
+        document.addEventListener("visibilitychange", auRetour);
+        return () => document.removeEventListener("visibilitychange", auRetour);
+    }, [monId]);
 
     // Fin de session : feedback + rafraîchissement des ressources, puis fermeture.
     useEffect(() => {

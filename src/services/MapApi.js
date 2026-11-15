@@ -6,8 +6,10 @@ function findAll(){
         .then(response => response.data['hydra:member'])
 }
 
+// SANS id : le serveur répond la carte où se trouve RÉELLEMENT le joueur (forme du jeu).
+// Avec un id : simple consultation (MapMaker).
 function find(id){
-   return axios.post(API_URL + "map/cases/data", {mapId: id})
+   return axios.post(API_URL + "map/cases/data", id === undefined ? {} : {mapId: id})
        .then(response => response.data)
 }
 

@@ -58,8 +58,12 @@ class Map extends React.Component {
     }
 
     async fetchMapData(){
-        const mapId = this.props.joueurState.mapId ? this.props.joueurState.mapId : this.state.mapId
-        const data = await MapApi.find(mapId);
+        // SANS mapId : le serveur répond la carte où se trouve RÉELLEMENT le joueur. Demander
+        // `joueurState.mapId` (remis à jour seulement au franchissement d'un passage) pouvait
+        // viser une carte périmée, et le serveur y renvoyait la position du joueur sur une
+        // AUTRE carte : personnage dessiné au milieu d'un décor infranchissable.
+        const data = await MapApi.find();
+        const mapId = data.mapId;
         // La carte peut avoir été rechargée après une téléportation décidée par le SERVEUR
         // (entrée en groupe dans un donjon, éjection d'une instance expirée, mort) : la
         // position du joueur est donc réadoptée depuis la réponse, jamais devinée ici.
@@ -67,7 +71,7 @@ class Map extends React.Component {
             cases: data.cases,
             name: data.mapInfo.nom,
             isInstance: data.mapInfo.isInstance,
-            mapId: data.mapId !== undefined ? data.mapId : mapId,
+            mapId: mapId,
             portesDonjon: data.portesDonjon || {},
             interactions: data.interactions || {},
             modesRecolte: data.modesRecolte || [],
@@ -75,6 +79,7 @@ class Map extends React.Component {
             ordonneeJoueur: data.ordonneeJoueur !== undefined ? data.ordonneeJoueur : this.state.ordonneeJoueur,
         }, () => {
             this.props.setMapLoaded(this.state.name);
+            this.props.updateJoueurState({mapId: mapId});
             this.props.updatePositionJoueur({abscisse: this.state.abscisseJoueur, ordonnee: this.state.ordonneeJoueur});
             this.majCibleMonstreInstance(this.state.cases, this.state.abscisseJoueur, this.state.ordonneeJoueur);
         });
@@ -166,7 +171,15 @@ class Map extends React.Component {
     }
 
     async updatePosition(abscisse, ordonnee){
-        const data = await UsersApi.updatePosition(this.state.mapId, abscisse, ordonnee)
+        let data;
+        try {
+            data = await UsersApi.updatePosition(this.state.mapId, abscisse, ordonnee);
+        } catch (error) {
+            // Le serveur arbitre la légalité du pas (voisinage, décor, PNJ, PM) et répond 400
+            // + message : sans ce catch, un refus ne faisait RIEN de visible.
+            toast.error(error.response?.data?.message || "Déplacement impossible.");
+            return;
+        }
         // Un monstre ne reste ciblé que tant qu'on est sur sa case : quitter la case
         // décible, qu'il s'agisse d'un monstre du monde ouvert ou d'un monstre d'instance.
         if(this.props.target.type === "monstre" || this.props.target.type === "renfort"){

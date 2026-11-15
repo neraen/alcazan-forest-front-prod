@@ -1,4 +1,8 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
+import {createPortal} from "react-dom";
+import GameModal from "../ui/gameModal/GameModal";
+import ModalShell from "../ui/gameModal/ModalShell";
+import GameButton from "../ui/gameButton/GameButton";
 import {connect} from "react-redux";
 import {toast} from "react-toastify";
 import {updateJoueurState} from "../../store/actions";
@@ -35,8 +39,13 @@ const enClair = (secondes) => {
  * Le compte à rebours est recalculé depuis `disponibleAt` (date serveur) à chaque seconde,
  * jamais décompté localement — un onglet en arrière-plan dériverait sinon.
  */
-const InteractionMap = (props) => {
+export const InteractionMap = (props) => {
 
+    const repereRef = useRef(null);
+    const ficheRef = useRef(null);
+    const [apercuOuvert, setApercuOuvert] = useState(false);
+    const [bulle, setBulle] = useState(null);
+    const [imageAbsente, setImageAbsente] = useState(false);
     const [enCours, setEnCours] = useState(false);
     const [etatLocal, setEtatLocal] = useState(null);
     const [choixOuvert, setChoixOuvert] = useState(false);
@@ -50,6 +59,43 @@ const InteractionMap = (props) => {
     // repère ni la même réaction : le second se distingue à l'œil.
     const gisementEpuise = etat ? !!etat.gisementEpuise : false;
     const modes = props.modesRecolte || [];
+    const skin = etat?.skin ?? interaction.skin;
+    const image = skin ? `/img/interaction/${skin}.png` : null;
+    const nom = etat?.nom || interaction.nom;
+    const statut = gisementEpuise ? "Gisement épuisé" : restant > 0 ? "En repousse"
+        : indisponible ? "Indisponible" : etat ? "Disponible" : "À inspecter";
+    useEffect(() => setImageAbsente(false), [image]);
+
+    useEffect(() => {
+        if (!apercuOuvert) return undefined;
+        ficheRef.current?.focus();
+        const repere = repereRef.current;
+        return () => repere?.focus();
+    }, [apercuOuvert]);
+
+    const montrerBulle = () => {
+        if (apercuOuvert || choixOuvert) return;
+        const rect = repereRef.current?.getBoundingClientRect();
+        if (!rect) return;
+        const largeur = Math.min(250, window.innerWidth - 16);
+        setBulle({left: Math.max(8, Math.min(rect.left + rect.width / 2 - largeur / 2,
+            window.innerWidth - largeur - 8)), width: largeur,
+            ...(rect.top > 180 ? {bottom: window.innerHeight - rect.top + 8} : {top: rect.bottom + 8})});
+    };
+
+    useEffect(() => {
+        if (!bulle) return undefined;
+        const fermer = () => setBulle(null);
+        const clavier = event => { if (event.key === "Escape") fermer(); };
+        window.addEventListener("scroll", fermer, true);
+        window.addEventListener("resize", fermer);
+        window.addEventListener("keydown", clavier);
+        return () => {
+            window.removeEventListener("scroll", fermer, true);
+            window.removeEventListener("resize", fermer);
+            window.removeEventListener("keydown", clavier);
+        };
+    }, [bulle]);
 
     // Horloge d'AFFICHAGE seulement : la valeur est toujours recalculée depuis la date.
     useEffect(() => {
@@ -83,6 +129,7 @@ const InteractionMap = (props) => {
 
     const declencher = (event) => {
         event.stopPropagation();
+        setApercuOuvert(false);
         if(enCours){
             return;
         }
@@ -101,30 +148,68 @@ const InteractionMap = (props) => {
         executer(mode);
     }
 
-    const infobulle = etat
-        ? (etat.disponible
-            ? `${etat.verbe} : ${etat.nom}${etat.coutPa ? ` (${etat.coutPa} PA)` : ""}`
-            : `${etat.nom} — ${etat.raison}`)
-        : `${interaction.verbe} : ${interaction.nom}`;
+    const details = (
+        <>
+            <strong>{nom}</strong>
+            <span className={styles.statut}>{statut}{restant > 0 ? ` · ${enClair(restant)}` : ""}</span>
+            {etat?.raison && <span>{etat.raison}</span>}
+            {etat && <span className={styles.cout}>{etat.coutPa || 0} PA</span>}
+        </>
+    );
 
     return (
         <>
-            <div className={`${styles.interaction} ${indisponible ? styles.indisponible : ""}`
+            <button type="button" ref={repereRef}
+                 className={`${styles.interaction} ${indisponible ? styles.indisponible : ""}`
                  + `${gisementEpuise ? " " + styles.epuise : ""}`}
-                 onClick={declencher}
-                 title={infobulle}>
-                {/* Repère TOUJOURS visible, sous l'image : une case interactive dont l'image
-                    manque resterait sinon un carré cliquable invisible, introuvable en jeu.
-                    L'image, quand elle existe, le recouvre. */}
-                <span className={styles.repere} aria-hidden="true"/>
-                {interaction.skin && (
-                    <img className={styles.skin}
-                         src={`/img/interaction/${interaction.skin}.png`}
-                         alt={interaction.nom}
-                         onError={(event) => { event.target.style.display = "none"; }}/>
-                )}
+                 onClick={event => { event.stopPropagation(); setBulle(null); setApercuOuvert(true); }}
+                 onMouseEnter={() => { if (window.matchMedia("(hover: hover)").matches) montrerBulle(); }}
+                 onMouseLeave={() => setBulle(null)} onFocus={montrerBulle} onBlur={() => setBulle(null)}
+                 onKeyDown={event => { event.stopPropagation(); if (event.key === "Escape") setBulle(null); }}
+                 aria-label={`${nom} — ${statut}. Inspecter`} aria-haspopup="dialog">
+                {image && !imageAbsente ? (
+                    <img className={styles.skin} src={image} alt="" draggable="false"
+                         onError={() => setImageAbsente(true)}/>
+                ) : <span className={styles.repere} aria-hidden="true">✦</span>}
+                <span className={styles.eclat} aria-hidden="true">{gisementEpuise ? "×" : restant > 0 ? "⌛" : "✦"}</span>
                 {restant > 0 && <span className={styles.compte}>{enClair(restant)}</span>}
-            </div>
+            </button>
+
+            {bulle && createPortal(
+                <div className={styles.infobulle} style={bulle} role="tooltip">{details}</div>, document.body
+            )}
+
+            {apercuOuvert && (
+                <GameModal isOpen onClose={() => setApercuOuvert(false)} size="auto">
+                    <div role="dialog" aria-modal="true" aria-label={nom} className={styles.fiche}
+                         ref={ficheRef} tabIndex={-1}
+                         onClick={event => event.stopPropagation()}
+                         onKeyDown={event => {
+                             event.stopPropagation();
+                             if (event.key === "Escape") setApercuOuvert(false);
+                             if (event.key === "Tab") {
+                                 const boutons = ficheRef.current.querySelectorAll("button:not(:disabled)");
+                                 const premier = boutons[0], dernier = boutons[boutons.length - 1];
+                                 if (event.shiftKey && (document.activeElement === premier || document.activeElement === ficheRef.current)) {
+                                     event.preventDefault(); dernier?.focus();
+                                 } else if (!event.shiftKey && document.activeElement === dernier) {
+                                     event.preventDefault(); premier?.focus();
+                                 }
+                             }
+                         }}>
+                        <ModalShell fit="content" title={nom} subtitle="Ressource et disponibilité"
+                                    onClose={() => setApercuOuvert(false)}>
+                            <div className={styles.ficheCorps}>
+                                {image && !imageAbsente && <img src={image} alt="" className={styles.apercu}/>}
+                                <div className={styles.details}>{details}</div>
+                                <GameButton onClick={declencher} disabled={enCours}>
+                                    {enCours ? "En cours…" : etat?.verbe || interaction.verbe || "Interagir"}
+                                </GameButton>
+                            </div>
+                        </ModalShell>
+                    </div>
+                </GameModal>
+            )}
 
             {choixOuvert && (
                 <ChoixRecolte nom={etat?.nom || interaction.nom}

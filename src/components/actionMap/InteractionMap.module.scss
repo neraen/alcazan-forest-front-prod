@@ -3,6 +3,12 @@
 .interaction {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,30 +16,34 @@
   z-index: 3;
 }
 
-.interaction:hover {
+.interaction:hover, .interaction:focus-visible {
   box-shadow: inset 0 0 0 2px var(--gold);
   background: var(--gold-softer);
 }
 
 .repere {
-  position: absolute;
-  width: 55%;
-  height: 55%;
-  border-radius: 50%;
-  border: 2px solid var(--gold);
-  box-shadow: 0 0 6px rgba(227, 182, 79, 0.7);
-  animation: repereInteraction 1.8s ease-in-out infinite;
+  color: var(--gold);
+  font-size: 22px;
+  text-shadow: 0 1px 3px #07191f;
 }
 
-@keyframes repereInteraction {
-  0%, 100% { opacity: 0.55; transform: scale(0.9); }
-  50%      { opacity: 1;    transform: scale(1.05); }
+.eclat {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: var(--gold);
+  font-size: 10px;
+  line-height: 1;
+  text-shadow: 0 1px 2px #07191f;
+  pointer-events: none;
 }
 
 .skin {
   position: relative;
-  max-width: 100%;
-  max-height: 100%;
+  width: 94%;
+  height: 94%;
+  image-rendering: pixelated;
+  pointer-events: none;
   object-fit: contain;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
 }
@@ -87,3 +97,29 @@
   white-space: nowrap;
   pointer-events: none;
 }
+
+.indisponible .eclat { color: var(--text-dim); }
+.epuise .eclat { color: var(--hp-label); }
+.infobulle {
+  position: fixed;
+  z-index: 10000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 14px;
+  border: 1px solid var(--gold);
+  border-radius: 10px;
+  background: #10272f;
+  color: var(--text, #f4eddc);
+  box-shadow: 0 6px 20px #0008;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.infobulle strong { color: var(--gold); }
+.statut { color: var(--text, #f4eddc); }
+.cout { color: var(--gold); font-weight: 700; }
+.fiche { width: 100%; max-width: 420px; }
+.ficheCorps { padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.apercu { width: 88px; height: 88px; object-fit: contain; image-rendering: pixelated; }
+.details { display: flex; flex-direction: column; gap: 6px; text-align: center; }

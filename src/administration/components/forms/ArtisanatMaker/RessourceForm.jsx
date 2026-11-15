@@ -4,7 +4,7 @@ import ArtisanatMakerApi from "../../../services/ArtisanatMakerApi";
 import ImageUploadField from "../imageUpload/ImageUploadField";
 
 const VIDE = {
-    id: 0, nom: "", description: "", image: "", prixVente: 0, metierId: null, niveauRessource: 0
+    id: 0, nom: "", description: "", image: "", imageCarte: "", prixVente: 0, metierId: null, niveauRessource: 0
 };
 
 /**
@@ -88,10 +88,19 @@ const RessourceForm = ({ressource, referentiels, onSaved}) => {
                            value={objet.prixVente ?? 0} onChange={champ("prixVente")}/>
                 </div>
 
-                <ImageUploadField id="ressource-image" collection="objet" label="Image"
+                <ImageUploadField id="ressource-image" collection="objet" label="Image dans l’inventaire"
                                   nom={objet.nom} valeur={objet.image}
                                   onChange={(fichier) => setObjet(precedent => ({...precedent, image: fichier}))}/>
             </div>
+
+            <ImageUploadField id="ressource-image-carte" collection="interaction"
+                              label="Image affichée sur la carte"
+                              nom={objet.nom ? `${objet.nom}-carte` : ""} valeur={objet.imageCarte}
+                              onChange={(fichier) => setObjet(precedent => ({...precedent, imageCarte: fichier}))}/>
+            <p className="form-help">
+                PNG à fond transparent, lisible en petit. Cette image s’applique à tous les points
+                de récolte qui donnent cette ressource. Laissez vide pour utiliser l’image de l’interaction.
+            </p>
 
             <button type="submit" disabled={enregistrement}>
                 {objet.id ? "Enregistrer les modifications" : "Créer l'objet"}

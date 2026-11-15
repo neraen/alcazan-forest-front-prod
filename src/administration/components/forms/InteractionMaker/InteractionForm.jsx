@@ -133,7 +133,7 @@ const InteractionForm = ({interactionId, referentiels, config, onSaved}) => {
                             )}
                         </select>
                     </div>
-                    <ImageUploadField id="interaction-skin" collection="interaction" label="Image (skin)"
+                    <ImageUploadField id="interaction-skin" collection="interaction" label="Image de l’interaction (repli pour les récoltes)"
                                       nom={interaction.nom} valeur={interaction.skin}
                                       onChange={(fichier) => setInteraction(precedent => ({...precedent, skin: fichier}))}/>
                     <div className="form-group">
