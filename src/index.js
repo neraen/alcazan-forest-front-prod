@@ -18,6 +18,7 @@ import store from "./store/index"
 import AdministrationPage from "./administration/pages/AdministrationPage";
 import HistoryPage from "./pages/historyPage/HistoryPage";
 import ClassementPage from "./pages/classementPage/ClassementPage";
+import GuidePage from "./pages/guidePage/GuidePage";
 import MessageriePage from "./pages/messageriePage/MessageriePage";
 import './styles/app.scss'
 import ProfilJoueur from "./components/profilJoueur/ProfilJoueur";
@@ -50,6 +51,7 @@ const Index =  () => {
                         <Route path="/inscription" component={RegisterPage}/>
                         <Route path="/preview" component={RegisterPage}/>
                         <Route path="/about" component={RegisterPage}/>
+                        <Route path="/guide" component={GuidePage}/>
                         <PrivateRoute path="/profil/:pseudo" component={ProfilJoueur}/>
                         <PrivateRoute path="/personnage" redirectTo="personnage/profil" component={ProfilPage}/>
                         <PrivateRoute path="/carte" component={MapPage}/>

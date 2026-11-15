@@ -22,9 +22,11 @@ const Navbar = ({history}) => {
             {label: "Profil", to: "/personnage"},
             {label: "Inventaire", to: "/inventaire"},
             {label: "Artisanat", to: "/artisanat"},
+            {label: "Guide", to: "/guide"},
             ...(role.includes('ROLE_ADMIN') ? [{label: "Administration", to: "/administration"}] : []),
         ]
         : [
+            {label: "Guide", to: "/guide"},
             {label: "Aperçu", to: "/preview"},
             {label: "À propos", to: "/about"},
         ];

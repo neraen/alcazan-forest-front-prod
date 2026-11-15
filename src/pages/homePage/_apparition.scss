@@ -1,0 +1,13 @@
+// Fondu d'apparition des pages vitrine (accueil, guide) — piloté par useApparition.js.
+@mixin apparition {
+  :global([data-apparition]) {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  :global([data-apparition][data-visible]) {
+    opacity: 1;
+    transform: none;
+  }
+}
