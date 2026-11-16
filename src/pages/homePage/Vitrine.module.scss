@@ -8,12 +8,14 @@ $largeur: 1180px;
 
 .vitrine {
   position: relative;
-  // La vitrine REMONTE de 300 px sur le bas de la parallaxe (−46 px compensent son
-  // `top: -46px`) : c'est ce qui pose le contenu sur le haut des falaises, comme
+  // La vitrine REMONTE sur le bas de la parallaxe (le header compense son `top`
+  // négatif) : c'est ce qui pose le contenu sur le haut des falaises, comme
   // l'ancien `.main-content { top: -300px }`. Sans ce chevauchement, on voit le
   // lac et le feuillage sous les rochers, et le bouton flotte au-dessus de l'eau.
+  // Le chevauchement (300 px au plus) se réduit sur les écrans bas pour ne pas
+  // recouvrir le bouton : `--chevauchement-vitrine`, défini dans home.scss.
   // z-index > celui de #btn (100) pour que le bouton glisse DERRIÈRE le contenu.
-  margin-top: calc(-46px - 300px);
+  margin-top: calc(-1 * var(--header-height) - var(--chevauchement-vitrine, 300px));
   z-index: 200;
   background: var(--bg-bottom);
   color: var(--text);

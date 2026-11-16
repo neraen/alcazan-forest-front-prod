@@ -1,5 +1,5 @@
 .header {
-  height: 72px;
+  height: var(--header-height);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -38,6 +38,7 @@
   color: var(--gold);
   letter-spacing: 0.04em;
   line-height: 1.1;
+  white-space: nowrap;
 }
 
 .brandSubtitle {
@@ -66,6 +67,7 @@
   padding: 8px 18px;
   border-radius: var(--radius-tab);
   text-decoration: none;
+  white-space: nowrap;
   transition: var(--transition);
 
   &:hover {
@@ -88,9 +90,13 @@
   display: flex;
   align-items: center;
   gap: 12px;
+
+  > * {
+    white-space: nowrap;
+  }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1100px) {
   .header {
     gap: 12px;
     padding: 0 14px;
@@ -103,5 +109,20 @@
   .tab {
     padding: 8px 10px;
     font-size: 13px;
+  }
+
+  .nav {
+    margin-left: 0;
+  }
+
+  .brandTitle {
+    font-size: 18px;
+  }
+}
+
+// Trop étroit pour le nom à côté du logo : le logo seul suffit à revenir à l'accueil.
+@media screen and (max-width: 860px) {
+  .brandText {
+    display: none;
   }
 }
