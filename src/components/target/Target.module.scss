@@ -94,3 +94,18 @@
   flex-direction: column;
   gap: 8px;
 }
+
+.swap {
+  margin-left: auto;
+  margin-right: 8px;
+  width: 32px;
+  height: 30px;
+  border: 1px solid var(--gold-soft);
+  border-radius: var(--radius-tab);
+  color: var(--gold);
+  background: var(--panel-inner);
+  font-size: 23px;
+  cursor: pointer;
+  &:hover { background: var(--panel); }
+  &:disabled { opacity: .45; cursor: default; }
+}

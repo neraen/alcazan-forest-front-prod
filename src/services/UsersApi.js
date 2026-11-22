@@ -78,8 +78,8 @@ function applySpellAutoFocused(spellId){
     return axios.post(API_URL + "joueur/spell/self", {spellId: spellId}).then(response => response.data)
 }
 
-function updatePosition(mapId, abscisse, ordonnee){
-    return axios.post(API_URL + "joueur/case/update_position", {mapId: mapId, caseAbscisse: abscisse, caseOrdonnee: ordonnee}).then(response => response.data)
+function updatePosition(mapId, abscisse, ordonnee, depuisAbscisse, depuisOrdonnee){
+    return axios.post(API_URL + "joueur/case/update_position", {mapId: mapId, caseAbscisse: abscisse, caseOrdonnee: ordonnee, depuisAbscisse, depuisOrdonnee}).then(response => response.data)
 }
 
 function changeMap(targetMapId, targetWrap, clickedWrap){
@@ -98,7 +98,12 @@ function disableTutorial(){
     return axios.post(API_URL + "joueur/disable/tutorial").then(response => response.data)
 }
 
+function echangerPosition(targetId, mapId, abscisse, ordonnee){
+    return axios.post(API_URL + "joueur/position/echanger", {targetId, mapId, abscisse, ordonnee}).then(response => response.data);
+}
+
 export default {
+    echangerPosition,
     register,
     find,
     findUserByPseudo,

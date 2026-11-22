@@ -62,6 +62,10 @@ const EchangeHost = (props) => {
     }
 
     const connecte = useMercure(topics, (payload) => {
+        if(payload.type === "position.echangee"){
+            props.updateJoueurState({needRefresh: true});
+            return;
+        }
         if(!payload.echange){
             return;
         }
@@ -77,7 +81,10 @@ const EchangeHost = (props) => {
         if(STATUTS_TERMINAUX.includes(payload.echange.statut)){
             props.setEchangeInvitations(invitations.filter(invitation => invitation.id !== payload.echange.id));
         }
-    }, resynchroniser);
+    }, () => {
+        resynchroniser();
+        props.updateJoueurState({needRefresh: true});
+    });
 
     const resyncRef = useRef(resynchroniser);
     resyncRef.current = resynchroniser;
@@ -99,6 +106,7 @@ const EchangeHost = (props) => {
         const auRetour = () => {
             if(document.visibilityState === "visible" && monId){
                 resyncRef.current();
+                props.updateJoueurState({needRefresh: true});
             }
         };
         document.addEventListener("visibilitychange", auRetour);

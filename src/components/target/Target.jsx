@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux";
-import { fetchTargetInfo, removePlayerTarget } from "../../store/actions";
+import { fetchTargetInfo, removePlayerTarget, updateJoueurState } from "../../store/actions";
+import UsersApi from "../../services/UsersApi";
+import {toast} from "react-toastify";
 import {Link} from "react-router-dom";
 import Panel from "../ui/panel/Panel";
 import GaugeBar from "../ui/gaugeBar/GaugeBar";
@@ -10,7 +12,7 @@ import styles from "./Target.module.scss";
  * Carte de ciblage (joueur / monstre / boss), affichée sous la fiche joueur.
  * Même langage visuel que la fiche joueur, accent danger pour l'ennemi.
  */
-class Target extends Component{
+export class Target extends Component{
 
     constructor(props){
         super(props);
@@ -25,6 +27,34 @@ class Target extends Component{
             }
         }
     }
+
+    voisin() {
+        const {target, joueurState, positionJoueur} = this.props;
+        if (target.type !== "player" || Number(target.targetId) === Number(joueurState.idJoueur)) return false;
+        const voisin = (joueurState.joueursCarte || []).find(c => Number(c.userId) === Number(target.targetId));
+        return voisin && !voisin.isWrap && Math.max(
+            Math.abs(Number(voisin.abscisse) - Number(positionJoueur.abscisse)),
+            Math.abs(Number(voisin.ordonnee) - Number(positionJoueur.ordonnee))
+        ) === 1;
+    }
+
+    echangerPosition = async () => {
+        if (this.echangeEnCours || this.props.joueurState.deplacementEnCours || !this.voisin()) return;
+        this.echangeEnCours = true;
+        this.props.updateJoueurState({deplacementEnCours: true});
+        try {
+            const {target, joueurState, positionJoueur} = this.props;
+            const data = await UsersApi.echangerPosition(Number(target.targetId), Number(joueurState.mapId),
+                Number(positionJoueur.abscisse), Number(positionJoueur.ordonnee));
+            this.props.updateJoueurState(data);
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Échange de position impossible.");
+            this.props.updateJoueurState({needRefresh: true});
+        } finally {
+            this.echangeEnCours = false;
+            this.props.updateJoueurState({deplacementEnCours: false});
+        }
+    };
 
     // Normalise les trois types de cible pour un rendu unique.
     getDisplay() {
@@ -68,6 +98,12 @@ class Target extends Component{
             <Panel className={styles.card}>
                 <div className={styles.cardHeader}>
                     <span className={styles.tag}>Cible</span>
+                    {this.voisin() && (
+                        <button type="button" className={styles.swap}
+                                title="Échanger les positions — 1 PM" aria-label="Échanger les positions — 1 PM"
+                                disabled={this.props.joueurState.deplacementEnCours || this.props.joueurState.pm < 1}
+                                onClick={this.echangerPosition}>⇄</button>
+                    )}
                     {/* Un monstre ne se décible pas à la main : il n'est visible/ciblé
                         que tant qu'on est sur sa case, et se décible en la quittant. */}
                     {this.props.target.type !== "monstre" && this.props.target.type !== "renfort" && (
@@ -103,5 +139,5 @@ class Target extends Component{
 
 export default connect(state => {
     let target = state.data.target;
-    return {target};
-}, {fetchTargetInfo, removePlayerTarget})(Target);
+    return {target, joueurState: state.data.joueurState, positionJoueur: state.data.positionJoueur};
+}, {fetchTargetInfo, removePlayerTarget, updateJoueurState})(Target);

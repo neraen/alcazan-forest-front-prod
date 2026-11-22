@@ -79,12 +79,17 @@ class Map extends React.Component {
             abscisseJoueur: data.abscisseJoueur !== undefined ? data.abscisseJoueur : this.state.abscisseJoueur,
             ordonneeJoueur: data.ordonneeJoueur !== undefined ? data.ordonneeJoueur : this.state.ordonneeJoueur,
         }, () => {
+            this.setState({unabledCases: this.getUnabledMove()});
+            if (this.props.target.type === "player") {
+                const cible = data.cases.find(c => Number(c.userId) === Number(this.props.target.targetId));
+                if (cible) this.props.updatePlayerTarget({abscisseTarget: cible.abscisse, ordonneeTarget: cible.ordonnee});
+                else this.props.removePlayerTarget();
+            }
             this.props.setMapLoaded(this.state.name);
-            this.props.updateJoueurState({mapId: mapId});
+            this.props.updateJoueurState({mapId: mapId, joueursCarte: data.cases.filter(c => c.userId)});
             this.props.updatePositionJoueur({abscisse: this.state.abscisseJoueur, ordonnee: this.state.ordonneeJoueur});
             this.majCibleMonstreInstance(this.state.cases, this.state.abscisseJoueur, this.state.ordonneeJoueur);
         });
-        this.setState({unabledCases: this.getUnabledMove()});
     }
 
     /**
@@ -172,14 +177,20 @@ class Map extends React.Component {
     }
 
     async updatePosition(abscisse, ordonnee){
+        if (this.deplacementEnCours || this.props.joueurState.deplacementEnCours) return;
+        this.deplacementEnCours = true;
+        this.props.updateJoueurState({deplacementEnCours: true});
         let data;
         try {
-            data = await UsersApi.updatePosition(this.state.mapId, abscisse, ordonnee);
+            data = await UsersApi.updatePosition(this.state.mapId, abscisse, ordonnee, this.state.abscisseJoueur, this.state.ordonneeJoueur);
         } catch (error) {
             // Le serveur arbitre la légalité du pas (voisinage, décor, PNJ, PM) et répond 400
             // + message : sans ce catch, un refus ne faisait RIEN de visible.
             toast.error(error.response?.data?.message || "Déplacement impossible.");
             return;
+        } finally {
+            this.deplacementEnCours = false;
+            this.props.updateJoueurState({deplacementEnCours: false});
         }
         // Un monstre ne reste ciblé que tant qu'on est sur sa case : quitter la case
         // décible, qu'il s'agisse d'un monstre du monde ouvert ou d'un monstre d'instance.
@@ -191,7 +202,7 @@ class Map extends React.Component {
             () => {
                 this.setState({ unabledCases: this.getUnabledMove() })
                 this.props.updatePositionJoueur({abscisse: data.abscisseJoueur, ordonnee: data.ordonneeJoueur})
-                this.props.updateJoueurState({lifeJoueur: data.life, manaJoueur: data.mana, pm: data.pm})
+                this.props.updateJoueurState({lifeJoueur: data.life, manaJoueur: data.mana, pm: data.pm, joueursCarte: data.cases.filter(c => c.userId)})
                 this.majCibleMonstreInstance(data.cases, data.abscisseJoueur, data.ordonneeJoueur)
             });
 
@@ -223,7 +234,7 @@ class Map extends React.Component {
             });
             // Remonte le nouveau nom de zone à la fiche joueur (présentation uniquement)
             this.props.setMapLoaded(mapData.mapInfo.nom);
-            this.props.updateJoueurState({mapId: mapData.mapId})
+            this.props.updateJoueurState({mapId: mapData.mapId, joueursCarte: mapData.cases.filter(c => c.userId)})
             this.props.updatePositionJoueur({abscisse: mapPosition.abscisse, ordonnee:  mapPosition.ordonnee })
             this.setState({unabledCases: this.getUnabledMove()});
             this.props.removePlayerTarget();
