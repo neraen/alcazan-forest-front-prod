@@ -25,6 +25,7 @@ export const ADD_WRAP_CASE = "add wrap case"
 export const ADD_PNJ_CASE = "add pnj case"
 export const ADD_MONSTER_CASE = "add monster case"
 export const ADD_INTERACTION_CASE = "add interaction case"
+export const ERASE_CASE = "erase case"
 
 
 export const updatePlayerTarget = (payload) => {
@@ -173,6 +174,15 @@ export const addMonsterCase = (index) => {
 export const addInteractionCase = (index) => {
     return{
         type: ADD_INTERACTION_CASE,
+        index
+    }
+}
+
+/* MapMaker : la gomme. `mode.data.cible` dit quoi retirer de la case
+   (tout | monstre | pnj | interaction | wrap | collision | boss). */
+export const eraseCase = (index) => {
+    return{
+        type: ERASE_CASE,
         index
     }
 }

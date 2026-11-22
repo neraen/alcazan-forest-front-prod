@@ -217,7 +217,10 @@ export const playerStatsReducer = (state = {
                 ...state,
                 data: {...state.data, mapMaker: {...state.data.mapMaker, cases: [...state.data.mapMaker.cases.map((t, i) => {
                             if (i === action.index) {
+                                // `hasMonstre` (id de la ligne monstre_carreau) ne sert qu'à
+                                // l'affichage ; la POSE passe par `monstreId` (cf. MapCaseEditorService).
                                 t.hasMonstre = state.data.mapMaker.mode.data.monstreId
+                                t.monstreId = state.data.mapMaker.mode.data.monstreId
                                 t.monstreQuantity = state.data.mapMaker.mode.data.quantity
                             }
                             return t;
@@ -237,6 +240,15 @@ export const playerStatsReducer = (state = {
                         })]}}
             }
         }
+        case actions.ERASE_CASE: {
+            const cible = state.data.mapMaker.mode.data.cible || "tout";
+            return {
+                ...state,
+                data: {...state.data, mapMaker: {...state.data.mapMaker, cases: state.data.mapMaker.cases.map((t, i) =>
+                    i === action.index ? gommerCase(t, cible) : t
+                )}}
+            }
+        }
         case actions.UPDATE_MODE_MAP_MAKER: {
             return {
                 ...state,
@@ -249,3 +261,39 @@ export const playerStatsReducer = (state = {
     }
 }
 
+/* La gomme du MapMaker. Un champ VIDÉ veut dire « retirer » pour /api/map/update
+   (MapCaseEditorService) — un champ absent, lui, ne toucherait à rien.
+   Le PNJ et le passage rendent la case foulable : leurs outils l'avaient bloquée.
+   « tout » laisse le boss, qui ne se repose pas depuis le MapMaker. */
+const gommerCase = (laCase, cible) => {
+    const c = {...laCase};
+    const tout = cible === "tout";
+    if (tout || cible === "monstre") {
+        c.hasMonstre = null;
+        c.monstreId = null;
+        c.monstreQuantity = null;
+    }
+    if ((tout || cible === "pnj") && c.pnjId) {
+        c.pnjId = null;
+        c.pnjName = null;
+        c.isUsable = true;
+    }
+    if (tout || cible === "interaction") {
+        c.interactionId = null;
+        c.interactionNom = null;
+    }
+    if ((tout || cible === "wrap") && c.isWrap) {
+        c.isWrap = false;
+        c.targetMapId = null;
+        c.targetWrap = null;
+        c.isUsable = true;
+    }
+    if (tout || cible === "collision") {
+        c.isUsable = true;
+    }
+    if (cible === "boss") {
+        c.bossId = null;
+        c.bossName = null;
+    }
+    return c;
+};

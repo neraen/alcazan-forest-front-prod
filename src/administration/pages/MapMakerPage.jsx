@@ -9,18 +9,22 @@ import WrapForm from "../components/forms/WrapForm";
 import PnjAddForm from "../components/forms/PnjAddForm";
 import MonsterAddForm from "../components/forms/MonsterAddForm";
 import InteractionAddForm from "../components/forms/InteractionAddForm";
+import GommeForm from "../components/forms/GommeForm";
 import Field from "../../components/forms/field/Field";
 
 class MapMakerPage extends React.Component{
 
     constructor(props) {
         super(props);
+        // `?carte=<id>` : ouverture directe depuis l'atlas du monde (onglet Monde).
+        const carteDemandee = Number(new URLSearchParams(props.location?.search || "").get('carte'));
         this.state = {
-            mapId: 1,
+            mapId: carteDemandee || 1,
             displayWrapFrom: false,
             displayMonsterFrom: false,
             displayPnjFrom: false,
             displayInteractionForm: false,
+            displayGommeForm: false,
             name: ""
         }
     }
@@ -31,7 +35,7 @@ class MapMakerPage extends React.Component{
     }
 
     handleChangeMap(event){
-        const mapId = event.target.value;
+        const mapId = Number(event.target.value);
         this.setState({mapId})
     }
 
@@ -67,6 +71,9 @@ class MapMakerPage extends React.Component{
             case "interaction":
                 this.setState({displayInteractionForm: !this.state.displayInteractionForm})
                 break;
+            case "gomme":
+                this.setState({displayGommeForm: !this.state.displayGommeForm})
+                break;
             default:
                 break;
         }
@@ -90,7 +97,7 @@ class MapMakerPage extends React.Component{
             <h1>Editer une carte</h1>
             <div className="map-maker-container">
                 <div className="map-maker-block-map">
-                    <Select onChange={(event) => this.handleChangeMap(event)}>
+                    <Select value={this.state.mapId} onChange={(event) => this.handleChangeMap(event)}>
                         {this.state.maps && this.state.maps.map(map =>
                             <option key={map.carteId} value={map.carteId}>{map.nom}</option>
                         )}
@@ -109,6 +116,8 @@ class MapMakerPage extends React.Component{
                         {this.state.displayMonsterFrom && <MonsterAddForm />}
                         <button className="map-maker-btn-outils btn-interaction" onClick={() => this.toggleForms("interaction")}> Poser une interaction </button>
                         {this.state.displayInteractionForm && <InteractionAddForm />}
+                        <button className="map-maker-btn-outils btn-gomme" onClick={() => this.toggleForms("gomme")}> Gomme (retirer un élément) </button>
+                        {this.state.displayGommeForm && <GommeForm />}
                         <button className="map-maker-btn-outils btn-desactive" onClick={() => this.unsetTool()} > Enlever l'outil </button>
                         <button className="map-maker-btn-outils btn-desactive" onClick={() => this.handleSubmit()} > Sauvegarder les changements </button>
                     </div>

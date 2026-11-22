@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from "react-redux";
-import {toggleCollisionCase, updateDiffCases, addMonsterCase, addPnjCase, addWrapCase, addInteractionCase} from "../../store/actions";
+import {toggleCollisionCase, updateDiffCases, addMonsterCase, addPnjCase, addWrapCase, addInteractionCase, eraseCase} from "../../store/actions";
 
 class EditableCase extends React.Component{
 
@@ -25,6 +25,9 @@ class EditableCase extends React.Component{
             case "interaction":
                 this.props.addInteractionCase(this.props.index);
                 break;
+            case "gomme":
+                this.props.eraseCase(this.props.index);
+                break;
             default:
                 return "";
 
@@ -46,6 +49,8 @@ class EditableCase extends React.Component{
                 return "map-maker-hover-monstre ";
             case "interaction":
                 return "map-maker-hover-interaction ";
+            case "gomme":
+                return "map-maker-hover-gomme ";
             default:
                 return "";
 
@@ -53,6 +58,10 @@ class EditableCase extends React.Component{
     }
 
     getCaseColor(){
+        if(this.props.bossId){
+            return "map-maker-boss ";
+        }
+
         if(this.props.interactionId){
             return "map-maker-interaction ";
         }
@@ -101,6 +110,14 @@ class EditableCase extends React.Component{
                         <div>{this.props.interactionNom || "Interaction"}</div>
                     )
                     }
+                    {this.props.hasMonstre && (
+                        <div>Monstre</div>
+                    )
+                    }
+                    {this.props.bossId && (
+                        <div>Boss : {this.props.bossName}</div>
+                    )
+                    }
                 </div>
             </div>
         </>
@@ -111,4 +128,4 @@ class EditableCase extends React.Component{
 
 export default connect((state, ownProps) => {
     return {mapMaker: state.data.mapMaker, ownProps};
-}, {toggleCollisionCase, updateDiffCases, addMonsterCase, addPnjCase, addWrapCase, addInteractionCase})(EditableCase);
+}, {toggleCollisionCase, updateDiffCases, addMonsterCase, addPnjCase, addWrapCase, addInteractionCase, eraseCase})(EditableCase);
