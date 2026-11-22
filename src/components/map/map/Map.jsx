@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import {updatePositionJoueur, removePlayerTarget, updateJoueurState, openDonjonPorte, updatePlayerTarget} from "../../../store/actions";
 import distanceCalculator from "../../../services/distanceCalculator";
 import "../mapGrid.scss";
+import {fondCarte} from "../imageCarte";
 
 
 
@@ -345,7 +346,7 @@ class Map extends React.Component {
 
         return (<>
 
-            <div className="cases" style={{backgroundImage: "url("+require("../../../img/map/"+this.state.mapId+".png").default+")", backgroundSize: 'cover'}}>
+            <div className="cases" style={{backgroundImage: fondCarte(this.state.mapId), backgroundSize: 'cover'}}>
                 {this.state.cases.map(uniqueCase => (
                     <div  onClick={() =>this.handleClick(uniqueCase)}>
                         <Case key={uniqueCase.carteCarreauId}

@@ -141,23 +141,7 @@
   font-weight: 700;
 }
 
-/* --- Monde --- */
-
-.world-maps {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.world-map {
-  width: 15vw;
-  max-width: 15vw;
-  height: 10vw;
-  margin: 2px;
-  display: inline-block;
-  justify-content: center;
-  border: solid 1px var(--gold-soft);
-}
+/* --- Monde : voir components/monde/MondeAtlas.module.scss (atlas du monde) --- */
 
 /* --- Map maker --- */
 
@@ -267,7 +251,9 @@
   color: var(--text);
 }
 
-.map-maker-pnj:hover .editable-case-hover, .map-maker-wrap:hover .editable-case-hover {
+.map-maker-pnj:hover .editable-case-hover, .map-maker-wrap:hover .editable-case-hover,
+.map-maker-interaction:hover .editable-case-hover, .map-maker-monstre:hover .editable-case-hover,
+.map-maker-boss:hover .editable-case-hover {
   display: block;
 }
 
@@ -993,6 +979,47 @@
   background-color: rgba(111, 208, 140, 0.55);
 }
 
+.btn-gomme {
+  background: var(--gold);
+}
+
+.map-maker-boss {
+  background-color: rgba(168, 60, 200, 0.55);
+}
+
+/* Gomme : la case survolée se barre, quelle que soit sa couleur d'élément. */
+.map-maker-hover-gomme {
+  cursor: crosshair;
+}
+.map-maker-hover-gomme:hover {
+  box-shadow: inset 0 0 0 2px var(--gold);
+  background-image: linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, .85) 45%, rgba(255, 255, 255, .85) 55%, transparent 55%);
+}
+
+.map-maker-gomme-cibles {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0;
+}
+.map-maker-gomme-cible {
+  padding: 8px 10px;
+  border-radius: var(--radius-bar);
+  border: 1px solid var(--gold-soft);
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: background .15s;
+}
+.map-maker-gomme-cible:hover {
+  background: var(--panel-inner-light);
+}
+.map-maker-gomme-cible.is-active {
+  background: var(--gold);
+  color: var(--ink);
+}
+
 /* ==========================================================================
    Import CSV d'équipements (création en masse, images ajoutées ensuite).
    ========================================================================== */
@@ -1370,3 +1397,84 @@
   font-size: 12px;
   color: var(--text-faint);
 }
+
+/* ==========================================================================
+   InteractionMaker : contenu d'un coffre en lignes (garanties / au tirage).
+   ========================================================================== */
+.contenu-coffre-modes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: var(--text-dim);
+  font-size: 13px;
+
+  button {
+    padding: 5px 10px;
+    border-radius: var(--radius-bar);
+    border: 1px solid var(--gold-soft);
+    background: transparent;
+    color: var(--gold);
+    cursor: pointer;
+    transition: background .15s;
+    &:hover { background: var(--panel-inner-light); }
+  }
+}
+
+.contenu-coffre-lignes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  li {
+    display: grid;
+    grid-template-columns: 145px minmax(160px, 1fr) auto 165px 150px 28px;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: var(--radius-bar);
+    border-left: 3px solid var(--gold);
+    background: var(--panel-inner);
+
+    &.is-tirage { border-left-color: var(--mp-label); }
+    select, input { margin: 0; }
+  }
+}
+
+.contenu-coffre-sans-item { color: var(--text-dim); font-size: 13px; }
+
+.contenu-coffre-quantite, .contenu-coffre-poids {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 13px;
+  input { width: 70px; }
+}
+
+.contenu-coffre-chance { color: var(--gold-pale); font-size: 12.5px; font-weight: 700; white-space: nowrap; }
+
+.contenu-coffre-retirer {
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  &:hover { color: var(--danger-text); }
+}
+
+.contenu-coffre-ajouter {
+  margin: 8px 0;
+  border: none;
+  background: transparent;
+  color: var(--gold);
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
+.contenu-coffre-tirages input { width: 90px; }
+

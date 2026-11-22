@@ -3,6 +3,7 @@ import EditableCase from "./EditableCase";
 import MapApi from "../../services/MapApi";
 import {connect} from "react-redux";
 import {setCases} from "../../store/actions";
+import {fondCarte} from "../../components/map/imageCarte";
 
 
 
@@ -47,11 +48,12 @@ class EditableMap extends React.Component {
     {
         return (<>
 
-            <div className="cases" style={{backgroundImage: "url("+require("../../img/map/"+this.props.mapId+".png").default+")", backgroundSize: 'contain'}}>
+            <div className="cases" style={{backgroundImage: fondCarte(this.props.mapId), backgroundSize: 'contain'}}>
                 {this.props.mapMaker.cases.map((uniquecase, index) => (
                     <div  onClick={() =>this.handleClick(uniquecase)}>
                         <EditableCase index={index} targetMapId={uniquecase.targetMapId} targetWrap={uniquecase.targetWrap} pnjName={uniquecase.pnjName} isUsable={uniquecase.isUsable} isWrap={uniquecase.isWrap} hasMonstre={uniquecase.hasMonstre} pnjId={uniquecase.pnjId}
                                       interactionId={uniquecase.interactionId} interactionNom={uniquecase.interactionNom}
+                                      bossId={uniquecase.bossId} bossName={uniquecase.bossName}
                                       key={uniquecase.carteCarreauId}/>
 
                     </div>
