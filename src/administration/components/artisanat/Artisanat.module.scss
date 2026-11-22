@@ -1,0 +1,390 @@
+// ArtisanatMaker en cartes. Imbriqué sous `.page` : les règles globales d'admin.scss
+// (`.main-administration-page button/input`, spécificité 0,1,1) écraseraient sinon le module.
+// Les formulaires du panneau gardent, eux, leurs classes globales (donjon-maker-*).
+
+.chargement { color: var(--text-dim); padding: 40px 24px; font-style: italic; }
+
+.page {
+  padding: 16px 20px 40px;
+  color: var(--text);
+  font-family: var(--font-body);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+
+  &.avecPanneau { grid-template-columns: minmax(0, 1fr) 470px; }
+
+  h1, h2, h3 { font-family: var(--font-title); color: var(--gold); margin: 0; letter-spacing: .02em; }
+
+  .colonne { min-width: 0; }
+  .vide { color: var(--text-mute); font-style: italic; font-size: 13px; }
+  .aucune { color: var(--pa-label); font-weight: 700; font-size: 11px; }
+
+  /* ------------------------------------------------------------ accueil */
+
+  .entete {
+    margin-bottom: 18px;
+    h1 { font-size: 24px; }
+    p { margin: 4px 0 0; color: var(--text-mute); font-size: 13px; max-width: 760px; }
+  }
+
+  .familles { display: flex; flex-direction: column; gap: 26px; }
+
+  .famille > h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 17px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gold-divider);
+    small { font-family: var(--font-body); color: var(--text-faint); font-size: 12px; }
+  }
+
+  .grilleMetiers {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 12px;
+  }
+
+  %carte {
+    position: relative;
+    text-align: left;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--gold-card-border);
+    background: var(--panel-soft);
+    color: var(--text);
+    transition: var(--transition);
+
+    &:hover { border-color: var(--gold-border); background: var(--gold-softer); transform: translateY(-2px); }
+  }
+
+  .carteMetier {
+    @extend %carte;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 14px !important;
+  }
+
+  .carteMetierCorps {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+
+    strong { font-family: var(--font-title); font-size: 15px; color: var(--text); }
+  }
+
+  .carteMetierDesc {
+    font-size: 12px;
+    color: var(--text-mute);
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .carteMetierStats {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-weight: 600;
+    b { color: var(--gold); font-size: 14px; }
+    span { color: var(--text-faint); margin-left: 4px; }
+  }
+
+  .iconeMetier {
+    flex: none;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-family: var(--font-title);
+    font-weight: 700;
+    color: var(--ink);
+    overflow: hidden;
+
+    img { width: 100%; height: 100%; object-fit: cover; }
+  }
+
+  .famille_recolte { background: radial-gradient(circle at 35% 30%, #8fe0b0, #3f9c7a); }
+  .famille_craft { background: radial-gradient(circle at 35% 30%, var(--gold-hover), #a7782a); }
+
+  .carteAjout {
+    @extend %carte;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 92px;
+    padding: 14px !important;
+    border: 2px dashed var(--gold-border) !important;
+    background: transparent !important;
+    color: var(--gold) !important;
+    text-align: center;
+
+    span { font-weight: 800; font-size: 13px; }
+    small { color: var(--text-faint); font-size: 11px; }
+    &:hover { background: var(--gold-softer) !important; }
+  }
+
+  /* ------------------------------------------------------------ fiche métier */
+
+  .retour {
+    border: none !important;
+    padding: 4px 0 !important;
+    color: var(--text-dim) !important;
+    font-weight: 700;
+    margin-bottom: 10px;
+    &:hover { background: none !important; color: var(--gold) !important; }
+  }
+
+  .ficheMetier {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    padding: 18px;
+    border-radius: var(--radius-panel);
+    border: 1px solid var(--gold-soft);
+    background: var(--panel);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .ficheMetierCorps {
+    flex: 1;
+    min-width: 240px;
+
+    h1 { font-size: 24px; }
+    p { margin: 6px 0 0; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; font-size: 12.5px; color: var(--text-dim); font-weight: 700; }
+    .description { font-style: italic; font-weight: 500; color: var(--text-mute); }
+  }
+
+  .chipFamille { padding: 2px 10px; border-radius: 999px; color: var(--ink); font-weight: 800; }
+
+  .ficheActions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  %bouton {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: var(--radius-slot);
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  .bouton { @extend %bouton; }
+  .boutonDanger {
+    @extend %bouton;
+    border-color: var(--danger-border) !important;
+    color: var(--danger-text) !important;
+    &:hover { background: var(--danger-bg-hover) !important; }
+  }
+
+  .outils {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+
+    input { max-width: 340px; margin: 0; }
+  }
+
+  .compte { color: var(--text-faint); font-size: 12.5px; font-weight: 700; }
+
+  .carteActive { border-color: var(--gold) !important; box-shadow: var(--halo-gold); }
+
+  .pastilleAlerte {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--pa-label);
+    box-shadow: 0 0 0 2px var(--ink);
+  }
+
+  .vignette {
+    flex: none;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--spell-thumb-bg);
+    border: 1px solid rgba(255, 255, 255, .07);
+    color: var(--text-faint);
+    overflow: hidden;
+
+    img { max-width: 86%; max-height: 86%; object-fit: contain; }
+  }
+
+  /* ------------------------------------------------------------ ressources */
+
+  .grilleItems {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+    gap: 12px;
+  }
+
+  .carteRessource {
+    @extend %carte;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 28px 10px 12px !important;
+    text-align: center;
+
+    strong { font-size: 13px; line-height: 1.25; }
+  }
+
+  .niveau {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--level);
+    background: var(--level-soft-bg);
+    border: 1px solid var(--level-border);
+  }
+
+  .sources {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+
+    span { display: inline-flex; align-items: center; gap: 3px; }
+  }
+
+  .prix { font-size: 11px; color: var(--text-faint); font-weight: 700; }
+  .usages { font-size: 11px; color: var(--mp-label); font-weight: 800; }
+
+  /* ------------------------------------------------------------ recettes */
+
+  .palier {
+    margin-top: 18px;
+
+    h3 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--gold-divider);
+      small { font-family: var(--font-body); color: var(--text-faint); font-size: 12px; }
+    }
+  }
+
+  .grilleRecettes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .carteAjoutRecette { min-height: 70px; flex-direction: row; gap: 10px; }
+
+  .carteRecette {
+    @extend %carte;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px !important;
+  }
+
+  .inactive { opacity: .6; border-style: dashed; }
+
+  .recetteTete { display: flex; gap: 10px; align-items: center; }
+
+  .recetteTitre {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    strong { font-size: 13.5px; line-height: 1.25; }
+    small { color: var(--text-faint); font-size: 11px; font-weight: 600; }
+  }
+
+  .quantiteProduit { font-weight: 900; color: var(--gold); font-size: 15px; }
+
+  .recetteMeta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text-dim);
+
+    > span { display: inline-flex; align-items: center; gap: 3px; }
+  }
+
+  .niveauInline { color: var(--level); }
+
+  .difficulte {
+    gap: 2px !important;
+    i { width: 7px; height: 7px; border-radius: 50%; background: var(--track); display: inline-block; }
+    .pleine { background: var(--pa-label); }
+  }
+
+  .badgeInactif { padding: 0 6px; border-radius: 999px; color: var(--danger-text); border: 1px solid var(--danger-border); }
+  .badgeEnCours { padding: 0 6px; border-radius: 999px; color: var(--success); border: 1px solid var(--success-border); }
+
+  .composants {
+    list-style: none;
+    margin: 0;
+    padding: 8px 0 0;
+    border-top: 1px solid var(--gold-divider);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    li { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-soft); }
+    b { color: var(--gold); font-weight: 900; min-width: 28px; text-align: right; }
+    span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  }
+
+  /* ------------------------------------------------------------ panneau */
+
+  .panneau {
+    position: sticky;
+    top: 70px;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    border-radius: var(--radius-panel);
+    border: 1px solid var(--gold-soft);
+    background: var(--panel);
+    padding: 14px 16px;
+
+    // Les formulaires existants : pleine largeur, sans double cadre.
+    :global(.donjon-maker-bloc) { margin-bottom: 12px; }
+    :global(form.donjon-maker-bloc) { border: none; padding: 0; }
+    input, select, textarea { max-width: none; }
+  }
+
+  .panneauEntete {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    h2 { font-size: 18px; }
+  }
+
+  .boutonIcone { padding: 6px !important; display: grid; place-items: center; border-color: transparent !important; color: var(--text-dim) !important; }
+
+  @media (max-width: 1150px) {
+    &.avecPanneau { grid-template-columns: 1fr; }
+    .panneau { position: static; max-height: none; }
+  }
+}

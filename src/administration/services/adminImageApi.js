@@ -20,6 +20,7 @@ export const COLLECTIONS_IMAGE = {
     pnj_skin: {dossier: "pnj", avecExtension: false},
     monstre: {dossier: "monstre", avecExtension: false},
     interaction: {dossier: "interaction", avecExtension: false},
+    consommable: {dossier: "consommables", avecExtension: true},
 };
 
 /**

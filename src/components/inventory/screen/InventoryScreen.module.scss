@@ -166,8 +166,10 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
+  /* Cases de taille fixe (~ celles du paperdoll) : un nombre de colonnes figé les
+     étirait sur toute la largeur du sac (≈ 165 px en plein écran). */
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 8px;
 }
 
 .rarity-commun {
@@ -201,7 +203,7 @@
   padding: 0;
   cursor: pointer;
   background: var(--parchment);
-  border: 2.5px solid var(--rarity);
+  border: 2px solid var(--rarity);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.28);
   display: flex;
   align-items: center;
@@ -223,8 +225,8 @@
   position: absolute;
   top: 4px;
   left: 4px;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--rarity);
 }
@@ -244,12 +246,12 @@
   position: absolute;
   right: 4px;
   bottom: 4px;
-  min-width: 20px;
-  padding: 1px 6px;
+  min-width: 18px;
+  padding: 0 5px;
   border-radius: var(--radius-tab);
   background: var(--qty-badge-bg);
   color: var(--text);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -312,10 +314,6 @@
 @media screen and (max-width: 1400px) {
   .character {
     width: 460px;
-  }
-
-  .grid {
-    grid-template-columns: repeat(4, 1fr);
   }
 }
 

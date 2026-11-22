@@ -102,6 +102,14 @@ const RessourceForm = ({ressource, referentiels, onSaved}) => {
                 de récolte qui donnent cette ressource. Laissez vide pour utiliser l’image de l’interaction.
             </p>
 
+            <p className="form-help">
+                Avec un métier de récolte, l’objet devient automatiquement disponible dans le MapMaker.
+                Nouvelle récolte : 3 PA, 1 ressource, 12 XP métier, recharge personnelle de 5 minutes,
+                choix mesuré/intensif. Les réglages existants sont conservés.
+                Ajustez-les dans <a href="/administration/interactions">Interactions</a> après enregistrement.
+                Retirer le métier de récolte désactive les points existants ; leur réactivation reste manuelle.
+            </p>
+
             <button type="submit" disabled={enregistrement}>
                 {objet.id ? "Enregistrer les modifications" : "Créer l'objet"}
             </button>

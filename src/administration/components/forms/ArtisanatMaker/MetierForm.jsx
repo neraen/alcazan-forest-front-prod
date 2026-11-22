@@ -16,20 +16,22 @@ const VIDE = {
  *
  * Aucune règle ici : familles et plafonds viennent de `/config`, le serveur revalide tout.
  */
-const MetierForm = ({metierId, referentiels, config, onSaved}) => {
+// `familleParDefaut` : famille pré-choisie d'un métier NEUF (création depuis la colonne
+// « récolte » ou « fabrication » de l'ArtisanatMaker).
+const MetierForm = ({metierId, referentiels, config, onSaved, familleParDefaut = null}) => {
 
     const [metier, setMetier] = useState(VIDE);
     const [enregistrement, setEnregistrement] = useState(false);
 
     useEffect(() => {
         if(!metierId){
-            setMetier(VIDE);
+            setMetier({...VIDE, famille: familleParDefaut || VIDE.famille});
             return;
         }
         ArtisanatMakerApi.getMetier(metierId)
             .then(donnees => setMetier({...VIDE, ...donnees}))
             .catch(() => toast.error("Impossible de charger ce métier."));
-    }, [metierId]);
+    }, [metierId, familleParDefaut]);
 
     const champ = (nom) => (event) => {
         const {type, value} = event.target;

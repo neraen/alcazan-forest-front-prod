@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {connect} from "react-redux";
 import {fetchTargetInfo, updateJoueurState, removePlayerTarget} from "../../store/actions";
 import UserActionApi from "../../services/UserActionApi";
+import {toast} from "react-toastify";
 import Slot from "../ui/slot/Slot";
 import styles from "./Consommable.module.scss";
 
@@ -63,15 +64,14 @@ const Consommable = (props) => {
     }
 
     const takeConsommable = async () => {
-        const statsAfterUseConsommable = await UserActionApi.takeConsommable(props.consommable.id);
-        props.updateJoueurState({
-            lifeJoueur: statsAfterUseConsommable.life,
-            manaJoueur: statsAfterUseConsommable.mana,
-        })
-
-        if(statsAfterUseConsommable.message !== ""){
-            //toast(statsAfterUseConsommable.message);
+        try {
+            const stats = await UserActionApi.takeConsommable(props.consommable.id);
+            props.updateJoueurState({lifeJoueur: stats.life, manaJoueur: stats.mana, buffVersion: Date.now()});
+            if (stats.message) toast.error(stats.message);
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Impossible d'utiliser cette potion.");
         }
+
     }
 
     return <>

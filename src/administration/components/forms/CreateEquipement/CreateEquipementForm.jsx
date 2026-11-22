@@ -43,7 +43,10 @@ class CreateEquipementForm extends React.Component{
             classes: [],
             listeCaracteristiques: [],
             equipements: [],
-            idEquipement: 0,
+            // Monté directement sur un équipement (Item Maker) : `componentDidUpdate` ne verrait
+            // jamais changer `externalSelectedId`, on le prend donc dès la construction ;
+            // `fetchFormElements` rappelle `setCurrentEquipement` une fois les listes chargées.
+            idEquipement: Number(props.externalSelectedId) > 0 ? props.externalSelectedId : 0,
             iconeFile: null,
             iconePreview: "",
             saving: false

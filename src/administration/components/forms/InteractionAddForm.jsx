@@ -52,7 +52,7 @@ const InteractionAddForm = (props) => {
             </select>
             <small>
                 Puis cliquez les cases. Pensez à « Sauvegarder les changements ».
-                Les interactions se créent dans l'onglet Interactions.
+                Les ressources de récolte apparaissent automatiquement après leur enregistrement dans l’Item Maker. Les autres interactions se créent dans l’onglet Interactions.
             </small>
         </div>
     );

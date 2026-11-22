@@ -15,6 +15,7 @@ import ArtisanatMakerPage from "./ArtisanatMakerPage";
 import JournalPage from "./JournalPage";
 import StatistiquesPage from "./StatistiquesPage";
 import JoueursPage from "./JoueursPage";
+import ItemMakerPage from "./ItemMakerPage";
 
 
 
@@ -56,6 +57,9 @@ const AdministrationPage = (props) => {
                         <NavLink className="" to="/administration/artisanat">Artisanat</NavLink>
                     </li>
                     <li className="administration-nav-link">
+                        <NavLink className="" to="/administration/items">Item Maker</NavLink>
+                    </li>
+                    <li className="administration-nav-link">
                         <NavLink className="" to="/administration/monstres">Monstres</NavLink>
                     </li>
                     <li className="administration-nav-link">
@@ -78,6 +82,7 @@ const AdministrationPage = (props) => {
                     <PrivateRoute path="/administration/pnj"  isAdmin={true} component={PnjMakerPage}/>
                     <PrivateRoute path="/administration/interactions"  isAdmin={true} component={InteractionMakerPage}/>
                     <PrivateRoute path="/administration/artisanat"  isAdmin={true} component={ArtisanatMakerPage}/>
+                    <PrivateRoute path="/administration/items"  isAdmin={true} component={ItemMakerPage}/>
                     <PrivateRoute path="/administration/monstres"  isAdmin={true} component={MonsterMakerPage}/>
                     <PrivateRoute path="/administration/equipements"  isAdmin={true} component={EquipementPage}/>
                     <PrivateRoute path="/administration/shopmaker"  isAdmin={true} component={ShopMakerPage}/>

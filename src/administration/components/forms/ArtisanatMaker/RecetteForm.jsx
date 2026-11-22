@@ -43,7 +43,9 @@ const SelecteurItem = ({valeur, referentiels, onChange}) => {
  * L'XP est SUGGÉRÉE à partir du niveau et de la difficulté, jamais imposée : enfermer
  * l'équilibrage dans une formule obligerait à redéployer pour retoucher un chiffre.
  */
-const RecetteForm = ({recetteId, referentiels, config, onSaved}) => {
+// `metierParDefaut` : métier pré-choisi d'une recette NEUVE (création depuis la fiche d'un
+// métier). Ignoré quand on édite une recette existante.
+const RecetteForm = ({recetteId, referentiels, config, onSaved, metierParDefaut = null}) => {
 
     const [recette, setRecette] = useState(RECETTE_VIDE);
     const [produit, setProduit] = useState(PRODUIT_VIDE);
@@ -53,9 +55,9 @@ const RecetteForm = ({recetteId, referentiels, config, onSaved}) => {
 
     useEffect(() => {
         if(!recetteId){
-            setRecette(RECETTE_VIDE);
+            setRecette({...RECETTE_VIDE, metierId: metierParDefaut});
             setProduit(PRODUIT_VIDE);
-            setIngredients([]);
+            setIngredients([{...INGREDIENT_VIDE}]);
             return;
         }
         ArtisanatMakerApi.getRecette(recetteId)
@@ -66,7 +68,7 @@ const RecetteForm = ({recetteId, referentiels, config, onSaved}) => {
                 setSuggeree(donnees.experienceSuggeree);
             })
             .catch(() => toast.error("Impossible de charger cette recette."));
-    }, [recetteId]);
+    }, [recetteId, metierParDefaut]);
 
     const champ = (nom) => (event) => {
         const {type, checked, value} = event.target;
