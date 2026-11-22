@@ -7,6 +7,8 @@ import Panel from "../../ui/panel/Panel";
 import SectionTitle from "../../ui/sectionTitle/SectionTitle";
 import GaugeBar from "../../ui/gaugeBar/GaugeBar";
 import Glyph from "../../ui/glyphs/Glyph";
+import useEffetsActifs from "../../spells/buff/useEffetsActifs";
+import {bonusParCaracteristique, dureeLongue, resumeEffet, signe} from "../../spells/buff/effetsUtils";
 import styles from "./Profil.module.scss";
 
 /**
@@ -63,6 +65,12 @@ const Profil = (props) => {
     // (richesse, honneur). Endpoint DÉDIÉ et non `data/minimal`, qui est le chemin chaud
     // rappelé à chaque déplacement sur la carte.
     const [stats, setStats] = useState(null);
+
+    // Effets temporaires (bienfaits ET affaiblissements) : même source que la grille de la
+    // barre de sorts, pour que les deux annoncent les mêmes valeurs et le même temps restant.
+    const {effets} = useEffetsActifs();
+    const bonusEffets = bonusParCaracteristique(effets);
+    const effetDe = (key) => bonusEffets[key] || 0;
 
     useEffect(() => {
         fetchCaracteristiques(props.user.id)
@@ -213,6 +221,32 @@ const Profil = (props) => {
                     )}
                 </Panel>
 
+                <Panel variant="soft" padding="lg" radius="lg" className={styles.effetsCard}>
+                    <SectionTitle right={<span className={styles.sectionNote}>{effets.length} actif(s)</span>}>
+                        Effets actifs
+                    </SectionTitle>
+                    {effets.length === 0
+                        ? <p className={styles.metierEmpty}>Aucun bienfait ni affaiblissement en cours.</p>
+                        : <div className={styles.effetRows}>
+                            {effets.map((effet) => (
+                                <div key={effet.userBuffId ?? effet.id}
+                                     className={`${styles.effetRow} ${effet.nefaste ? styles.effetNefaste : styles.effetBienfait}`}>
+                                    <img className={styles.effetIcone} src={"/img/spell/" + effet.icone} alt=""/>
+                                    <div className={styles.effetTexte}>
+                                        <span className={styles.effetNom}>
+                                            {effet.name}
+                                            <span className={styles.effetTag}>
+                                                {effet.controleLabel || (effet.nefaste ? "Affaiblissement" : "Bienfait")}
+                                            </span>
+                                        </span>
+                                        <span className={styles.effetResume}>{resumeEffet(effet) || "—"}</span>
+                                    </div>
+                                    <span className={styles.effetTemps}>{dureeLongue(effet.restant)}</span>
+                                </div>
+                            ))}
+                        </div>}
+                </Panel>
+
                 {statsLignes.length > 0 && (
                     <Panel variant="soft" padding="lg" radius="lg" className={styles.faitsCard}>
                         <SectionTitle>Faits d'armes</SectionTitle>
@@ -228,8 +262,8 @@ const Profil = (props) => {
                 )}
 
                 <Panel variant="soft" padding="lg" radius="lg" className={styles.equipCard}>
-                    <SectionTitle right={<span className={styles.sectionNote}>base + bonus</span>}>
-                        Équipement
+                    <SectionTitle right={<span className={styles.sectionNote}>base + équip + effets</span>}>
+                        Statistiques
                     </SectionTitle>
                     <div className={styles.equipRows}>
                         {STATS_META.map((s) => (
@@ -238,8 +272,14 @@ const Profil = (props) => {
                                 <span className={styles.equipLabel}>{s.label}</span>
                                 <span className={styles.equipBase}>{caracteristiques[s.key]}</span>
                                 <span className={styles.equipBonus}>+{caracteristiquesBonus[s.key]}</span>
+                                {/* Toujours rendu (même à zéro) : les colonnes restent alignées
+                                    d'une ligne à l'autre ; seul le zéro s'efface. */}
+                                <span className={`${styles.equipEffet} ${effetDe(s.key) < 0 ? styles.equipEffetMalus : ""} ${effetDe(s.key) === 0 ? styles.equipEffetNul : ""}`}
+                                      title="Effets temporaires (potions, sorts)">
+                                    {signe(effetDe(s.key))}
+                                </span>
                                 <span className={styles.equipTotal}>
-                                    {caracteristiques[s.key] + caracteristiquesBonus[s.key]}
+                                    {caracteristiques[s.key] + caracteristiquesBonus[s.key] + effetDe(s.key)}
                                 </span>
                             </div>
                         ))}
@@ -302,6 +342,12 @@ const Profil = (props) => {
                                     <div className={styles.statDetail}>
                                         base {caracteristiques[s.key]} · équip{" "}
                                         <span className={styles.statDetailBonus}>+{caracteristiquesBonus[s.key]}</span>
+                                        {effetDe(s.key) !== 0 && <>
+                                            {" "}· effets{" "}
+                                            <span className={effetDe(s.key) < 0 ? styles.statDetailMalus : styles.statDetailBonus}>
+                                                {signe(effetDe(s.key))}
+                                            </span>
+                                        </>}
                                     </div>
                                 </div>
                                 {pendingFor(s.key) > 0 && (

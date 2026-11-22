@@ -148,6 +148,88 @@
   flex: 0 0 auto;
 }
 
+/* --- Carte « effets actifs » (bienfaits et affaiblissements en cours) --- */
+
+.effetsCard {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.effetRows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.effetRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 11px;
+  background: var(--row-bg);
+  border-left: 3px solid var(--bonus);
+}
+
+.effetNefaste {
+  border-left-color: var(--danger);
+  background: var(--danger-bg-hover);
+}
+
+.effetIcone {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: var(--radius-bar);
+  border: 1px solid var(--gold-mini-border);
+  object-fit: cover;
+}
+
+.effetTexte {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.effetNom {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.effetTag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bonus);
+}
+
+.effetNefaste .effetTag {
+  color: var(--danger-text);
+}
+
+.effetResume {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mute);
+}
+
+.effetTemps {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
 /* --- Carte équipement (base + bonus par stat) --- */
 
 .equipCard {
@@ -266,6 +348,24 @@
   color: var(--bonus);
 }
 
+/* Effets temporaires : vert comme l'équipement quand ils aident, rouge quand ils pèsent,
+   éteints à zéro (la colonne reste là pour l'alignement). */
+.equipEffet {
+  min-width: 34px;
+  text-align: right;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--bonus);
+}
+
+.equipEffetMalus {
+  color: var(--danger-text);
+}
+
+.equipEffetNul {
+  color: var(--text-dim3);
+}
+
 .equipTotal {
   min-width: 46px;
   text-align: right;
@@ -378,6 +478,10 @@
 
 .statDetailBonus {
   color: var(--bonus);
+}
+
+.statDetailMalus {
+  color: var(--danger-text);
 }
 
 .statPending {

@@ -9,6 +9,67 @@
   position: relative;
 }
 
+/* Le cadre dit la nature de l'effet ; il est posé PAR-DESSUS le slot (dont la bordure or
+   reste celle du design system) pour ne pas dupliquer ses styles. */
+.cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-bar);
+  pointer-events: none;
+}
+
+.bienfait::after {
+  box-shadow: inset 0 0 0 1px var(--bonus);
+}
+
+.nefaste::after {
+  box-shadow: inset 0 0 0 1px var(--danger);
+}
+
+/* Un contrôle (immobilisation…) change le jeu : il pulse, une teinte fixe se perd. */
+.controle::after {
+  animation: pulsation 1.2s ease-in-out infinite;
+}
+
+@keyframes pulsation {
+  0%, 100% { box-shadow: inset 0 0 0 1px var(--danger), 0 0 0 0 var(--danger-border); }
+  50% { box-shadow: inset 0 0 0 2px var(--danger), 0 0 6px 1px var(--danger-border); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .controle::after {
+    animation: none;
+    box-shadow: inset 0 0 0 2px var(--danger);
+  }
+}
+
+/* Emplacements vides de la ligne des affaiblissements : un soupçon de rouge suffit à
+   dire « cette ligne-là, c'est ce qu'on subit ». */
+.grid .videNefaste {
+  border-color: var(--danger-bg-strong);
+}
+
+.compteur {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  min-width: 12px;
+  padding: 0 2px;
+  border-top-left-radius: 4px;
+  background: var(--actionbar-bg);
+  color: var(--text);
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 11px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.nefaste .compteur {
+  color: var(--danger-text-strong);
+}
+
 .tooltip {
   display: none;
   position: absolute;
@@ -16,15 +77,66 @@
   left: 12px;
   background: var(--panel);
   backdrop-filter: blur(20px);
-  padding: 6px 8px;
+  padding: 8px 10px;
   border: solid 1px var(--gold-soft);
   border-radius: var(--radius-bar);
   color: var(--text);
   z-index: 10;
-  width: 150px;
+  width: 200px;
   font-size: 12px;
+  line-height: 1.4;
+}
+
+.nefaste .tooltip {
+  border-color: var(--danger-border);
 }
 
 .cell:hover .tooltip {
   display: block;
+}
+
+.tooltipHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.tagBienfait,
+.tagNefaste {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tagBienfait {
+  color: var(--bonus);
+}
+
+.tagNefaste {
+  color: var(--danger-text);
+}
+
+.tooltipControle {
+  color: var(--danger-text-strong);
+  margin-bottom: 2px;
+}
+
+.bonus {
+  color: var(--bonus);
+  font-weight: 700;
+}
+
+.malus {
+  color: var(--danger-text);
+  font-weight: 700;
+}
+
+.tooltipTemps {
+  margin-top: 4px;
+  color: var(--text-faint);
+  font-size: 11px;
 }

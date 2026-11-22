@@ -110,6 +110,9 @@ const Spell = (props) => {
         props.updateJoueurState({
             message: spellStats.message,
             lifeJoueur: spellStats.life,
+            // Un sort de soutien pose un bienfait : la grille d'effets se recharge tout
+            // de suite au lieu d'attendre son prochain sondage.
+            buffVersion: Date.now(),
             needRefresh: true
         })
     }
