@@ -24,11 +24,21 @@
 }
 
 .joueur {
-  background-size: contain;
   content: "";
-  width: 4.1vh;
-  height: 4.1vh;
+  width: 100%;
+  height: 100%;
   position: relative;
+}
+
+// Retouche discrète des sprites d'origine, isolée de l'infobulle du joueur.
+.joueur::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--joueur-skin) center / contain no-repeat;
+  image-rendering: pixelated;
+  filter: brightness(1.03) contrast(1.04) saturate(1.06);
+  pointer-events: none;
 }
 
 .joueur-hover {

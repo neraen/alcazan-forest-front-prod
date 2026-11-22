@@ -10,10 +10,11 @@
   border-radius: 4px;
   background: transparent;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   cursor: pointer;
   z-index: 3;
+  overflow: visible;
 }
 
 .interaction:hover, .interaction:focus-visible {
@@ -39,13 +40,41 @@
 }
 
 .skin {
-  position: relative;
-  width: 94%;
-  height: 94%;
+  // Les sprites recadrés occupent presque tout le PNG : petite marge au pied.
+  // Seul le dessin dépasse ; la zone cliquable reste celle de la case.
+  position: absolute;
+  bottom: -4%;
+  left: -10%;
+  width: 120%;
+  height: 145%;
+  max-width: none;
+  max-height: none;
   image-rendering: pixelated;
   pointer-events: none;
   object-fit: contain;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
+  object-position: center bottom;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.65));
+}
+
+// Essai niveau 0 : léger lissage et réduction de 4 px, sans toucher aux autres sprites.
+.skin[src$="/recolte-fer-niv0-v2.png"],
+.skin[src$="/recolte-frene-niv0-v2.png"],
+.skin[src$="/recolte-ortie-niv0-v2.png"] {
+  left: calc(-10% + 2px);
+  width: calc(120% - 4px);
+  height: calc(145% - 4px);
+  image-rendering: auto;
+}
+
+.disponible .skin {
+  filter: drop-shadow(0 0 1px #fff2af)
+          drop-shadow(0 0 3px rgba(255, 214, 104, 0.95))
+          drop-shadow(0 0 6px rgba(245, 191, 71, 0.65));
+}
+
+.disponible:hover .skin, .disponible:focus-visible .skin {
+  filter: brightness(1.12) drop-shadow(0 0 2px #fff2af)
+          drop-shadow(0 0 7px rgba(255, 214, 104, 0.95));
 }
 
 /* Indisponible (métier manquant, en recharge, épuisée) : le repère s'efface sans
@@ -57,7 +86,10 @@
 }
 
 .indisponible .skin {
-  filter: grayscale(1) brightness(0.6);
+  // L'état doit rester identifiable sans faire disparaître le dessin sur le décor.
+  // Le statut et le compte à rebours portent aussi l'information d'indisponibilité.
+  filter: grayscale(0.75) saturate(0.65)
+          drop-shadow(0 1px 1px rgba(0, 0, 0, 0.85));
 }
 
 .indisponible:hover {
@@ -120,6 +152,70 @@
 .statut { color: var(--text, #f4eddc); }
 .cout { color: var(--gold); font-weight: 700; }
 .fiche { width: 100%; max-width: 420px; }
+// Palette de récolte : couleurs lisibles, sans halo permanent.
+// Les PNG restent intacts ; chaque ressource peut ajuster sa teinte sans changer sa forme.
+.skin[src*="-carte-sobre-v"] {
+  image-rendering: auto;
+  --recolte-saturation: 1.45;
+  --recolte-teinte: 0deg;
+}
+.disponible .skin[src*="-carte-sobre-v"] {
+  filter: saturate(var(--recolte-saturation)) hue-rotate(var(--recolte-teinte))
+          drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
+}
+.disponible:hover .skin[src*="-carte-sobre-v"],
+.disponible:focus-visible .skin[src*="-carte-sobre-v"] {
+  filter: saturate(var(--recolte-saturation)) hue-rotate(var(--recolte-teinte))
+          brightness(1.06) drop-shadow(0 0 2px rgba(224, 198, 135, 0.5));
+}
 .ficheCorps { padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
 .apercu { width: 88px; height: 88px; object-fit: contain; image-rendering: pixelated; }
 .details { display: flex; flex-direction: column; gap: 6px; text-align: center; }
+
+// Champignon historique : réduction discrète de 4 px, ancrage bas conservé.
+.skin[src$="/champignon-bleu-carte-sobre-v3.png"] {
+  left: calc(-10% + 2px);
+  width: calc(120% - 4px);
+  height: calc(145% - 4px);
+}
+
+// Réglages par ressource : palette intermédiaire demandée après validation des formes.
+.skin[src$="/champignon-bleu-carte-sobre-v3.png"] { --recolte-saturation: 2.2; --recolte-teinte: 0deg; }
+.skin[src$="/mine-cuivre-carte-sobre-v4.png"] { --recolte-saturation: 1.25; --recolte-teinte: 0deg; }
+.skin[src$="/mine-etain-carte-sobre-v4.png"] { --recolte-saturation: 1; --recolte-teinte: 0deg; }
+.skin[src$="/mine-charbon-carte-sobre-v4.png"] { --recolte-saturation: 1; --recolte-teinte: 0deg; }
+.skin[src$="/mine-cobalt-carte-sobre-v4.png"] { --recolte-saturation: 1.45; --recolte-teinte: 0deg; }
+.skin[src$="/mine-corrompu-carte-sobre-v4.png"] { --recolte-saturation: 1.6; --recolte-teinte: 0deg; }
+.skin[src$="/mine-argent-carte-sobre-v4.png"] { --recolte-saturation: 1; --recolte-teinte: 0deg; }
+.skin[src$="/mine-enchante-carte-sobre-v4.png"] { --recolte-saturation: 1.5; --recolte-teinte: 0deg; }
+.skin[src$="/mine-quartz-carte-sobre-v4.png"] { --recolte-saturation: 1.1; --recolte-teinte: 0deg; }
+.skin[src$="/mine-amethyste-carte-sobre-v4.png"] { --recolte-saturation: 1.55; --recolte-teinte: 0deg; }
+.skin[src$="/mine-serpentine-carte-sobre-v4.png"] { --recolte-saturation: 1.55; --recolte-teinte: 10deg; }
+.skin[src$="/mine-or-carte-sobre-v4.png"] { --recolte-saturation: 1.2; --recolte-teinte: 0deg; }
+.skin[src$="/mine-rubis-carte-sobre-v4.png"] { --recolte-saturation: 1.8; --recolte-teinte: 0deg; }
+.skin[src$="/mine-saphir-carte-sobre-v4.png"] { --recolte-saturation: 1.6; --recolte-teinte: 0deg; }
+.skin[src$="/mine-cristal-pur-carte-sobre-v4.png"] { --recolte-saturation: 1.1; --recolte-teinte: 0deg; }
+.skin[src$="/arbre-frene-carte-sobre-v4.png"] { --recolte-saturation: 1.35; --recolte-teinte: 12deg; }
+.skin[src$="/arbre-chataignier-carte-sobre-v4.png"] { --recolte-saturation: 1.35; --recolte-teinte: -8deg; }
+.skin[src$="/arbre-bouleau-carte-sobre-v4.png"] { --recolte-saturation: 1.2; --recolte-teinte: 10deg; }
+.skin[src$="/arbre-erable-carte-sobre-v4.png"] { --recolte-saturation: 1.35; --recolte-teinte: -12deg; }
+.skin[src$="/arbre-corrompu-carte-sobre-v4.png"] { --recolte-saturation: 1.65; --recolte-teinte: 0deg; }
+.skin[src$="/arbre-noyer-carte-sobre-v4.png"] { --recolte-saturation: 1.4; --recolte-teinte: 10deg; }
+.skin[src$="/arbre-enchante-carte-sobre-v4.png"] { --recolte-saturation: 1.65; --recolte-teinte: 20deg; }
+.skin[src$="/arbre-if-carte-sobre-v4.png"] { --recolte-saturation: 1.4; --recolte-teinte: 12deg; }
+.skin[src$="/arbre-ebene-carte-sobre-v4.png"] { --recolte-saturation: 1.35; --recolte-teinte: -8deg; }
+.skin[src$="/arbre-fer-carte-sobre-v4.png"] { --recolte-saturation: 1.65; --recolte-teinte: 18deg; }
+.skin[src$="/arbre-ancestral-carte-sobre-v4.png"] { --recolte-saturation: 1.2; --recolte-teinte: -5deg; }
+.skin[src$="/arbre-arbre-monde-carte-sobre-v4.png"] { --recolte-saturation: 1.35; --recolte-teinte: 18deg; }
+.skin[src$="/herbe-ortie-carte-sobre-v4.png"] { --recolte-saturation: 1.45; --recolte-teinte: 8deg; }
+.skin[src$="/herbe-camomille-carte-sobre-v4.png"] { --recolte-saturation: 1.4; --recolte-teinte: 0deg; }
+.skin[src$="/herbe-bolet-luisant-carte-sobre-v4.png"] { --recolte-saturation: 1.8; --recolte-teinte: -8deg; }
+.skin[src$="/herbe-menthe-carte-sobre-v4.png"] { --recolte-saturation: 1.65; --recolte-teinte: 18deg; }
+.skin[src$="/herbe-lavande-carte-sobre-v4.png"] { --recolte-saturation: 1.9; --recolte-teinte: 0deg; }
+.skin[src$="/herbe-champignon-corrompu-carte-sobre-v4.png"] { --recolte-saturation: 1.85; --recolte-teinte: 0deg; }
+.skin[src$="/herbe-fleur-enchantee-carte-sobre-v4.png"] { --recolte-saturation: 1.9; --recolte-teinte: 0deg; }
+.skin[src$="/herbe-morille-songes-carte-sobre-v4.png"] { --recolte-saturation: 1.9; --recolte-teinte: 0deg; }
+.skin[src$="/herbe-trefle-astral-carte-sobre-v4.png"] { --recolte-saturation: 1.6; --recolte-teinte: 12deg; }
+.skin[src$="/herbe-orchidee-lunaire-carte-sobre-v4.png"] { --recolte-saturation: 1.65; --recolte-teinte: 0deg; }
+.skin[src$="/herbe-amanite-spectrale-carte-sobre-v4.png"] { --recolte-saturation: 2; --recolte-teinte: 0deg; }
+.skin[src$="/herbe-fleur-arbre-monde-carte-sobre-v4.png"] { --recolte-saturation: 1.5; --recolte-teinte: 0deg; }

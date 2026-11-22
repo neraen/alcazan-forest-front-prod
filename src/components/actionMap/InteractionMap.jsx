@@ -58,6 +58,7 @@ export const InteractionMap = (props) => {
     // « J'ai récolté trop tôt » et « quelqu'un a saigné le filon » n'appellent ni le même
     // repère ni la même réaction : le second se distingue à l'œil.
     const gisementEpuise = etat ? !!etat.gisementEpuise : false;
+    const disponible = etat?.disponible === true && !gisementEpuise && restant === 0;
     const modes = props.modesRecolte || [];
     const skin = etat?.skin ?? interaction.skin;
     const image = skin ? `/img/interaction/${skin}.png` : null;
@@ -161,7 +162,8 @@ export const InteractionMap = (props) => {
         <>
             <button type="button" ref={repereRef}
                  className={`${styles.interaction} ${indisponible ? styles.indisponible : ""}`
-                 + `${gisementEpuise ? " " + styles.epuise : ""}`}
+                 + `${gisementEpuise ? " " + styles.epuise : ""}`
+                 + `${disponible ? " " + styles.disponible : ""}`}
                  onClick={event => { event.stopPropagation(); setBulle(null); setApercuOuvert(true); }}
                  onMouseEnter={() => { if (window.matchMedia("(hover: hover)").matches) montrerBulle(); }}
                  onMouseLeave={() => setBulle(null)} onFocus={montrerBulle} onBlur={() => setBulle(null)}

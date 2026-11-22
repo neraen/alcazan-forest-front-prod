@@ -56,7 +56,7 @@ const Player = (props) => {
     }
 
     return <>
-        <div className={"joueur " + (props.player.idJoueur !== props.joueurState.joueurId && "joueur-hoverable") } style={{backgroundImage: "url(../img/classes/"+props.player.nomClasse+"_"+ props.player.sexe +".png)"}} onClick={handleTarget} onContextMenu={handleContextMenu}>
+        <div className={"joueur " + (props.player.idJoueur !== props.joueurState.joueurId && "joueur-hoverable") } style={{"--joueur-skin": "url(../img/classes/"+props.player.nomClasse+"_"+ props.player.sexe +".png?v=base-20261119)"}} onClick={handleTarget} onContextMenu={handleContextMenu}>
             <div className="joueur-hover">
                 <div className="joueur-name">{props.player.pseudo}</div>
                 <div className="joueur-level">
