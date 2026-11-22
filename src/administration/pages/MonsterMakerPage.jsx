@@ -4,11 +4,15 @@ import monsterApi from "../../services/monsterApi";
 import AdminCatalog from "../components/AdminCatalog";
 import CreateMonsterForm from "../components/forms/CreateMonsterForm";
 
-const EMPTY_MONSTER = {id: 0, name: "", maxLife: 0, skin: "", tempsRepop: 0, puissance: 0};
+const EMPTY_MONSTER = {id: 0, name: "", maxLife: 0, skin: "", tempsRepop: "", puissance: 0, armure: 0};
 
 /** Image d'un monstre : même convention que le jeu (/img/monstre/<skin>.png). */
 const monsterThumb = (monster) => (monster.skin ? `/img/monstre/${monster.skin}.png` : null);
-const repop = (monster) => monster.tempsRepop ?? monster.temps_repop ?? 0;
+/** Temps de repop affiché : non renseigné (ou ≤ 0) = défaut serveur de 30 s (`MonstreConfig`). */
+const repop = (monster) => {
+    const valeur = Number(monster.tempsRepop ?? monster.temps_repop ?? 0);
+    return valeur > 0 ? `${valeur}s` : "30s (défaut)";
+};
 
 const MonsterMakerPage = () => {
 
@@ -35,7 +39,8 @@ const MonsterMakerPage = () => {
                     <div className="admin-preview-stats">
                         <div className="admin-preview-stat"><span>Vie</span><span>{monster.maxLife}</span></div>
                         <div className="admin-preview-stat"><span>Puissance</span><span>{monster.puissance}</span></div>
-                        <div className="admin-preview-stat"><span>Repop</span><span>{repop(monster)}s</span></div>
+                        <div className="admin-preview-stat"><span>Armure</span><span>{monster.armure ?? 0}</span></div>
+                        <div className="admin-preview-stat"><span>Repop</span><span>{repop(monster)}</span></div>
                     </div>
                 </div>
             </>
@@ -50,7 +55,7 @@ const MonsterMakerPage = () => {
                 selectedId={selectedId}
                 onSelect={setSelectedId}
                 getThumb={monsterThumb}
-                getMeta={(monster) => `${monster.maxLife} PV · ${monster.puissance} puiss.`}
+                getMeta={(monster) => `${monster.maxLife} PV · ${monster.puissance} puiss. · ${monster.armure ?? 0} arm.`}
                 newLabel="+ Créer un monstre"
                 renderPreview={renderPreview}
             >

@@ -130,7 +130,14 @@ const Spell = (props) => {
             }
         }else if(props.target.type === "monstre"){
             if(props.spell.type !== "soin"){
-                attackStats = await UsersApi.applyAttaqueToMonster(props.target.targetId, props.spell.id)
+                try{
+                    attackStats = await UsersApi.applyAttaqueToMonster(props.target.targetId, props.spell.id)
+                }catch(erreur){
+                    // Refus serveur (case vidée en attente de repop, cible introuvable) :
+                    // sans ce catch le rejet laissait le ciblage mort jusqu'au F5.
+                    toast.error(erreur.response?.data?.message || "Impossible de frapper cette cible.");
+                    return;
+                }
             }else{
                 //toast("Vous ne pouvez pas soigner cette cible")
                 return;

@@ -12,7 +12,7 @@ class MonstreAddForm extends React.Component{
         this.state = {
             monstreInfos: [],
             monstreId: 1,
-            quantity: 0
+            quantity: 1
         }
     }
 

@@ -4,7 +4,7 @@ import Field from "../../../components/forms/field/Field";
 import monsterApi from "../../../services/monsterApi";
 import ImageUploadField from "./imageUpload/ImageUploadField";
 
-const EMPTY = {id: 0, name: "", maxLife: 0, skin: "", tempsRepop: 0, puissance: 0};
+const EMPTY = {id: 0, name: "", maxLife: 0, skin: "", tempsRepop: "", puissance: 0, armure: 0};
 
 /** Normalise un monstre venu de la liste (temps_repop) vers l'état du form (tempsRepop). */
 const normalize = (monster) => ({
@@ -12,8 +12,10 @@ const normalize = (monster) => ({
     name: monster.name ?? "",
     maxLife: monster.maxLife ?? 0,
     skin: monster.skin ?? "",
-    tempsRepop: monster.tempsRepop ?? monster.temps_repop ?? 0,
+    // Vide = non renseigné : le serveur applique alors le délai par défaut (30 s).
+    tempsRepop: monster.tempsRepop ?? monster.temps_repop ?? "",
     puissance: monster.puissance ?? 0,
+    armure: monster.armure ?? 0,
 });
 
 /**
@@ -55,7 +57,9 @@ const CreateMonsterForm = ({monster, onSaved}) => {
                               onChange={(fichier) => setForm(previous => ({...previous, skin: fichier}))}/>
             <Field name="maxLife" type="number" label="Vie max" value={form.maxLife} onChange={handleChange}/>
             <Field name="puissance" type="number" label="Puissance" value={form.puissance} onChange={handleChange}/>
-            <Field name="tempsRepop" type="number" label="Temps de repop (s)" value={form.tempsRepop} onChange={handleChange}/>
+            <Field name="armure" type="number" label="Armure" value={form.armure} onChange={handleChange}/>
+            <Field name="tempsRepop" type="number" label="Temps de repop (s)" placeholder="30 par défaut"
+                   value={form.tempsRepop} onChange={handleChange}/>
             <button type="submit">{isEdit ? "Enregistrer les modifications" : "Créer le monstre"}</button>
         </form>
     );
