@@ -3,6 +3,7 @@ import {toast} from "react-toastify";
 import InteractionMakerApi from "../../../services/InteractionMakerApi";
 import ConditionsForm from "./ConditionsForm";
 import ImageUploadField from "../imageUpload/ImageUploadField";
+import ContenuRecompenseForm, {lignesDepuisHistorique} from "./ContenuRecompenseForm";
 
 const VIDE = {
     id: null,
@@ -25,8 +26,13 @@ const VIDE = {
 
 const RECOMPENSE_VIDE = {
     objetId: null, equipementId: null, consommableId: null,
-    money: null, experience: null, quantity: null
+    money: null, experience: null, quantity: null,
+    tirages: null, lignes: []
 };
+
+/* La récolte garde la récompense historique (UNE ressource : l'image de la case sur la
+   carte vient de `recompense.objet`) ; tout le reste se décrit en lignes. */
+const enLignes = (type) => type !== "recolter";
 
 /**
  * Édition complète d'une interaction : fiche + récompense + conditions, sauvegardées en
@@ -87,7 +93,11 @@ const InteractionForm = ({interactionId, referentiels, config, onSaved}) => {
         }
         setEnregistrement(true);
         try {
-            const sauvegarde = await InteractionMakerApi.save({...interaction, recompense, conditions});
+            // Récolte : sans `lignes` (le serveur garde les champs historiques). Sinon : les
+            // lignes seules, qui remplacent les champs historiques côté serveur.
+            const {lignes: _lignes, tirages, ...historique} = recompense;
+            const aEnvoyer = enLignes(interaction.type) ? {tirages, lignes: lignesAffichees} : historique;
+            const sauvegarde = await InteractionMakerApi.save({...interaction, recompense: aEnvoyer, conditions});
             setInteraction(sauvegarde.interaction);
             setRecompense(sauvegarde.recompense);
             setConditions(sauvegarde.conditions);
@@ -105,6 +115,9 @@ const InteractionForm = ({interactionId, referentiels, config, onSaved}) => {
         return <p>Chargement…</p>;
     }
 
+    // Un coffre d'avant les lignes est PRÉSENTÉ en lignes garanties ; il ne sera converti
+    // en base qu'au prochain enregistrement.
+    const lignesAffichees = recompense.lignes?.length ? recompense.lignes : lignesDepuisHistorique(recompense);
     const typeCourant = config.types.find(t => t.value === interaction.type);
     const porteeCourante = config.portees.find(p => p.value === interaction.porteeRecharge);
 
@@ -223,7 +236,7 @@ const InteractionForm = ({interactionId, referentiels, config, onSaved}) => {
                     </div>
                     <div className="form-group">
                         <label>Niveau minimum</label>
-                        <input type="number" min="1" value={interaction.niveauMetierMin}
+                        <input type="number" min="0" value={interaction.niveauMetierMin}
                                onChange={champ("niveauMetierMin")} disabled={!interaction.metierId}/>
                     </div>
                     <div className="form-group">
@@ -234,7 +247,13 @@ const InteractionForm = ({interactionId, referentiels, config, onSaved}) => {
                 </div>
             </fieldset>
 
-            <fieldset className="donjon-maker-bloc">
+            {enLignes(interaction.type) && <fieldset className="donjon-maker-bloc">
+                <legend>Contenu</legend>
+                <ContenuRecompenseForm lignes={lignesAffichees} tirages={recompense.tirages} referentiels={referentiels}
+                                       onChange={({lignes, tirages}) => setRecompense(p => ({...p, lignes, tirages}))}/>
+            </fieldset>}
+
+            {!enLignes(interaction.type) && <fieldset className="donjon-maker-bloc">
                 <legend>Récompense</legend>
                 <div className="donjon-maker-ligne">
                     {[
@@ -267,7 +286,7 @@ const InteractionForm = ({interactionId, referentiels, config, onSaved}) => {
                         <input type="number" min="0" value={recompense.experience ?? ""} onChange={champRecompense("experience")}/>
                     </div>
                 </div>
-            </fieldset>
+            </fieldset>}
 
             <ConditionsForm conditions={conditions}
                             onChange={setConditions}
