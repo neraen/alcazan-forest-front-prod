@@ -61,13 +61,14 @@ export const fetchTargetError = (error) => {
     }
 }
 
-export const fetchTargetInfo = (target, type) => {
-    return dispatch => {
+export const fetchTargetInfo = (targetId, type) => {
+    return (dispatch, getState) => {
         dispatch(requestTarget());
-        return GameApi.getTargetInfos(target, type).then(
+        return GameApi.getTargetInfos(targetId, type).then(
             response => {
-                const target = response.data;
-                dispatch(fetchTargetSuccess(target));
+                const current = getState().data.target;
+                if (current.targetId !== targetId || current.type !== type) return;
+                dispatch(fetchTargetSuccess(response.data));
             },
             error => {
                 dispatch(fetchTargetError(error));

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {connect} from "react-redux";
 import {toast} from "react-toastify";
 import {updatePlayerTarget, updateEchange} from "../../store/actions";
@@ -10,12 +10,6 @@ const Player = (props) => {
 
     // Menu contextuel (clic droit) : {x, y} d'ouverture, null fermé.
     const [menu, setMenu] = useState(null);
-
-    useEffect(() => {
-        if(props.hasMonstre){
-            props.updatePlayerTarget({targetId: props.hasMonstre, type: "monstre"})
-        }
-    }, [])
 
     const handleTarget = () =>{
         props.updatePlayerTarget({targetId: props.player.idJoueur, type: "player"})

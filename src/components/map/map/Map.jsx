@@ -1,3 +1,4 @@
+import MonstreCible from "../../target/MonstreCible";
 import React from 'react'
 import {toast} from "react-toastify";
 import MapApi from "../../../services/MapApi";
@@ -98,7 +99,7 @@ class Map extends React.Component {
      * autrement. Il n'est pas dessiné sur la carte, exactement comme les monstres du monde
      * ouvert (peints dans l'image de fond).
      *
-     * Le monde ouvert fait ce ciblage au montage du composant Player (prop `hasMonstre`) ;
+     * Le monde ouvert est suivi par MonstreCible, y compris pendant le repop ;
      * ici c'est Map qui s'en charge, parce que c'est le seul endroit qui sache quelle case
      * est LA MIENNE — Player est aussi rendu pour les autres membres du groupe, et cibler
      * le monstre sur lequel un coéquipier se tient n'aurait aucun sens.
@@ -354,8 +355,10 @@ class Map extends React.Component {
     render()
     {
         const zones = this.getZonesParCase();
+        const maCase = this.state.cases.find(c => c.abscisse === this.state.abscisseJoueur && c.ordonnee === this.state.ordonneeJoueur);
 
         return (<>
+            <MonstreCible key={`${this.state.mapId}:${this.state.abscisseJoueur}:${this.state.ordonneeJoueur}`} id={maCase?.renfortId ? null : maCase?.hasMonstre}/>
 
             <div className="cases" style={{backgroundImage: fondCarte(this.state.mapId), backgroundSize: 'cover'}}>
                 {this.state.cases.map(uniqueCase => (
